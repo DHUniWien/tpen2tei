@@ -3,18 +3,37 @@ __author__ = 'tla'
 
 import json
 from lxml import etree
+from os.path import basename
 import re
 import sys
 
-IDTAG = '{http://www.w3.org/XML/1998/namespace}id'
+# IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
 
 
-def wordtokenize(xmlfile, milestone=None, first_layer=False):
+def from_file(xmlfile, milestone=None, first_layer=False, encoding='utf-8'):
+    with open(xmlfile, encoding=encoding) as fh:
+        return from_fh(fh, milestone=milestone, first_layer=first_layer)
+
+
+def from_fh(xml_fh, milestone=None, first_layer=False):
+    xmldoc = etree.parse(xml_fh)            # returns an ETree
+    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer)
+
+
+def from_string(xml_string, milestone=None, first_layer=False):
+    xmldoc = etree.fromstring(xml_string)   # returns an Element
+    return from_element(xmldoc, milestone=milestone, first_layer=first_layer)
+
+
+def from_etree(xml_doc, milestone=None, first_layer=False):
+    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer)
+
+
+def from_element(xml_object, milestone=None, first_layer=False):
     """Take a TEI XML file as input, and return a JSON structure suitable
     for passing to CollateX."""
-    xmldoc = etree.parse(xmlfile).getroot()
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
-    thetext = xmldoc.xpath('//t:text', namespaces=ns)[0]
+    thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
 
     # For each paragraph-like block in the text, break it up into words.
     tokens = []
@@ -23,7 +42,7 @@ def wordtokenize(xmlfile, milestone=None, first_layer=False):
         # Find all the content starting from the given milestone up to
         # the next milestone of the same unit.
         try:
-            msel = thetext.xpath('.//t:milestone[@n=%s]' % milestone, namespaces=ns)[0]
+            msel = thetext.xpath('.//t:milestone[@n="%s"]' % milestone, namespaces=ns)[0]
         except IndexError:
             return tokens
         xpathexpr = './/t:milestone[@n="%s"]/following-sibling::t:milestone[@unit="%s"]' % (milestone, msel.get('unit'))
@@ -158,9 +177,8 @@ if __name__ == '__main__':
     else:
         xmlfiles = sys.argv
     for fn in xmlfiles:
-        sigil = re.sub('\.xml$', '', fn)
-        with open(fn, encoding='utf-8') as xf:
-            result = wordtokenize(xf, textms)
-            if len(result):
-                witness_array.append({'id': sigil, 'tokens': result})
+        sigil = re.sub('\.xml$', '', basename(fn))
+        result = from_file(fn, textms)
+        if len(result):
+            witness_array.append({'id': sigil, 'tokens': result})
     print(json.dumps({'witnesses': witness_array}, ensure_ascii=False))
