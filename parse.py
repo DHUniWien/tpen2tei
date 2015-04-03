@@ -25,13 +25,12 @@ def from_sc(jsondata):
         thetext = []
         xval = 0
         for line in page['resources']:
-            # TODO motivation: oa:commenting -> it needs to be a note!
             if line['resource']['@type'] == 'cnt:ContentAsText':
                 transcription = line['resource']['cnt:chars']
                 if len(transcription) == 0:
                     continue
                 if line['motivation'] == 'sc:painting':
-                    # First see if this line even has any text.
+                    # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
                     coords = re.match('^.*#xywh=-?(\d+)', line['on'])
                     if coords is None:
@@ -43,12 +42,13 @@ def from_sc(jsondata):
                     # Get the line ID, for later attachment of notes.
                     lineid = re.match('^.*line/(\d+)$', line['@id'])
                     if lineid is None:
-                        raise ValueError('Could not find a line ID on line %s' % json.dump(line))
+                        raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
                     thetext[-1].append((lineid.group(1), transcription))
                 elif line['motivation'] == 'oa:commenting':
+                    # This 'transcription' is actually a transcriber's note.
                     lineid = re.match('^.*line/(\d+)$', line['on'])
                     if lineid is None:
-                        raise ValueError('Could not find a line ID on comment %s' % json.dump(line))
+                        raise ValueError('Could not find a line ID on comment %s' % json.dumps(line))
                     notes.append((lineid.group(1), transcription))
         # Spit out the text
         if len(thetext):
@@ -143,7 +143,8 @@ def xmlify(txdata):
             else:
                 el.set('cert', 'low')
 
-    return tei_wrap(content, sorted(glyphs_seen.values(), key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')))
+    return tei_wrap(content, sorted(glyphs_seen.values(),
+                    key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')))
 
 
 def get_glyph(gname):

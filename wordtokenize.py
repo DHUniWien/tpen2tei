@@ -52,7 +52,7 @@ def _find_words(element, first_layer=False):
     tokens = []
     # First handle the text of the element, if any
     if element.text is not None:
-        _split_text_node(element.text, tokens, first_layer )
+        _split_text_node(element.text, tokens)
 
     # Now tokens has only the tokenized contents of the element itself.
     # If there is a single token, then we 'lit' the entire element.
@@ -104,10 +104,10 @@ def _find_words(element, first_layer=False):
     if element.tail is not None:
         # Strip any insignificant whitespace from the tail.
         tnode = element.tail
-        if re.match('.*\}[clp]b$', element.tag ):
+        if re.match('.*\}[clp]b$', element.tag):
             tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
         if tnode != '':
-            _split_text_node(tnode, tokens, first_layer)
+            _split_text_node(tnode, tokens)
 
     # Get rid of any final empty tokens.
     if len(tokens) and _is_blank(tokens[-1]):
@@ -115,7 +115,7 @@ def _find_words(element, first_layer=False):
     return tokens
 
 
-def _split_text_node(tnode, tokens, first_layer=False):
+def _split_text_node(tnode, tokens):
     tnode = tnode.rstrip('\n')
     words = re.split('\s+', tnode)
     for word in words:
@@ -126,7 +126,6 @@ def _split_text_node(tnode, tokens, first_layer=False):
             open_token['lit'] += word
             del open_token['INCOMPLETE']
             tokens.append(open_token)
-            open_token = None
         elif word != '':
             token = {'t': word, 'n': word, 'lit': word}
             tokens.append(token)
@@ -151,17 +150,17 @@ def _is_blank(token):
 
 if __name__ == '__main__':
     witness_array = []
-    milestone = None
+    textms = None
     xmlfiles = None
     if re.match('.*\.xml$', sys.argv[1]) is None:
-        milestone = sys.argv[1]
+        textms = sys.argv[1]
         xmlfiles = sys.argv[2:]
     else:
         xmlfiles = sys.argv
     for fn in xmlfiles:
         sigil = re.sub('\.xml$', '', fn)
-        with open(fn, encoding='utf-8') as xmlfile:
-            result = wordtokenize(xmlfile, milestone)
+        with open(fn, encoding='utf-8') as xf:
+            result = wordtokenize(xf, textms)
             if len(result):
                 witness_array.append({'id': sigil, 'tokens': result})
     print(json.dumps({'witnesses': witness_array}, ensure_ascii=False))
