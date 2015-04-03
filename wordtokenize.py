@@ -6,6 +6,8 @@ from lxml import etree
 import re
 import sys
 
+IDTAG = '{http://www.w3.org/XML/1998/namespace}id'
+
 
 def wordtokenize(xmlfile, milestone=None, first_layer=False):
     """Take a TEI XML file as input, and return a JSON structure suitable
@@ -29,24 +31,6 @@ def wordtokenize(xmlfile, milestone=None, first_layer=False):
         msend = None
         if len(nextmsel):
             msend = nextmsel[0]
-        # ns1 = '//t:milestone[@n="%s"]/following-sibling::node()' % milestone
-        # ns2 = '//t:milestone[@n="%s"]/preceding-sibling::node()' % msend
-        # xpathexpr = '%s[count(.|%s)=count(%s)]' % (ns1, ns2, ns2)
-        # content = thetext.xpath(xpathexpr, namespaces=ns)
-        # ablock = etree.Element('{%s}ab' % ns['t'])
-        # # TODO figure out what to do with a leading text node
-        # try:
-        #     if content[0].is_tail:
-        #         ablock.text = content.pop(0)
-        # except AttributeError:
-        #     pass
-        # for el in content:
-        #     try:
-        #         x = el.tag
-        #     except AttributeError:
-        #         continue
-        #     ablock.append(el)
-        # blocks = [ablock]
         in_milestone = False
         for block in blocks:
             for el in block.iterchildren():
@@ -54,19 +38,12 @@ def wordtokenize(xmlfile, milestone=None, first_layer=False):
                     in_milestone = True
                 elif el is msend:
                     in_milestone = False
+                # TODO handle nested milestones
                 if not in_milestone:
                     el.getparent().remove(el)
     for block in blocks:
         tokens.extend(_find_words(block, first_layer))
 
-    # Get rid of the last empty token.
-    empty = 0
-    for token in tokens:
-        if token['t'] == '':
-            empty += 1
-            tokens.remove(token)
-    if empty:
-        print("Removed %d empty tokens" % empty, file=sys.stderr)
     return tokens
 
 
@@ -77,8 +54,6 @@ def _find_words(element, first_layer=False):
     if element.text is not None:
         _split_text_node(element.text, tokens, first_layer )
 
-    if element.get('n') == '10':
-        pass
     # Now tokens has only the tokenized contents of the element itself.
     # If there is a single token, then we 'lit' the entire element.
     if len(tokens) == 1:
@@ -134,6 +109,9 @@ def _find_words(element, first_layer=False):
         if tnode != '':
             _split_text_node(tnode, tokens, first_layer)
 
+    # Get rid of any final empty tokens.
+    if len(tokens) and _is_blank(tokens[-1]):
+        tokens.pop()
     return tokens
 
 
@@ -149,16 +127,26 @@ def _split_text_node(tnode, tokens, first_layer=False):
             del open_token['INCOMPLETE']
             tokens.append(open_token)
             open_token = None
-        else:
+        elif word != '':
             token = {'t': word, 'n': word, 'lit': word}
             tokens.append(token)
-    if len(tokens) and re.match( '\s+$', tnode) is None:
+    if len(tokens) and re.search('\s+$', tnode) is None:
         tokens[-1]['INCOMPLETE'] = True
     return tokens
 
 
 def _tag_is(el, tag):
     return el.tag == '{http://www.tei-c.org/ns/1.0}%s' % tag
+
+
+def _is_blank(token):
+    if token['n'] != '':
+        return False
+    if token['t'] != '':
+        return False
+    if token['lit'] != '':
+        return False
+    return True
 
 
 if __name__ == '__main__':
@@ -172,7 +160,7 @@ if __name__ == '__main__':
         xmlfiles = sys.argv
     for fn in xmlfiles:
         sigil = re.sub('\.xml$', '', fn)
-        with open(fn) as xmlfile:
+        with open(fn, encoding='utf-8') as xmlfile:
             result = wordtokenize(xmlfile, milestone)
             if len(result):
                 witness_array.append({'id': sigil, 'tokens': result})
