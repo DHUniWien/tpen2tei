@@ -70,7 +70,7 @@ def _find_words(element, first_layer=False):
     """Detect word boundaries and add an anchor to each."""
     tokens = []
     # First handle the text of the element, if any
-    if element.text is not None:
+    if element.tag is not etree.Comment and element.text is not None:
         _split_text_node(element.text, tokens)
 
     # Now tokens has only the tokenized contents of the element itself.
@@ -123,7 +123,7 @@ def _find_words(element, first_layer=False):
     if element.tail is not None:
         # Strip any insignificant whitespace from the tail.
         tnode = element.tail
-        if re.match('.*\}[clp]b$', element.tag):
+        if re.match('.*\}[clp]b$', str(element.tag)):
             tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
         if tnode != '':
             _split_text_node(tnode, tokens)
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         textms = sys.argv[1]
         xmlfiles = sys.argv[2:]
     else:
-        xmlfiles = sys.argv
+        xmlfiles = sys.argv[1:]
     for fn in xmlfiles:
         sigil = re.sub('\.xml$', '', basename(fn))
         result = from_file(fn, textms)
