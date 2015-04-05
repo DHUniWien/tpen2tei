@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Ժամանակագրութիւն</title>
+        <author>մատթէոս ուռհայեցի</author>
+        <respStmt xml:id="tla">
+          <resp>Transcription by</resp>
+          <name>Tara L Andrews</name>
+        </respStmt>
+      </titleStmt>
+      <publicationStmt>
+        <p>Unpublished manuscript</p>
+      </publicationStmt>
+      <sourceDesc>
+        <msDesc xml:id="A">
+          <msIdentifier>
+            <settlement>Yerevan</settlement>
+            <repository>Matenadaran</repository>
+            <idno>1896</idno>
+          </msIdentifier>
+          <p>35r-35v; 85r-87r</p>
+        </msDesc>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <pb n="17ա"/>
+      <!-- first Kozern prophecy -->
+      <p><hi rend="DEFAULT">Ի</hi> թու<ex resp="#tla">ականութեան</ex> հայոց <num value="478">նհը</num> յամս <lb/>
+կայսերն յունաց վասլի. <lb/>
+Եղեւ յերկինս ահաւոր նը<lb/>
+շան և սոսկալի, և բար<lb/>
+կութի<ex resp="#tla">ւն</ex> ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ամ<ex resp="#tla">ենայն</ex> արարա֊<lb/>
+ծոց. ի հոկտեմբեր ամսոյ <lb/>
+<num value="3">գ</num> յերրորդ ժամու աւ<lb/>
+ուրն, պատառեցաւ վե<lb/>
+րին հաստատութիւնն <lb/>
+երկն<subst><del>բ</del><add place="overwrite">ի</add></subst>ց յարեւելից կուսէ՝ <lb/>
+մինչեւ յարեւմուտս, ընդ <lb/>
+երկուս հերձաւ կապուտ <lb/>
+երկինդ։ և <subst><del>նոցի</del><add place="overwrite">լոյս</add></subst> <subst><del>քան...</del><add place="overwrite">պայ</add></subst><lb/>
+ծառ յերկիր թափեցաւ ի <lb/>
+հիւսիսայի՛ն կողմանէ՛. և <lb/>
+մեծաւ շարժմամբ դող<lb/>
+աց ամ<ex resp="#tla">ենայն</ex> երկիր։ և նախ քան <lb/>
+զնուազիլ լուսոյն՝ եղեւ <lb/>
+գոջիւն և թնդիւն ահաւ<lb/>
+որ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ամ<ex resp="#tla">ենայն</ex> արարածոց. խա֊<lb/>
+ւարեցաւ արեգակն՝ և աս<lb/>
+տեղք երեւեցան որպէս ի <lb/>
+մէջ գիշերի, և սո՛ւգ զգե֊<lb/>
+ցան ամ<ex resp="#tla">ենայն</ex> երկիր, և դա՛ռն <lb/>
+արտասուօք աղաղակէ<lb/>
+ին ամենայն ազինք ա՛ռ <lb/>
+ա<ex resp="#tla">ստուա</ex>ծ։ Եւ ապա յետ երեք <lb/>
+աւուր՝ ժողովեցան ամ<ex resp="#tla">ենայն</ex> <lb/>
+իշխանք և ազատքն հրա֊<lb/>
+մանաւ թագաւորին հայ<lb/>
+ոց յովանիսի։ և եկեալ ա֊<lb/>
+ռաջի ս<ex resp="#tla">ուր</ex>բ վարդապետին <lb/><cb/>
+յօհաննու կոզեռանն, որ <lb/>
+է՛ր ա՛յր ա<ex resp="#tla">ստուա</ex>ծազգեա՛ց և հրեշ<lb/>
+տակակրօն, և լի՛ իսկ առաքե֊<lb/>
+լակա՛ն և մարգարէակա՛ն գը֊<lb/>
+րոց գիտութ<ex resp="#tla">եամ</ex>բ։ Եւ յորժամ ե֊<lb/>
+կին իշխանքն հայո՛ց՝ հարցա֊<lb/>
+նել զնա՛ և իմանալ վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> հրաշա֊<lb/>
+լի տեսլեանն և նշանին։ և տե֊<lb/>
+սին զս<ex resp="#tla">ուր</ex>բ վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ապե</ex>տն յօհաննէս՝ <lb/>
+անկեալ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> երեսաց իւ֊<lb/>
+րոց տրտմութ<ex resp="#tla">եամ</ex>բ, և լա՛յր դա՛ռ<lb/>
+նապէս։ Եւ ի հարցանելն <lb/>
+ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, նա՛ դա՛ռն ոգո՛վ, և ա֊<lb/>
+ղիողորմ հառաչանօք՝ <lb/>
+ե՛տ պատասխանի և ասաց։ <lb/>
+Ո՜վ որդի՛ք, լուարու՛ք ինձ՝ <lb/>
+վա՛յ և եղու՛կ է ամ<ex resp="#tla">ենայն</ex> մարդկ<ex resp="#tla">ա</ex>ն <lb/>
+զի ահա այսօ՛ր հազա՛ր ա՛մ է <lb/>
+կապանացն սատանայի՝ զոր <lb/>
+կապեաց տ<ex resp="#tla">է</ex>րն մեր յ<ex resp="#tla">իսու</ex>ս ք<ex resp="#tla">րիստո</ex>ս խա֊<lb/>
+չիւն իւրով ս<ex resp="#tla">ր</ex>բով, մանաւ<lb/>
+անդ իւր ս<ex resp="#tla">ուր</ex>բ մկրտութ<ex resp="#tla">եամ</ex>բն <lb/>
+ի յորդանան գետն։ Եւ <lb/>
+ա՛րդ արձակեցաւ սատա֊<lb/>
+նայ ի կապանաց իւրոց, <lb/>
+ըստ վկայութե<ex resp="#tla">ան</ex> տեսլեանն <lb/>
+յօհաննու աւետարան<lb/>
+չին։ որպէս ասաց նմա հը֊<lb/>
+րեշտակն ա<ex resp="#tla">ստուծո</ex>յ, թէ <num value="1000">ռ</num> ա՛մ կա֊<lb/>
+պեսցի սատանայ, և դա՛ր<lb/>
+ձեալ արձակեսցի ի կապա֊<lb/>
+նաց իւրոց։ <lb/>
+<pb n="17բ"/>
+Եւ ահա այսօր արձակեցաւ <lb/>
+սատանա՛յ ի հազա՛ր ամէ կա֊<lb/>
+պանաց իւրոց։ որ հայոց <lb/>
+թուականն <num value="400">ն</num> և <num value="78">հը</num> ամ է։ <lb/>
+և կա՛լ զառաջինն <num value="552">շծբ</num> որ <lb/>
+լինի <num value="1000">ռ</num> և <num value="30">լ</num> ամ<del>է՛</del>։ զերեսուն <lb/>
+ա՛մն տո՛ւր յառաջ քան ըզ<lb/>
+մկրտութի<ex resp="#tla">ւն</ex>ն, և կա՛լ զհազարն <lb/>
+մինչեւ ցայսօր։ Եւ ա՛րդ վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> <lb/>
+այսորիկ եղեւ պատառումն <lb/>
+երկնից։ Եւ ահա յայսմհե֊<lb/>
+տէ ոչ ոք կարասցէ կա՛լ հաս<lb/>
+տատուն ի հաւատս ք<ex resp="#tla">րիստոս</ex>ի, <lb/>
+և ի պատուիրանսն ա<ex resp="#tla">ստուծո</ex>յ։ <lb/>
+Ո՜չ հայրապե՛տ, և ո՜չ վարդա֊<lb/>
+պետ։ ո՜չ եպիսկոպոս, և ոչ <lb/>
+քահանայ։ ոչ աբեղայ, <lb/>
+և ոչ կրօնաւոր, ոչ իշխա՛ն <lb/>
+և ոչ ժողովուրդ։ իշխա<lb/>
+նք յարենան ի գո՛ղս, և յաւ<lb/>
+ազակս և ի յափշտակօղս։ <lb/>
+Դատաւորք ի կաշառս <lb/>
+և յանիրաւ դատաստանս։ <lb/>
+Կրօնաւորք թողուն զանա֊<lb/>
+պատս և զմենաստանս, <lb/>
+և յաշխարհի սբաղմունս <lb/>
+դեգերին, և շրջին ընդ <lb/>
+փողոցս և ի մէջ կանանց, <lb/>
+ատեն զաղօթս, և թողուն <lb/>
+զկարգս կրօնաւորութե<ex resp="#tla">ան</ex> <lb/>
+իւրեանց, սիրեն զվարս աշ<lb/>
+խարհի, և զհետ երթան գո֊<lb/><cb/>
+վեստից մարդկան։ Որոճա֊<lb/>
+լով որոճեն զդիւական երգս, <lb/>
+և փքացեալ ի վերա ընկե֊<lb/>
+րացն ասելով, թէ ես կցու՛րդ <lb/>
+և մեղեդի՛ գիտեմ և դու <lb/>
+ո՜չ. և այսու պատճառ<lb/>
+աւ՝ պղտորեն զկարգ <lb/>
+ժամատեղացն։ լինին <lb/>
+և բազումք ուսումնա֊<lb/>
+տեացք, ձո՛յլք՝ և դատ<lb/>
+արկաբանք, տրտնջօղք՝ <lb/>
+և ամբաստանօղք, և <lb/>
+ու՛ր ուրեք երեւի ճշմար<lb/>
+տութի<ex resp="#tla">ւն</ex> ի մարդիկ։ Զի <lb/>
+լինին կամապա՛շտք՝ ան<lb/>
+ձնասէ՛րք՝ և ընկերատե<lb/>
+ացք, շոգմոգք քսու՛ք <lb/>
+ստախօ՛սք՝ հպա՛րտք, <del>վ</del><lb/>
+փառասէ՛րք անձնահ<lb/>
+ա՛ճք ինքնահաւա՛նք <lb/>
+որկորամո՛լք, գինէսէ՛րք <lb/>
+և ցանկասէ՛րք։ Որդեակք <lb/>
+իմ ահա՛ յայսմհետէ խափա֊<lb/>
+նեսցի փառաբանութի<ex resp="#tla">ւն</ex>ն <lb/>
+ա<ex resp="#tla">ստուծո</ex>յ ի մարդկանէ՛, և ոչ <lb/>
+երեւի ճշմարտութի<ex resp="#tla">ւն</ex> <lb/>
+առ մարդիկք։ Այլ և <lb/>
+իշխանք պի՛ղծ և մեծ<lb/>
+ախտիւ յանդգնեալ <lb/>
+և մոլորեալ. թողուն ըզ<lb/>
+հոգս շինութե<ex resp="#tla">ան</ex> տանց, և <lb/>
+զյաջողուածս գործոց, և <lb/>
+<pb n="18ա"/>
+միշտ և հան<ex resp="#tla">ա</ex>պ<ex resp="#tla">ա</ex>զ ի գինարբուսն <lb/>
+դեգերին, վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> սիրոյ և ցանկութե<ex resp="#tla">ան</ex> <lb/>
+չար և պիղծ ախտին. հ<ex resp="#tla">ա</ex>յր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ք և֊ <lb/>
+եպ<ex resp="#tla">իսկոպո</ex>սունք, և ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յք և կրօնաւո՛րք, <lb/>
+արծաթասէ՛րք առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ քան ա<ex resp="#tla">ստուա</ex>ծասէրք։ <lb/>
+Որդեակք իմ ահա յայսմհետէ <lb/>
+ս<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յի կամքն առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ կատարեսցի <lb/>
+յորդիս մարդկան քան զա<ex resp="#tla">ստուծո</ex>յն։ և ի <lb/>
+ձեռն անարժան պ<ex resp="#tla">ատա</ex>ր<ex resp="#tla">ա</ex>գողա՛ցն որ <lb/>
+յայսմ հետէ լինելո՛ց է, բարկա<lb/>
+նայ ա<ex resp="#tla">ստուա</ex>ծ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ար<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>ծոցս, ևս առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ <lb/>
+ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> մատուցողին զնայ, զի յանար<lb/>
+ժանիցն պ<ex resp="#tla">ատա</ex>ր<ex resp="#tla">ա</ex>գելոց է ք<ex resp="#tla">րիստո</ex>ս, և յանար<lb/>
+ժանսն բաշխի. և առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ վիրաւո<lb/>
+րելոց է տ<ex resp="#tla">է</ex>ր մեր յ<ex resp="#tla">իսու</ex>ս ք<ex resp="#tla">րիստո</ex>ս ի յանարժա՛ն <lb/>
+ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յիցն, քան զչարչարիլն և զխա<lb/>
+չիլն ի հրէից, զի արձակեցաւ <lb/>
+ս<ex resp="#tla">ա</ex>տ<ex resp="#tla">անա</ex>յ ի <num value="1000">ռ</num> ամէ կապանա՛ց իւրոց <lb/>
+զոր կապե<ex resp="#tla">ա</ex>ց ք<ex resp="#tla">րիստո</ex>ս։ Եւ զայս որդե<ex resp="#tla">ա</ex>կք <lb/>
+իմ պատուիրեմ ձեզ հառաչա<lb/>
+նօք սրտիւ լալո՛վ և ողբալով, <lb/>
+վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի քակտին բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմք ի հաւա<lb/>
+տո՛ց, և պարծանօք ուրանան <lb/>
+զք<ex resp="#tla">րիստո</ex>ս, և վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ խաւար կալաւ <lb/>
+զամ<ex resp="#tla">ենայն</ex> արարածս։ Զայս այսպէս <lb/>
+ասաց ս<ex resp="#tla">ուր</ex>բ վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն հայոց վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> կա<lb/>
+տարածի բարկութե<ex resp="#tla">ան</ex> նըշանին, <lb/>
+և այլ բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ ինչ ճառե<ex resp="#tla">ա</ex>ց, որ <lb/>
+կատարելո՛ց էր ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> հաւատացե<lb/>
+լոցս, զոր ահա ամ<ex resp="#tla">ենայն</ex> ինչ կատարե<lb/>
+ցաւ մի աո մի ի ձեռն ելից կա<lb/>
+տաղի և շուն ազգին թուրքաց, <lb/><cb/>
+անօրէն և պիղծ որդւոցն քամա՛։ <lb/></p>
+      <pb n="21բ"/>
+      <!-- second Kozern prophecy -->
+      <p><hi rend="DEFAULT">Յ</hi>ա՛յսմ տումարիս և ի թվ<ex resp="#tla">ա</ex>կ<ex resp="#tla">ա</ex>նութե<ex resp="#tla">ան</ex>ս <lb/>
+հայոց <num value="400">ն</num> և <num value="85">ձե</num> խաւարեցաւ <expan resp="#tla">արեգակ</expan>ն, <lb/>
+ահաւոր և սոսկալի տեսլեամբ. <lb/>
+վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի զոր օր<ex resp="#tla">ի</ex>ն<ex resp="#tla">ա</ex>կ եղեւ խաւարե<ex resp="#tla">ա</ex>լ <lb/>
+ի խաչելութե<ex resp="#tla">ան</ex>ն ք<ex resp="#tla">րիստո</ex>սի, նոյն օր<ex resp="#tla">ի</ex>ն<ex resp="#tla">ա</ex>կաւ <lb/>
+ծածկե<ex resp="#tla">ա</ex>ց զլոյսն իւր և խաւա՛ր <lb/>
+զգեցաւ. և լուսաւորքն <expan resp="#tla">աշխարհ</expan>իս <lb/>
+ի մութն և ի սեաւ դարձան, և ամ<ex resp="#tla">ենայն</ex> <lb/>
+երկինք իբրեւ զկամա՛ր կամար կա<lb/>
+պեցաւ խաւարաւն. և եղեւ սեւա<lb/>
+ցեա՛լ արեգակն ի մէջ օրէի, և֊ <lb/>
+ամ<ex resp="#tla">ենայն</ex> աստեղքն առ հասարա՛կ ե<lb/>
+րեւէին ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> ի մէջ գիշերի. և սաստ<lb/>
+կացաւ խաւարն և մո՛ւթն, և֊ <lb/>
+գոչե<ex resp="#tla">ա</ex>ց առ հաս<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>կ ամ<ex resp="#tla">ենայն</ex> ար<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>ծք, և֊ <lb/>
+հընչեցին ամ<ex resp="#tla">ենայն</ex> լերինք և բլուրք, <lb/>
+և դողա՛ց սասանելով լերինք և֊ <lb/>
+ամ<ex resp="#tla">ենայն</ex> ապառա՛ժք, և երերալով <lb/>
+ծփա՛յր համատարա՛ծ մեծ ծո՛վն <lb/><cb/>
+ովկիանոս, և սուգ առեալ լայր <lb/>
+զամ<ex resp="#tla">ենայն</ex> որդիս մ<ex resp="#tla">ար</ex>դկ<ex resp="#tla">ա</ex>ն։ Եւ եղեւ ի տե<lb/>
+սանել զայս ամ<ex resp="#tla">ենայն</ex> որդւոց մ<ex resp="#tla">ար</ex>դկ<ex resp="#tla">ա</ex>ն, <lb/>
+ահաբեկեա՛լ լինէին յերկի<ex resp="#tla">ւ</ex>ղէն <lb/>
+ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> մեռեալ։ </p>
+      <p><hi rend="DEFAULT">Յ</hi>այնժամ լայր <lb/>
+որդի առ հայր իւր, և լայր հայր <lb/>
+ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> որդւոց. տղայք զարհու<lb/>
+րեալք ի յահէն, անկանէին ի֊ <lb/>
+գիրկս ծնօղա՛ցն. մարքն աղետե<ex resp="#tla">ա</ex>լ <lb/>
+սաստիկ վառմա<add place="above">մ</add>բ իբրեւ հրով, <lb/>
+լային զտղայս իւր<ex resp="#tla">եան</ex>ց. և ա՛յսպէս <lb/>
+ահաբեկեալ կային ամ<ex resp="#tla">ենայն</ex> ար<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>ծք, <lb/>
+և յերկի<ex resp="#tla">ւ</ex>ղէն պաշարեալ կային, <lb/>
+և ելս իրացն ոչ գտանէին ընդ <lb/>
+սոսկալի նշանն, զարհուրե<ex resp="#tla">ա</ex>լ <lb/>
+հիանային և ահաբեկե<ex resp="#tla">ա</ex>լ կային <lb/>
+առ հաս<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>կ։ <lb/></p>
+      <p><hi rend="DEFAULT">Յ</hi>այնժ<ex resp="#tla">ա</ex>մ տէր պ<ex resp="#tla">ետ</ex>ր<ex resp="#tla">ո</ex>ս հ<ex resp="#tla">ա</ex>յր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն հայ<lb/>
+ոց, և թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րն յ<ex resp="#tla">ո</ex>վհ<ex resp="#tla">ա</ex>ն<ex resp="#tla">է</ex>ս յուղարկե<ex resp="#tla">ա</ex>լ <lb/>
+արք փ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ո</ex>րք առ ս<ex resp="#tla">ուր</ex>բ վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն <lb/>
+հայոց յօհանէս որ կոչէին կոզե՛ռն, <lb/>
+<del>վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex></del> զի ի նմանէ գիտասցեն զմեկ<lb/>
+նութի<ex resp="#tla">ւն</ex> մեծ նշանին։ զի էր այր <lb/>
+ս<ex resp="#tla">ուր</ex>բ և սքանչելի, ճգնութ<ex resp="#tla">եամ</ex>բ զար<lb/>
+դարե<ex resp="#tla">ա</ex>լ, և մեկնիչ հին և նոր կտա<lb/>
+կարանացն ա<ex resp="#tla">ստուծո</ex>յ։ լցեալ վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ակա՛ն <lb/>
+շնորհօք։ Իսկ որք առ<ex resp="#tla">ա</ex>ք<ex resp="#tla">ե</ex>ցա՛ն առ <lb/>
+վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն հայոց, գրիգոր մագիստ<lb/>
+րոսն որդին վասակայ, <add place="above">և</add> հայկազնին <lb/>
+մեծն սարգիս, և այլք ոմանք յազա<lb/>
+տաց տանն հայոց, և այլք ի ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յի՛ցն <lb/>
+զի զերկրորդելն ահաւոր նշանին <lb/>
+<pb n="22ա"/>
+գիտասցեն։ <lb/></p>
+      <p><hi rend="DEFAULT">Ե</hi>ւ եղև իբրև գնացին առ <lb/>
+վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն հայոց՝ գտանէին զնա, <lb/>
+զի դարձեալ <subst><del>գ</del><add place="overwrite">կ</add></subst>այր ի գետինն <lb/>
+երեսք ի վայր ի խո՛ր տրտմութե<ex resp="#tla">ան</ex>, <lb/>
+և թացե<ex resp="#tla">ա</ex>լ լինէր արտասուօք զգե<lb/>
+տինն. և ի սաստկութ<ex resp="#tla">են</ex>է լալոյն և ի <lb/>
+դառն հառաչանա՛ց որ ելանէր <lb/>
+ի բերանոյ նորին՝ ոչ ոք իշխէր <lb/>
+ինչ հարցանել ցնայ. վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի տեսա<lb/>
+նէին զնա ի խորին սուգս, և յահա<lb/>
+գին տրտմութի<ex resp="#tla">ւն</ex>ս, և անդադա՛ր <lb/>
+հեղոյր զարտասուսն, և կոծէր <lb/>
+զկուրծսն իւր. և յայնժամ նստան <lb/>
+իշխանքն հայոց մերձ առ վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն <lb/>
+յ<ex resp="#tla">ով</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">է</ex>ս, և զ<num value="6">վեց</num> ժամու աւուրն <lb/>
+ոչինչ համարձակեցան խօսել, <lb/>
+և հարցանել վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> ահաւոր նշանին. <lb/>
+և լային առ հաս<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>կ ամ<ex resp="#tla">ենայն</ex> եկեալքն <lb/>
+առ նայ։ </p>
+      <p><hi rend="DEFAULT">Յ</hi>այնժամ իբրև ետես <lb/>
+վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն հայոց զողբումն ամ<ex resp="#tla">ենայն</ex> եկե<lb/>
+լոցն, բացե<ex resp="#tla">ա</ex>լ զբերանն իւր ըսկ<lb/>
+սաւ խօսել հառաչանօք, և֊ <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մ արտասուօք, և սկսաւ <lb/>
+լա՛լ զամ<ex resp="#tla">ենայն</ex> ազգս հաւատ<ex resp="#tla">ա</ex>ց<ex resp="#tla">ե</ex>լ<ex resp="#tla">ո</ex>ց։ <lb/>
+լա՛յր և զկարգ ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յակա՛ն, և <lb/>
+զեղծումն սրբութե<ex resp="#tla">ան</ex> ս<ex resp="#tla">ր</ex>բ<ex resp="#tla">ո</ex>յ խոր<lb/>
+հրդոյն, լայր և զեկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցի ա<ex resp="#tla">ստուծո</ex>յ, և <lb/>
+զքակտումն պ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ո</ex>ւ<ex resp="#tla">ի</ex>ր<ex resp="#tla">ա</ex>նին, որ ի նմ<ex resp="#tla">ա</ex> <lb/>
+ծածկեա՛լ կան ա<ex resp="#tla">ստուա</ex>ծեղէնքն։ <lb/></p>
+      <p><hi rend="DEFAULT">Ե</hi>ւ սկսաւ այսպէս ասել ցիշ<lb/>
+խանսն հայոց, ո՜վ փառաւոր <lb/><cb/>
+որդիք իմ, լուարուք զբանս զայս <lb/>
+ի վիրաւո՛ր և ի վշտագնե<ex resp="#tla">ա</ex>լ յոհա<lb/>
+նիսէ. զի ահա այսօր լցան <num value="1000">ռ</num> ամ <lb/>
+չարչարանացն ք<ex resp="#tla">րիստոս</ex>ի խաչելութե<ex resp="#tla">ան</ex>ն։ <lb/>
+և արձակմանն բելիարա՛յ, զոր կա<lb/>
+պեալ էր զնա փրկիչն ի յորդանան, <lb/>
+գետ, զոր յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջին նշանէն ցուցաւ <lb/>
+մեզ յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ քան զ<subst><del><damage extent="8"/></del><add place="margin"><num value="6">վեց</num></add></subst> ամն <lb/>
+զոր ասացաք։ Եւ յ<ex resp="#tla">ա</ex>յնժ<ex resp="#tla">ա</ex>մ դ<ex resp="#tla">ար</ex>ձ<ex resp="#tla">եա</ex>լ երկ<ex resp="#tla">րոր</ex>դե<ex resp="#tla">ա</ex>ց <lb/>
+զի նախ երկինք պ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ռեցաւ, և երկի<lb/>
+րս մթացաւ. և ահա յայսմ ամի լու<lb/>
+սաւորքդ խաւարեցան և ամ<ex resp="#tla">ենայն</ex> ա<lb/>
+րարածք, վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի յայսմ հետէ ամ<ex resp="#tla">ենայն</ex> <lb/>
+ազգ<subst><del>աց</del><add>ք</add></subst> հաւատ<ex resp="#tla">ա</ex>ց<ex resp="#tla">ե</ex>լոցն ք<ex resp="#tla">րիստոս</ex>ի ի խաւա՛ր <lb/>
+շրջելոց են. զի այսուհետև խաւա<lb/>
+րին կարգ<add place="above">ք</add> եկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցւ<ex resp="#tla">ո</ex>յ ք<ex resp="#tla">րիստո</ex>սի, յամ<ex resp="#tla">ենայն</ex> <add place="margin">ազգաց</add> հաւա<lb/>
+տացելոց, թուլանան ի պահոց և <lb/>
+յաղօթից, պակասին յոյս հանդեր<lb/>
+ձելոցն, և երկիւղ դատաստանին <lb/>
+ա<ex resp="#tla">ստուծո</ex>յ արհամարհի, բառնա՛ ճշ<ex resp="#tla">մարի</ex>տ հաւ<lb/>
+ատք յամ<ex resp="#tla">ենայն</ex> ազգաց, տկարանայ <lb/>
+ա<ex resp="#tla">ստուա</ex>ծպաշտութի<ex resp="#tla">ւն</ex>ն, ատեն զպատուի<lb/>
+րանն ա<ex resp="#tla">ստուծո</ex>յ, դիմադա՛րձ լինին բանից <lb/>
+ս<ex resp="#tla">ուր</ex>բ աւետարանին ք<ex resp="#tla">րիստոս</ex>ի. ամ<ex resp="#tla">ենայն</ex> ոք հա<lb/>
+կառակ գտանին ս<ex resp="#tla">ր</ex>բ<ex resp="#tla">ո</ex>ց պ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ո</ex>ւիրա<lb/>
+նացն ա<ex resp="#tla">ստուծո</ex>յ, արհամարհեն զբանս <lb/>
+ս<ex resp="#tla">ուր</ex>բ վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ա՛ցն, անկոսնեն և զհրա<lb/>
+մանս կանոնաց ս<ex resp="#tla">ր</ex>բ<ex resp="#tla">ո</ex>ց հ<ex resp="#tla">ա</ex>յր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ա՛ցն, և <lb/>
+այնու բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մք անկանին ի բարձրութ<ex resp="#tla">են</ex>է <lb/>
+հաւատոց, և ատեն զդրունս ս<ex resp="#tla">ուր</ex>բ <lb/>
+եկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցւ<ex resp="#tla">ո</ex>յ, և ի ծուլութ<ex resp="#tla">են</ex>է պահոցն և֊ <lb/>
+յաղօթիցն կուրանան յա<ex resp="#tla">ստուա</ex>ծպ<ex resp="#tla">ա</ex>շտ<ex resp="#tla">ո</ex>ւ<ex resp="#tla">թ</ex>ե<ex resp="#tla">ան</ex>ցն. <lb/>
+<pb n="22բ"/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմք մտանեն ընդ լծով անիծից, <lb/>
+վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի ո՜չ հաւանին խրատու ա<ex resp="#tla">ստուա</ex>ծե<lb/>
+ղէն բանիցն ս<ex resp="#tla">ուր</ex>բ առաշնորդա՛ցն <lb/>
+որդիք անիծանին ի ծնօղաց իւր<ex resp="#tla">եան</ex>ց, <lb/>
+առ ի յոչ հնազանդութ<ex resp="#tla">են</ex>է զաւա<lb/>
+կաց։ ծնօղքն չարչարին ի ծն<expan resp="#tla">ընդ</expan>ոց <lb/>
+իւր<ex resp="#tla">եան</ex>ց. ցամաքեսցի գութ սիրոյ <lb/>
+բարեկամա՛ց ի հա՛րց և ի զաւակ<ex resp="#tla">ա</ex>ց. <lb/>
+և ահա՛ յայսմհետէ բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ հեր<lb/>
+ձուածք մտանեն յեկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցի ա<ex resp="#tla">ստուծո</ex>յ ի֊ <lb/>
+ծուլութ<ex resp="#tla">են</ex>է հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ա՛ցն վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի թուլա<lb/>
+մորթին և տկարանան, և հաւատոյ <lb/>
+քննութի<ex resp="#tla">ւն</ex> ոչ առնեն։ և կան յիմարե<ex resp="#tla">ա</ex>լք։ <lb/>
+Յ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>գս արծաթոյն թողուն ի բաց <lb/>
+զհաւա՛տն, և պակասին ա<ex resp="#tla">ւր</ex>հներգու<lb/>
+թի<ex resp="#tla">ւն</ex>ք ի տանէն ա<ex resp="#tla">ստուծո</ex>յ։ երկիւղն և ա՛հ <lb/>
+սոսկալի դատաստանին ա<ex resp="#tla">ստուծո</ex>յ յաւ<lb/>
+ուրն ահաւորի՛ որ լինելո՛ցն է, <lb/>
+փարատեալ խափանին յամ<ex resp="#tla">ենայն</ex> մտաց. <lb/>
+մոռանան զհատուցումն արդա<lb/>
+րոցն և մեղաւորա՛ցն, վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի մեղ<lb/>
+սասէրք և ցանկացողք լինելոց են <lb/>
+չար ճան<ex resp="#tla">ա</ex>պ<ex resp="#tla">ա</ex>րհին, փափաքանօք <lb/>
+երթան ի մեղաց ժողովարանն, <lb/>
+զի ահա ի թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րա՛ց և յիշխան<ex resp="#tla">ա</ex>ց և յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ<lb/>
+նորդաց՝ ապ<ex resp="#tla">ա</ex>կ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ե</ex>լո՛ց է երկիր. առ<ex resp="#tla">ա</ex>ջ<lb/>
+նորդք<add place="above">ն</add> և իշխանքն լինելոց են կա<lb/>
+շառ<add place="above">ա</add>սէ՛րք և ստախօ՛սք, և սուտ<lb/>
+երդմունք, և ի ձեռս կաշառացն <lb/>
+թիւրեն զդ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ստ<ex resp="#tla">ա</ex>նս իրաւանց<add place="above">ն</add> աղքա<lb/>
+տին, և յ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>գս այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ բարկա<lb/>
+նայ ա<ex resp="#tla">ստուա</ex>ծ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, զի զառաջնորդու<lb/><cb/>
+թի<ex resp="#tla">ւն</ex>ն և զիշխանութի<ex resp="#tla">ւն</ex>ն ընդ երեսա՛ց <lb/>
+վարեն, և ոչ ըստ ա<ex resp="#tla">ստուծո</ex>յ։ և տիրեալ իշ<lb/>
+խանաբար ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> վիճակին, և ոչ ա֊<lb/>
+հիւն ա<ex resp="#tla">ստուծո</ex>յ հովուել և ուսուց<ex resp="#tla">ա</ex>ն<ex resp="#tla">ե</ex>լ, <expan resp="#tla">որպէս</expan> <lb/>
+պատուիրե<ex resp="#tla">ա</ex>ց ս<ex resp="#tla">ուր</ex>բ առ<ex resp="#tla">ա</ex>ք<ex resp="#tla">եա</ex>լն պօղոս. իշ<lb/>
+խանք և դ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ո</ex>րք պոռնկասէ՛րք, <lb/>
+առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ քան ա<ex resp="#tla">ստուա</ex>ծասէրք։ և ատե<lb/>
+ցողք լինին ս<ex resp="#tla">ուր</ex>բ ամուսնութե<ex resp="#tla">ան</ex>ն, և֊ <lb/>
+փակին ընդ պոռնկութե<ex resp="#tla">ան</ex> ախ<lb/>
+տին։ և սիրեն զկորուստ նմա<lb/>
+նե<ex resp="#tla">ա</ex>ց իւր<ex resp="#tla">եան</ex>ց, մեծարեն զմատնիչ<lb/>
+սն և զգողսն, յափշտակեն անի<lb/>
+րաւաբար զ<add place="above">աշ</add>ատողացն զինչ<lb/>
+սն, անողորմ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ուղղել դա<lb/>
+տաստանացն։ Որդեակք իմ <lb/>
+ահա յայսմ հետէ ի հակառա<lb/>
+կութ<ex resp="#tla">են</ex>է առաջնորդա՛ց՝ փակե<lb/>
+լոց են դրունք ս<ex resp="#tla">ուր</ex>բ եկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցւ<ex resp="#tla">ո</ex>յ, և վե<lb/>
+րանան սրբութե<ex resp="#tla">ան</ex> կարգք յամ<ex resp="#tla">ենայն</ex> <lb/>
+ազգէ։ և յ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>գս արծաթսիրու<ex resp="#tla">թ</ex>ե<ex resp="#tla">ան</ex> <lb/>
+տան ձեռնադրութի<ex resp="#tla">ւն</ex> բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ ան<lb/>
+արժանից։ և զամ<ex resp="#tla">ենայն</ex> պղծեալսն <lb/>
+ածեն ի կարգ ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յութե<ex resp="#tla">ան</ex>։ և֊ <lb/>
+յայնժամ պ<ex resp="#tla">ատա</ex>ր<ex resp="#tla">ա</ex>գի ք<ex resp="#tla">րիստո</ex>ս ի ձեռն ան<lb/>
+արժան քահանայիցն, և բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմք <lb/>
+անարժանութ<ex resp="#tla">եամ</ex>բ հաղորդին ի նմա<lb/>
+նէ, ոչ եթէ ի փրկութի<ex resp="#tla">ւն</ex>, այլ ի դա<lb/>
+տապարտու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex>, և ի կորուստ հոգ<lb/>
+ւոյն, և ուր ուրեք կա՛ ճշ<ex resp="#tla">մարի</ex>տ պ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>գ<lb/>
+օղ ք<ex resp="#tla">րիստոս</ex>ի ս<ex resp="#tla">ուր</ex>բ խորհրդո՛յն յ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>գս ազգիս <lb/>
+որ ի ձեռն ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex> ողորմի ա<ex resp="#tla">ստուա</ex>ծ աշխարհի։ <lb/>
+Որդեակք զս<ex resp="#tla">ուր</ex>բսն և զառաքինի՛սն <lb/>
+<pb n="23ա"/>
+վիրաւորե՛ն՛, և զանարատն դար<lb/>
+ձուցանեն ի ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յութ<ex resp="#tla">են</ex>է, առ ի֊ <lb/>
+չունելոյ արծաթ ոչ տան զձեռ<lb/>
+նադրութի<ex resp="#tla">ւն</ex>. և ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> ասացաք յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ <lb/>
+քան զ<num value="40">դժ</num>ան ամն ի լինելոյ միւ<lb/>
+սումն նշանին եթէ պակասին <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմք ի հաւատոց ա<ex resp="#tla">ստուա</ex>ծպաշտու<lb/>
+թե<ex resp="#tla">ան</ex>ց, վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմք ի ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յից և ի կրօ<lb/>
+նաւորաց՝ թուլամորթին ի կրօ<lb/>
+նից իւր<ex resp="#tla">եան</ex>ց, լինելոց են ցանկասէ՛րք <lb/>
+ախտից, փափաքո՛ղք, որոճալով <lb/>
+որոճեն զերգս դիւակա՛ն. կրօ<lb/>
+նաւորքն փախչին յանապատէ՛ն՝ <lb/>
+և ատեն զս<ex resp="#tla">ուր</ex>բ երամս ճգնաւոր<ex resp="#tla">ա</ex>ցն, <lb/>
+և զվարս առաջին կրօն<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ո</ex>րացն, <lb/>
+ատե<ex resp="#tla">ա</ex>լ անարգեն լինիցին խանկա<lb/>
+րիչք կարգաց և կրօնից, փախչի՛ն <lb/>
+ի ձայնէ սաղմոսերգութե<ex resp="#tla">ան</ex>ցն ա<ex resp="#tla">ստուծո</ex>յ. <lb/>
+այս ամ<ex resp="#tla">ենայն</ex> լինելոց է որդեա՛կք իմ <lb/>
+յազգս այս, յղփանան առաջնոր<lb/>
+դք <expan resp="#tla">աշխարհ</expan>ի, արծաթսիրութ<ex resp="#tla">եամ</ex>բ, և զամ<ex resp="#tla">ենայն</ex> <lb/>
+անկե<ex resp="#tla">ա</ex>լս և զորոշե<ex resp="#tla">ա</ex>լս ի շնորհաց <lb/>
+որդւոյն ա<ex resp="#tla">ստուծո</ex>յ յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ կոչեն, և ածեն <lb/>
+զն<ex resp="#tla">ո</ex>ս<ex resp="#tla">ա</ex> ի կարգս ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յ<ex resp="#tla">ա</ex>կան, և զամ<ex resp="#tla">ենայն</ex> մեր<lb/>
+ժեալսն՝ գլուխ և առաջնորդ <lb/>
+կացուցանեն ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ժ<ex resp="#tla">ո</ex>ղ<ex resp="#tla">ո</ex>վրդեանն <lb/>
+ա<ex resp="#tla">ստուծո</ex>յ. և ոչ գիտեն զինչ գործեն, <lb/>
+վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> զի կուրանան ի սաստկութ<ex resp="#tla">են</ex>է <lb/>
+արծաթսիրութե<ex resp="#tla">ան</ex>ն. և առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ ու<lb/>
+նիմ ասել զայս. զի ահա՛ յայսմհե<lb/>
+տէ մեծաւ խոցմամբ վիրաւորե<lb/><cb/>
+լոց է ք<ex resp="#tla">րիստո</ex>ս յանարժան ք<ex resp="#tla">ա</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յիցն, քան զխա<lb/>
+չիլն և զչարչարիլն ի հրէից։ զի պա<lb/>
+կասն ի նոցանէ վճարելոց է ի սոցանէ։ <lb/>
+և լսելոց է եթէ ընկեր, վ<ex resp="#tla">ա</ex>ս<ex resp="#tla">ն</ex> <ex resp="#tla">ո</ex>ր<ex resp="#tla">ո</ex>յ մտեր <lb/>
+յայս հարսանի՛սս։ Յայնժամ կ<ex resp="#tla">ա</ex>պե<ex resp="#tla">ա</ex>լ <lb/>
+ոտիւք և կապեալ ձեռօք հանեն զնա <lb/>
+ի խաւարն արտաքին, և զոր ժողովե<ex resp="#tla">ա</ex>ցն <lb/>
+կուտի՛ կորստեամբ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex>։ Որդե<ex resp="#tla">ա</ex>կք <lb/>
+իմ ահա այս ամ<ex resp="#tla">ենայն</ex> լինելո՛ց է ի յետին <lb/>
+ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կս. զի արձակ<ex resp="#tla">ե</ex>ց<ex resp="#tla">ա</ex>ւ ս<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>յ ի <num value="1000">ռ</num> ամէ <lb/>
+կապանա՛ցն, զոր կապե<ex resp="#tla">ա</ex>ց ք<ex resp="#tla">րիստո</ex>ս խաչիւն <lb/>
+իւրով. և յայս<add place="above">մ</add>հետէ երեւեսցին ճշ<ex resp="#tla">մարի</ex>տ <lb/>
+հաւատ<ex resp="#tla">ա</ex>ց<ex resp="#tla">եա</ex>լքն ք<ex resp="#tla">րիստոս</ex>ի, կալով ընդդէմ <lb/>
+ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex> ի պ<ex resp="#tla">ատե</ex>ր<ex resp="#tla">ա</ex>զմ, զի ունի պ<ex resp="#tla">ատե</ex>ր<ex resp="#tla">ա</ex>զմել ընդ ս<ex resp="#tla">ուր</ex>բսն, <lb/>
+որք պատուիրանաւն ա<ex resp="#tla">ստուծո</ex>յ պահպա<lb/>
+նեալ կան ի կարգս ճշ<ex resp="#tla">մարի</ex>տ խոստ<ex resp="#tla">ո</ex>վ<ex resp="#tla">ա</ex>նու<ex resp="#tla">թ</ex>ե<ex resp="#tla">ան</ex>ն <lb/>
+ք<ex resp="#tla">րիստո</ex>սի ա<ex resp="#tla">ստուծո</ex>յ մերոյ, <add place="bottom margin">որք կան յազգս ազգս</add>։ Այսուհետև լինին <lb/>
+յարձակ<add place="above">մ</add>ունք այլազգե<ex resp="#tla">ա</ex>ց պիղծ զօրքն <lb/>
+թուրքաց անիծե<ex resp="#tla">ա</ex>լ որդւոցն քամայ, <lb/>
+ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> ազգաց քրիստոնէի՛ց, և ի սուր <lb/>
+սուսերի մաշի ամ<ex resp="#tla">ենայն</ex> երկիր սովով և֊ <lb/>
+գերութ<ex resp="#tla">եամ</ex>բ անցանէ ամ<ex resp="#tla">ենայն</ex> ազգ հաւ<lb/>
+ատացելոցն ք<ex resp="#tla">րիստո</ex>սի. յանմարդ դառ<lb/>
+նան բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ գաւառք, բառնալոց է <lb/>
+զօրութի<ex resp="#tla">ւն</ex>ք սրբոց յերկրէ, քակտին <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ եկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցիք ի հիմանց, խափանեսցի <lb/>
+խորհուրդ խաչին ք<ex resp="#tla">րիստոս</ex>ի ի բա<add place="below">զ</add>մանալ <lb/>
+անօրէնութե<ex resp="#tla">ան</ex>ցն, խափանին տօնա<lb/>
+խըմբութի<ex resp="#tla">ւն</ex>ք սրբոցն։ գրգռին որ<lb/>
+դիք ընդ հարցն, ատեցողք լինին <lb/>
+հարք առ որդիս, յարիցեն եղբա<lb/>
+<pb n="23բ"/>
+րք ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> միմեանց սպանութ<ex resp="#tla">եամ</ex>բ և <lb/>
+արեան հեղութ<ex resp="#tla">եամ</ex>բ ջանան կորու<lb/>
+սանել զիր<add place="above">ե</add>արս։ ուրանան զգութ <lb/>
+և զսէր եղբայրութե<ex resp="#tla">ան</ex>ն, ցամաքես<lb/>
+ցի արիւն եղբայրութե<ex resp="#tla">ան</ex> ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, և այս<lb/>
+պիսի գործօք հաւասարակի՛ց լի<lb/>
+նին անօրինացն. և յազգաց անօ<lb/>
+րինաց ծփի երկիր, և ցօղ արեան <lb/>
+զգենուն բոյսք անդաստանա՛ց։ <lb/>
+և զամս <num value="60">կ</num> սրո՛վ և գերութ<ex resp="#tla">եամ</ex>բ աւե<lb/>
+րելո՛ց է երկիր։ <lb/></p>
+      <p><hi rend="DEFAULT">Ե</hi>ւ յայնժամ ելցեն ազգն արի<lb/>
+ականք որ<add place="above">ք</add> են ֆռանգ, և բազմու<ex resp="#tla">թեամ</ex>բ <lb/>
+զօրօք առցեն զս<ex resp="#tla">ուր</ex>բ ք<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>քն ե<ex resp="#tla">րուսաղ</ex>էմ, և ա֊<lb/>
+զատի՛ ի գերութ<ex resp="#tla">են</ex>էն ս<ex resp="#tla">ուր</ex>բ գեր<ex resp="#tla">ե</ex>զմ<ex resp="#tla">ա</ex>նն <lb/>
+ա<ex resp="#tla">ստուա</ex>ծընկա՛լ։ <lb/></p>
+      <p><hi rend="DEFAULT">Ե</hi>ւ զկնի այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ զամս <num value="50">ծ</num> տագնա<lb/>
+պի երկիր ի զօրացն պարսկա՛ց սրով <lb/>
+և գերութ<ex resp="#tla">եամ</ex>բ, և <num value="7">է</num>պատիկ առ<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ե</ex>լ <lb/>
+քան զորս յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ կրեցին հաւատա<lb/>
+ցեալք, և ահաբեկին ամ<ex resp="#tla">ենայն</ex> ազգ<add place="above">ք</add> հա<lb/>
+ւատացելոց ք<ex resp="#tla">րիստոս</ex>ի։ և ի բ<ex resp="#tla">ա</ex>զմութ<ex resp="#tla">են</ex>է նե<lb/>
+ղութե<ex resp="#tla">ան</ex>ցն յուսահատին զօրք հռով<lb/>
+մայեցւո՛ց, բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ անցումն և կոտո<lb/>
+րած կրեն ի յազգէն պարսի՛ց. և֊ <lb/>
+ըտիր ընտիրս ի քաջ զօրականացն <lb/>
+խողխողեն սրով և գերութ<ex resp="#tla">եամ</ex>բ, մին<lb/>
+չեւ ի փրկութ<ex resp="#tla">են</ex>է յուսահատին զօրքն <lb/>
+հռովմայեցւո՛ց. և զկնի ամացն <lb/>
+սկիզբն առնուն ի զօրանալ առ <lb/>
+սակաւ սակաւ։ և ու՛ր ուրեք <lb/><cb/>
+լինի մնացե<ex resp="#tla">ա</ex>լ յառաջին գընդէն, <lb/>
+և ամ յամէ յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ գան և հաստա<lb/>
+տին իբրեւ տեղապահ գոլով աշ<lb/>
+խարհաց և գաւառա՛ց։ Յայնժ<ex resp="#tla">ա</ex>մ <lb/>
+<add place="margin">ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex></add> ի քնոյ զարթուցե<ex resp="#tla">ա</ex>լ լինի թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րն հռո<lb/>
+մէացւոց, և հասանէ ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> զար<lb/>
+ծիւ ի վ<ex resp="#tla">ե</ex>ր<ex resp="#tla">այ</ex> զօրացն պարսից. ահա<lb/>
+գին բազմութ<ex resp="#tla">եամ</ex>բ ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> զաւազ առ <lb/>
+եզր ծովու, ելցէ ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> զհուր բոր<lb/>
+բոքե<ex resp="#tla">ա</ex>լ, և յահէ ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex> դողան ամ<ex resp="#tla">ենայն</ex> ար<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>ծք, <lb/>
+և պարսիկք, և ամ<ex resp="#tla">ենայն</ex> զօրք այլազ<add place="above">գ</add>ե<ex resp="#tla">ա</ex>ցն <lb/>
+արա<add place="above">ս</add>ցեն զփախուստ իւր<ex resp="#tla">եան</ex>ց յայն<lb/>
+կոյս մեծ գետոյն ջա<add place="above">հ</add>ունեաց։ և֊ <lb/>
+յայնժամ թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րն հռոմայեցւոց, <lb/>
+տիրելով տիրէ ամ<ex resp="#tla">ենայն</ex> աշխարհի զամս <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմս. և նորոգումն առնու ամ<ex resp="#tla">ենայն</ex> <lb/>
+երկիր, և շինութե<ex resp="#tla">ան</ex> հիմն արկանէ, <lb/>
+և այնպէս նորանայ ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> զկնի ջրհե<lb/>
+ղեղին. բազմանան ծնունդք մարդ<lb/>
+կան և անասնո՛ց, բղխեսցեն աղբեւրք <lb/>
+զգնացս ջրոց։ պտղաբերին անդաս<lb/>
+տանք առաւել քան զառ<ex resp="#tla">ա</ex>ջինն. և <lb/>
+այնուհետեւ անկանի սով ի յ<expan resp="#tla">աշխարհ</expan>ն <lb/>
+պարսի՛ց զբ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ ամս, մինչեւ յարձա<lb/>
+կեալ զմիմեանս ուտիցե՛ն։ և յահէ <lb/>
+զօրութե<ex resp="#tla">ան</ex> թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րին հռովմայեցւո՛ց, <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ իշխանք պարսից ելցեն ի֊ <lb/>
+քաղաքաց և ի գաւառաց իւր<ex resp="#tla">եան</ex>ց, <lb/>
+և առանց պ<ex resp="#tla">ատե</ex>ր<ex resp="#tla">ա</ex>զմի զփախուստ ա֊<lb/>
+րասցեն յայնկոյս ջահուն գետոյ, <lb/>
+և զամ<ex resp="#tla">ենայն</ex> ժող<ex resp="#tla">ո</ex>վս մթերից իւր<ex resp="#tla">եան</ex>ց զամաց <lb/>
+<pb n="24ա"/>
+բազմաց, զոսկոյ և զարծաթոյ, և֊ <lb/>
+զամ<ex resp="#tla">ենայն</ex> բազմութի<ex resp="#tla">ւն</ex> գանձուցն, ո<ex resp="#tla">ր</ex>պ<ex resp="#tla">էս</ex> <lb/>
+զհո՛ղ կամ զքարակոյ՛տս անչափ հա<lb/>
+մարով առցեն յ<expan resp="#tla">աշխարհ</expan>էն պարսից, <lb/>
+և բարձեալ տարցեն յ<expan resp="#tla">աշխարհ</expan>ն հռով<lb/>
+մայեցւոց։ և զամ<ex resp="#tla">ենայն</ex> մանկունս և֊ <lb/>
+զաղջկունս և զկանայս տարցեն <lb/>
+ի գերութի<ex resp="#tla">ւն</ex> յ<expan resp="#tla">աշխարհ</expan>ն հռոմայեցւոց. աւե<lb/>
+րա՛կս և անմա՛րդ լինելոց է տունն <lb/>
+պարսից ի զօրացն հռովմ<ex resp="#tla">ա</ex>յ<ex resp="#tla">ե</ex>ցւ<ex resp="#tla">ո</ex>ց։ <lb/>
+և հ<ex resp="#tla">ա</ex>ստ<ex resp="#tla">ա</ex>տի ամ<ex resp="#tla">ենայն</ex> իշխ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ո</ex>ւ<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex> երկրի, ի֊ <lb/>
+ներքոյ ձեռին թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րին հռ<ex resp="#tla">ո</ex>մ<ex resp="#tla">ա</ex>յ<ex resp="#tla">ե</ex>ցւ<ex resp="#tla">ո</ex>ց։ <lb/></p>
+      <p><add place="margin">զ<ex resp="#tla">ա</ex>յս</add> <hi rend="DEFAULT">Ա</hi>յսպէս ասաց ս<ex resp="#tla">ուր</ex>բ վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ն յ<ex resp="#tla">ո</ex>հ<ex resp="#tla">ա</ex>ն<ex resp="#tla">է</ex>ս <lb/>
+և արձակեալ յուղարկե<ex resp="#tla">ա</ex>ց զիշխան<lb/>
+սն հայոց խաղ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ո</ex>ւ<ex resp="#tla">թեամ</ex>բ, և գնացին <lb/>
+յ<expan resp="#tla">աշխարհ</expan>ն իւր<ex resp="#tla">եան</ex>ց։ <lb/></p>
+      <pb n="35ա"/>
+      <!-- intro Book 2 -->
+      <p><hi rend="DEFAULT">Ա</hi>րդ՝ ահա մինչև ցայս վայրս <lb/>
+բազմաջան և աշխատաւոր <lb/>
+քննութ<ex resp="#tla">եամ</ex>բ գըտեալ գրեցաք. <lb/>
+զշարագրական գրեալս զ<num value="100">Ճ</num><lb/>
+ից ամաց զորս ի բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ ժամա<lb/>
+նակաց հետաքննեալ հասու <lb/>
+եղաք ընդ այնքանեաց տեսո<lb/>
+ղացն և լսողացն, որք էին հին ա֊<lb/>
+մաց ծնեալք, և ընդ ընթերցող<lb/>
+<pb n="35բ"/>
+սն յառաջին պ<ex resp="#tla">ա</ex>տմագրացս, որք <lb/>
+ականատեսք էին լեա՛լք ամ<ex resp="#tla">ենայն</ex> ե<lb/>
+ղելոցս և նեղութե<ex resp="#tla">ան</ex>ցս այս<ex resp="#tla">ո</ex>ց<ex resp="#tla">ի</ex>կ, <lb/>
+զոր <expan resp="#tla">վասն</expan> մեղաց կրե<ex resp="#tla">ա</ex>ց տունն հայ<add place="above">ո</add>ց։ <lb/>
+Եւ ահա որ զայս բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մ անգամ <lb/>
+զմտաւ ածե<ex resp="#tla">ա</ex>լ եմ, <expan resp="#tla">վասն</expan> այս յետին <lb/>
+ժամ<ex resp="#tla">անա</ex>կին գրել զդառնաշունչ <lb/>
+կատարածսն զայս սոսկալի բար<lb/>
+կութի<ex resp="#tla">ւն</ex>ս, զոր կրե<ex resp="#tla">ա</ex>ց ազգս հայոց. <lb/>
+ի գիսաւոր և ի պիղծ եղիմացւոց <lb/>
+ազգէն թուրքաց, և եղբարց <lb/>
+իւր<ex resp="#tla">եան</ex>ց հոռոմոց։ և <expan resp="#tla">վասն</expan> այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ հա<lb/>
+րկ եղև ի մտաց խորհրդոյս ի<lb/>
+մոյ. անդադա՛ր յուզմա՛մբ իբ<lb/>
+րև զմեծ իմն համարելով գտա<lb/>
+նել զայս գործս կատարածի. <lb/>
+և <expan resp="#tla">վասն</expan> այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ զօրաժ<ex resp="#tla">ո</ex>ղ<ex resp="#tla">ո</ex>վ արարի և գը<lb/>
+րեցի մինչև ցայս վայր զ<num value="3">Գ</num> ազ<lb/>
+գա՛ցս և զհ<ex resp="#tla">ա</ex>յր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետա</ex>ցս, և զայլ պէս<lb/>
+պէս քննութե<ex resp="#tla">ան</ex>ց, զազգաց և զթ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>ր<lb/>
+աց զորս յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ ասացաք, և որ զկնի <lb/>
+դեռևս ասասցուք, զսկիզբն <lb/>
+կատարածիս, զոր ինչ եղև յաւուրս <lb/>
+հարցն մերոց։ որք էին տեսե<ex resp="#tla">ա</ex>լ <lb/>
+բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ անգամ աչօք իւրեանց. <lb/>
+զոր և ի՛մ իսկ խորհեալ զխորհուր<lb/>
+դս զայս և զ<num value="8">Ը</num> ամ անհանգի<add place="above">ս</add>տ <lb/>
+կացի. և զայս ամ<ex resp="#tla">ենայն</ex> յօժարեցի, <lb/>
+ի տեսու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex> և ի մատենագրու<lb/>
+թի<ex resp="#tla">ւն</ex> ածել գրով, <expan resp="#tla">վասն</expan> զի մի՜ ի չա<lb/>
+րաշունչ դառնութե<ex resp="#tla">ան</ex> ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կս <lb/>
+կորիցի այս ամ<ex resp="#tla">ենայն</ex> և մոռասցի։ <lb/><cb/>
+Եւ <expan resp="#tla">վասն</expan> այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ ես մաթէոս ուրհայե<lb/>
+ցի և վանակա՛ն, զաշխատութե<ex resp="#tla">ան</ex> <lb/>
+զգործս իմ ոչինչ համարեցայ, <lb/>
+այլ թողի զայս յիշ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>կ սիրողաց <lb/>
+ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կագրութե<ex resp="#tla">ան</ex>ց, զի յ<ex resp="#tla">ո</ex>րժ<ex resp="#tla">ա</ex>մ ի հան<lb/>
+դէս քննութե<ex resp="#tla">ան</ex> ելցեն յ<ex resp="#tla">ա</ex>ղ<ex resp="#tla">ա</ex>գս ժա<lb/>
+մանակա՛ց՝ անցելոց՝ դիւրաւ <lb/>
+կարասցեն գտանել զժա՛մս՝ և <lb/>
+զժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կս. և զկատ<ex resp="#tla">ա</ex>ր<ex resp="#tla">ա</ex>ծ բարկութ<subst><del>ի</del><add place="overwrite">ե</add></subst><ex resp="#tla">ան</ex>ն <lb/>
+ի <expan resp="#tla">վերայ</expan> ժամ<ex resp="#tla">անա</ex>կացն գտանիցե՛ն. և֊ <lb/>
+այնու ևս զմտաւ ածե<ex resp="#tla">ա</ex>լ յիշես<lb/>
+ցեն զա<ex resp="#tla">ստուա</ex>ծասաստ բարկութի<ex resp="#tla">ւն</ex>ն, <lb/>
+զորս <expan resp="#tla">վասն</expan> մեղացն ընկալաք, զհա<lb/>
+տուցումն յարդա՛ր դատաւո<lb/>
+րէն ա<ex resp="#tla">ստուծո</ex>յ. և <expan resp="#tla">վասն</expan> այ<ex resp="#tla">սո</ex>ր<ex resp="#tla">ի</ex>կ կողմանց զկո<lb/>
+րու՛ստ հաւատ<ex resp="#tla">ա</ex>ց<ex resp="#tla">ե</ex>լ<ex resp="#tla">ո</ex>ցն. և զխրատ <lb/>
+զոր անօրէն ազգաւ խրատե<ex resp="#tla">ա</ex>ց <lb/>
+զմեզ տ<ex resp="#tla">է</ex>ր ա<ex resp="#tla">ստուա</ex>ծ մեր. և ահ<add place="above">ա</add> որ ոչ կա<lb/>
+մեցաք զսպառնալիսն և զխրա<lb/>
+տն ա<ex resp="#tla">ստուծո</ex>յ մոռացուցանել ի <expan resp="#tla">վերայ</expan> մեր։ <lb/>
+Արդ` արժան է միշտ և հան<ex resp="#tla">ա</ex>պ<ex resp="#tla">ա</ex>զ <lb/>
+լսել զխրատն ա<ex resp="#tla">ստուծո</ex>յ մերոյ. և դ<ex resp="#tla">ար</ex>ձ<ex resp="#tla">եա</ex>լ <lb/>
+ի նոյն պատուհասն մեղաց դե<lb/>
+գերեալ շրջի՛մք, զորս ընկալաք <lb/>
+ըստ արժանե<ex resp="#tla">ա</ex>ց մերոց զհ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ո</ex>ւց<ex resp="#tla">ո</ex>ւմն։ <lb/>
+նա և այլ ևս ունիմք ասել ձեզ <lb/>
+ամաց <num value="80">Ձ</num>ից զաշխատութ<ex resp="#tla">են</ex>է մատ<lb/>
+թէոսի ուռհայեցւո՛յ և վանաց իրիցու։ <lb/></p>
+      <pb n="85ա"/>
+      <p><!-- starts earlier on page -->
+ի յամի <num value="400">Ն</num>երորդի <num value="500">Շ</num>երորդի <lb/>
+<num value="50">Ծ</num>երորդի՛ ի գիրս այս ժողովե<lb/>
+ցաք զգործ ժամանակա՛ց <num value="150">ՃԾ</num>ի՛ց <lb/>
+ամաց. և յայսմ տեղւոջ լռեալ <lb/>
+դադարեցաք ի յարուեստաւոր <lb/>
+քննութ<ex resp="#tla">են</ex>էս մերմէ, <expan resp="#tla">վասն</expan> զի այլոց ո֊<lb/>
+մանց թողաք զայս մարտ մտաց. <lb/>
+և պայքարումն խորհրդո՛ց, և֊ <lb/>
+մեր յետ ելանալով տեղի տալով <lb/>
+հանճարեղա՛ցն. և իմաստուն <lb/>
+արուեստաւոր քննողա՛ց, ըստ <lb/>
+բանի ս<ex resp="#tla">ր</ex>բ<ex resp="#tla">ո</ex>յ առ<ex resp="#tla">ա</ex>ք<ex resp="#tla">ե</ex>լոյն պօղոսի որ <lb/>
+ասէ. եթէ ոք յատենի ելցէ՝ <lb/>
+<pb n="85բ"/>
+առաջինն լռեսցէ՛, և այս ե֊<lb/>
+ղև ի հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ութե<ex resp="#tla">ան</ex>ն տանն հայ<lb/>
+ոց տ<ex resp="#tla">եառ</ex>ն գրիգ<add place="above">ո</add>րիսի՛. և տեառն <lb/>
+բարսղի՛, յորժամ եղև սկիզ<lb/>
+բն առաջին երկրապատմու<lb/>
+թե<ex resp="#tla">ան</ex>ս. և էր ի հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ութե<ex resp="#tla">ան</ex>ն հո<lb/>
+ռոմո՛ց որ ի կոստանդնուպօ<lb/>
+լիս՝ նիկօլայ, և ի հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ութե<ex resp="#tla">ան</ex>ն <lb/>
+անտիոքայ յօհաննու՛, և ի հայ<lb/>
+րապետութե<ex resp="#tla">ան</ex>ն ե<ex resp="#tla">րուսաղ</ex>էմայ սիմէօ<lb/>
+նի՛, և ի հ<ex resp="#tla">ա</ex>յր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ութե<ex resp="#tla">ան</ex>ն աղէքսան<lb/>
+դու՝ յոհաննու, և ի հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex><lb/>
+ութե<ex resp="#tla">ան</ex> տանն ասորոց աթանա<lb/>
+սի։ և ի յադամայ էին ամք ժա<lb/>
+մանակաց <num value="6000">ց</num> և <num value="600">ո</num> և <num value="10">ժ</num>. և արդ՝ <lb/>
+զամս <num value="10">ժ</num> ոչինչ արարաք հոգս <lb/>
+<expan resp="#tla">վասն</expan> այս ժամանակագրութե<ex resp="#tla">ան</ex>ց<add place="above">ս</add>, և֊ <lb/>
+թողեալ էաք ի բացեա՛ զարու<lb/>
+եստ գրչութե<ex resp="#tla">ան</ex>ցս. և տեսանե<lb/>
+լով մեր հան<ex resp="#tla">ա</ex>պ<ex resp="#tla">ա</ex>զօ՛ր զա<ex resp="#tla">ստուա</ex>ծասա՛ստ <lb/>
+բարկու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex>ս հեղեալ ի <expan resp="#tla">վերայ</expan> քրիս<lb/>
+տոնէից, և ամ յամէ անկեալ <lb/>
+և գլորեալ լինէր զօրութի<ex resp="#tla">ւն</ex> զօ<lb/>
+րաց հաւատացելո՛ցն, և տեսաք <lb/>
+զի ոչ ոք ունէր ի մտի զայս խը<lb/>
+նդրել կամ ի գիրս հաւաքել, <lb/>
+զի ապագայիցն յիշատակ լի<lb/>
+ցի այս կատարա՛ծս և նեղութի<ex resp="#tla">ւն</ex>ս <lb/>
+առ բարի ժամանա՛կն, յորժամ <lb/>
+տացէ տ<ex resp="#tla">է</ex>ր ա<ex resp="#tla">ստուա</ex>ծ զխոստացե<ex resp="#tla">ա</ex>լսն <lb/>
+յետին ժամ<ex resp="#tla">անա</ex>կին, յ<ex resp="#tla">ո</ex>րժ<ex resp="#tla">ա</ex>մ տացէ <lb/>
+ա<ex resp="#tla">ստուա</ex>ծ հաւատ<ex resp="#tla">ա</ex>ց<ex resp="#tla">ե</ex>լոց զժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կն, որ լի՛ <lb/><cb/>
+իսկ իցէ ամ<ex resp="#tla">ենայն</ex> ուրախութեամբ, և ապա <lb/>
+մեր յ<ex resp="#tla">ա</ex>ռ<ex resp="#tla">ա</ex>ջ եկեալ յայնժամ բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մ <lb/>
+ուր<ex resp="#tla">ա</ex>խ<ex resp="#tla">ո</ex>ւ<ex resp="#tla">թեամ</ex>բ, <expan resp="#tla">որպէս</expan> թէ յա<ex resp="#tla">ստուծո</ex>յ այս հրա<lb/>
+մայեցաւ ինձ, զայս այսպէս ի֊ <lb/>
+գիր հաւաքել, և ապագայիցն <lb/>
+թողուլ զայս յիշ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>կս. և թէպէտ <lb/>
+և ո՜չ է սա հոգևոր հըմտութ<ex resp="#tla">եամ</ex>բ <lb/>
+զարդարեալ, կամ արուեստ <lb/>
+հոգևոր, և կամ շաւիղս առա<lb/>
+քինութե<ex resp="#tla">ան</ex> ինչ, այլ զխրատն տ<ex resp="#tla">եառ</ex>ն <lb/>
+զոր <expan resp="#tla">վասն</expan> մեղաց ազգի ազգի յան<lb/>
+ցանօք ի բարկութի<ex resp="#tla">ւն</ex> շարժեցաք <lb/>
+զտ<ex resp="#tla">է</ex>ր ա<ex resp="#tla">ստուա</ex>ծ ի <expan resp="#tla">վերայ</expan> մեր, և ի նմանէ ա<lb/>
+ռաք զխրատս զայս գաւազա<lb/>
+նաւն ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex>. և արդ պա՛րտ և ար<lb/>
+ժան է ոչ մոռանալ զսա՛ որք կեն<lb/>
+դանիքս են ժամ<ex resp="#tla">ա</ex>ն<ex resp="#tla">ա</ex>կիս, այլ գրել <lb/>
+և յիշատակել զսա ծնանելոցն <lb/>
+եթէ ա՛յս է մեղաց պտուղն զոր <lb/>
+ցանեցին հարքն մեր, և <num value="7">է</num>պա<lb/>
+տիկ ժողովեցին. և <expan resp="#tla">վասն</expan> այս<ex resp="#tla">ո</ex>ր<ex resp="#tla">ի</ex>կ ե՛ս <lb/>
+մաթէոս, որ անարժանս եմ ողոր<lb/>
+մութե<ex resp="#tla">ան</ex>ն ա<ex resp="#tla">ստուծո</ex>յ, զամս բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմս քաջա<lb/>
+ջա՛ն քննութ<ex resp="#tla">եամ</ex>բ կացի՛, և արիաբա՛ր <lb/>
+մտօք ի քաղաքս միջագետաց <lb/>
+յուռհայ, ժողովեալ գրեցաք <lb/>
+մինչև ցա՛յս վայր, և զամաց ե֊<lb/>
+րեսնից դեռևս առաջի կա՛յ <lb/>
+ի գրի հաւաքել. և արդ ահա <lb/>
+այս վ<ex resp="#tla">ա</ex>րդ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետա</ex>ց և կորովի գիտնա<lb/>
+կանաց էր գործ, և ոչ մերում <lb/>
+տկարութե<ex resp="#tla">ան</ex>ցս, և կամ սակաւ <lb/>
+<pb n="86ա"/>
+գիտութե<ex resp="#tla">ան</ex>ցս։ Բայց այս սովորու<lb/>
+թի<ex resp="#tla">ւն</ex> է ա<ex resp="#tla">ստուծո</ex>յ զի ի տկարաց և ի նուա<lb/>
+զից գործ ինչ պիտանացու պա<lb/>
+հանջէ. <expan resp="#tla">որպէս</expan> տեսանեմք զերամս <lb/>
+մեղուա՛ցն, և զարմանամք ընդ <lb/>
+դասապետութի<ex resp="#tla">ւն</ex>սն ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, եթէ <expan resp="#tla">որպէս</expan> <lb/>
+յոչի՛նչ և ի թեթև մարմնոյն ամ<ex resp="#tla">ենայն</ex> <lb/>
+որդիք մ<ex resp="#tla">ար</ex>դկ<ex resp="#tla">ա</ex>ն յագենան քաղց<lb/>
+րութ<ex resp="#tla">եամ</ex>բն ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, և ի պէտս ս<ex resp="#tla">ր</ex>բ<ex resp="#tla">ո</ex>ց մատ<lb/>
+չին գործքն ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>, և առաջի թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րաց <lb/>
+փառաւորի՜. և կամ մեռեալ որդն <lb/>
+որ գա՛յ և կենդանանայ, և վաստա<lb/>
+կօք իւրովք ի գոյնս գոյնս զար<lb/>
+դարէ զթ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րս և զիշխանս, և ամ<ex resp="#tla">ենայն</ex> <lb/>
+եկ<ex resp="#tla">ե</ex>ղ<ex resp="#tla">ե</ex>ցիք նովաւ հարսնանան պէս<lb/>
+պէս զարդարանօք։ այսպէս՝ և֊ <lb/>
+տկարութի<ex resp="#tla">ւն</ex>ս մեր համարձակութի<ex resp="#tla">ւն</ex> է<lb/>
+֊առ, և առաջի հռետորաց և իմա<lb/>
+ստնո՛ց, և խորին հանճարեղաց, և քա<lb/>
+ջակի՛րթ քննողա՛ց խօսեցաք զա՛յս, <lb/>
+և յանձին արարաք զմատենագրու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex>ս <lb/>
+մեր ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>։ <expan resp="#tla">վասն</expan> զի արկցեն ի բո՛վս, և քըն<lb/>
+նութի<ex resp="#tla">ւն</ex> արասցե՛ն, և մեք ոչ ընդդի<lb/>
+մանամք, <expan resp="#tla">վասն</expan> զի մերս ընդդէմ գիտ<lb/>
+նակաց ոչ ունի դիմագրութի<ex resp="#tla">ւն</ex>ս. <lb/>
+<expan resp="#tla">որպէս</expan> և այն թեթև թռչունն, թէպէտ <lb/>
+և ձայնովն ընդդիմանայ բ<ex resp="#tla">ա</ex>զմաց՝ <lb/>
+այլ մարմնովն տկարանա՛յ, այն որ <lb/>
+կոչի ծիծառն. սակայն նա զմերս <lb/>
+ունի նմանութի<ex resp="#tla">ւն</ex>, առ զարմանալի <lb/>
+գործ բնութե<ex resp="#tla">ան</ex>ն իւրոյ, թէ զիա՜րդ <lb/>
+յոչ<subst><del>ի</del><add place="overwrite">ը</add></subst>նչո՛յ բնակութի<ex resp="#tla">ւն</ex>ս կազմէ, և ի <lb/><cb/>
+բարձունս առանց հիման կառու<lb/>
+ցանէ, շաղախաբե՛ր <add place="margin">և շիղաբեր</add> վաստակս հը<lb/>
+նարո՛վ հնարէ, և ամրութի<ex resp="#tla">ւն</ex>ս պըն<lb/>
+դագոյնս հաստատէ, և որդոց <lb/>
+իւրոց զնա՛ տացէ ժառանգու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex>ս, <lb/>
+զոր և այլ յաղթանդամ թռ<add place="below">չ</add>նոց <lb/>
+անհնա՛ր է զայն գործել, արծուոյ <lb/>
+ասեմ, և նմանե<ex resp="#tla">ա</ex>ց ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex>, <expan resp="#tla">վասն</expan> զի զայլ <lb/>
+քաջութի<ex resp="#tla">ւն</ex>ս մեծաւ կարողութ<ex resp="#tla">եամ</ex>բ <lb/>
+առնեն հաւքն քաջաթռի՛չքն, <lb/>
+բայց զայն զոր գործեաց թեթև <lb/>
+թռչունն՝ զայն ո՛չ կարեն առնել։ <lb/>
+արդ այսպիսի օրինակաւս հան<lb/>
+ճարեղք և գիտնականք զամ<ex resp="#tla">ենայն</ex> քըն<lb/>
+նութի<ex resp="#tla">ւն</ex>ս հին և նոր կտակարանա<lb/>
+ցն ա<ex resp="#tla">ստուծո</ex>յ կարող են առնել, և ի յայտ <lb/>
+բերել ահաւոր և լուսաւոր <damage agent="ink" extent="1"/>քըն<lb/>
+նութ<ex resp="#tla">եամ</ex>բ, բայց զայս հաւաստա<lb/>
+պէս ասացից և առանց <add place="margin">երկբայ</add>ութե<ex resp="#tla">ան</ex>, <lb/>
+<expan resp="#tla">վասն</expan> զի այս որ ի մէնջ քննեալ գծագ<lb/>
+րեցաւ՝ անհնար է եթէ այլ կարող <lb/>
+լինի զայս գտանել, և կամ հաւա<lb/>
+քումն առնել միահամուռն ազգաց, <lb/>
+և թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րաց հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ա՛ց և իշխանաց։ <lb/>
+զամ<ex resp="#tla">ենայն</ex> ժամ<ex resp="#tla">անա</ex>կս թուականութ<ex resp="#tla">եամ</ex>բ ի գի՛ր <lb/>
+հաւաքել, <expan resp="#tla">վասն</expan> զի վճարեալ հատան <lb/>
+առաջինքն որք ականատեսք էին <lb/>
+ամ<ex resp="#tla">ենայն</ex> ժամ<ex resp="#tla">անա</ex>կացն. արդ զայս ոչ ոք է <lb/>
+կարող առնել՝ զոր ինչ մեք արա<lb/>
+րաք, զի զոր ինչ գրեցաք՝ գրեցաւ, <lb/>
+զի զամս <num value="15">հնգետասան</num> ունէաք <lb/>
+զայս գործ քննութե<ex resp="#tla">ան</ex>ս, զոր ի մա<lb/>
+<pb n="86բ"/>
+տենագրութի<ex resp="#tla">ւն</ex>ս ընթերցեալ գը<lb/>
+տանէաք զթուականսն ժամ<ex resp="#tla">անա</ex>կ<ex resp="#tla">ա</ex>ցն <lb/>
+ի յիշ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>կարանս գրոցն, և ընդ <lb/>
+ծերսն ի քննութի<ex resp="#tla">ւն</ex> մտեալ դե<lb/>
+գերէաք անդադա՛ր քննութ<ex resp="#tla">եամ</ex>բ, <lb/>
+և հաւաքեալ գրեցաք ի գիրս <lb/>
+զայս ինչ։ <lb/></p>
+      <p><hi rend="DEFAULT">Ե</hi>ւ արդ՝ ե՜ս մաթէոս՝ այսու՛ <lb/>
+եղէ ցանկասէ՛ր, և կամեցայ <lb/>
+դառնալ ընդ նոյն բնաբա՛ն <lb/>
+պողոտայն, զոր օրինակ ոք ի֊ <lb/>
+բազում ժամ<ex resp="#tla">անա</ex>կաց շրջեալ ի <expan resp="#tla">վերայ</expan> <lb/>
+համատարա՛ծ մեծի ծովուն <lb/>
+ովկիանոսի՛, և ցնորեալ բազում <lb/>
+նեղութ<ex resp="#tla">եամ</ex>բ, և զկնի ալեկոծու<lb/>
+թե<ex resp="#tla">ան</ex>ն երթիցէ ի տուն իւր խա<lb/>
+ղաղութ<ex resp="#tla">եամ</ex>բ, և զմտաւ ածեալ <lb/>
+յիշեսցէ զսէր բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ո</ex>ւմ շահիցն, <lb/>
+յայնժամ ոչինչ ի յանցեալ նե<lb/>
+ղութե<ex resp="#tla">ան</ex>ցն մտաբերէ՛, և առ ոչ<lb/>
+֊ինչ համարելով զամ<ex resp="#tla">ենայն</ex> ինչսն <lb/>
+զոր ի ծովուն նաւակոծեցաւ, <lb/>
+այլ փութա՛յ մեծաւ փափա<lb/>
+քանօք դառնալ ի նոյն ծովա<lb/>
+գնացութի<ex resp="#tla">ւն</ex>ս. այսպիսի օրինա<lb/>
+կաւս և մեք դարձցուք ի մեր <lb/>
+թողեալ կէտ գրոյն, և գտաք <lb/>
+զբնաբանն զառաջին զոր թո<lb/>
+ղեա՛լ էաք։ <hi rend="DEFAULT">Յ</hi>որժամ էաք <lb/>
+ի յամս <num value="550">ՇԾ</num>, և արդ սկսաք ա֊<lb/>
+սել <add place="above">և</add> զայլ ևս զամաց <num value="20">ի</num> և <num value="5">ե</num>ի՛ց <lb/>
+և <num value="30">լ</num> լիցի վճարումն գրոցն։ <lb/><cb/>
+<expan resp="#tla">վասն</expan> զի աճե<ex resp="#tla">ա</ex>ց թվ<ex resp="#tla">ա</ex>կ<ex resp="#tla">ա</ex>նութի<ex resp="#tla">ւն</ex>ս հայոց բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մ <lb/>
+նեղութ<ex resp="#tla">եամ</ex>բ. և ի նոյն հայր<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ութի<ex resp="#tla">ւն</ex>ս <lb/>
+տ<ex resp="#tla">եառ</ex>ն գրիգորիսի՛, և ի թ<ex resp="#tla">ա</ex>գ<ex resp="#tla">աւո</ex>րութե<ex resp="#tla">ան</ex>ն յու<lb/>
+նաց ալէքսի՛ն, դարձաք յօժարա<lb/>
+կան մտօք և սկսաք առ ի պատմել <lb/>
+զկատարածն և զնեղութի<ex resp="#tla">ւն</ex>ս չա՛ր <lb/>
+ժամ<ex resp="#tla">անա</ex>կիս այսորիկ. և ոչ արարաք <lb/>
+զսա ի պէտս սնափառութե<ex resp="#tla">ան</ex>ց, <lb/>
+<expan resp="#tla">որպէս</expan> կարծել ոմանց, այլ յիշատա<lb/>
+կս և ի յազդումն առ ի յապա՛ ժա<lb/>
+մանակին. և ոչինչ զմտաւ ածի <lb/>
+զտկարութի<ex resp="#tla">ւն</ex> մտա՛ց և զանկարո<lb/>
+ղութի<ex resp="#tla">ւն</ex> ի գիտութ<ex resp="#tla">են</ex>է հմտութե<ex resp="#tla">ան</ex>ց։ <lb/>
+այլ որք կատարեալքն են գիտու<lb/>
+թ<ex resp="#tla">եամ</ex>բ հին և նոր կտակարանացն <lb/>
+ա<ex resp="#tla">ստուծո</ex>յ՝ ն<ex resp="#tla">ո</ex>ք<ex resp="#tla">ա</ex> են կարող քերական ա֊<lb/>
+րուեստիւք զբանսն սրբել, և֊ <lb/>
+զամ<ex resp="#tla">ենայն</ex> զսխալանս բանիցն պայ<lb/>
+ծառացուցանե՛լ, ըստ ա<ex resp="#tla">ստուա</ex>ծա<lb/>
+տուր շնորհացն որ տուաւ ն<ex resp="#tla">ո</ex>ց<ex resp="#tla">ա</ex>։ <lb/>
+Իսկ մեք ըստ տխմար գիտութե<ex resp="#tla">ան</ex>ս <add place="margin">մերոյ</add>, <lb/>
+զայս քննեալ մաքրութ<ex resp="#tla">եամ</ex>բ և գրե<lb/>
+ցաք զբազում մատենագրու<ex resp="#tla">թ</ex>ի<ex resp="#tla">ւն</ex>ս <lb/>
+զորս գտաք <expan resp="#tla">վասն</expan> նեղութե<ex resp="#tla">ան</ex>ց ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կ<ex resp="#tla">ա</ex>ցս <lb/>
+այսորիկ՝ զոր ի տեղիս տեղիս գը<lb/>
+րեալ էին, և թողեալ էին զայն <lb/>
+իւր<ex resp="#tla">եան</ex>ց յիշ<ex resp="#tla">ա</ex>տ<ex resp="#tla">ա</ex>կ. զոր և մեք ժողովե<ex resp="#tla">ա</ex>լ <lb/>
+զայն ամ<ex resp="#tla">ենայն</ex> բ<ex resp="#tla">ա</ex>զ<ex resp="#tla">ու</ex>մ հոգեբարձութ<ex resp="#tla">եամ</ex>բ. <lb/>
+և լսեցաք յայլոց ոմանց պատու<lb/>
+ականա՛ց որք հասո՛ւ էին ժամ<ex resp="#tla">անա</ex>կ<ex resp="#tla">ա</ex>ցն՝ <lb/>
+և նեղութե<ex resp="#tla">ան</ex>ցն, և անսխալ հասե<ex resp="#tla">ա</ex>լ <lb/>
+էին ի <expan resp="#tla">վերայ</expan> ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կա՛ցն՝ և թվ<ex resp="#tla">ա</ex>կ<ex resp="#tla">ա</ex>նա՛ցն, <lb/>
+<pb n="87ա"/>
+և ընդ ծերս ունէաք խօսակար<lb/>
+գութի<ex resp="#tla">ւն</ex>ս, և քննութի<ex resp="#tla">ւն</ex>ս որք տեղե<ex resp="#tla">ա</ex>կ<add place="margin">ք</add> <lb/>
+էին անցեալ ամացն, ըստ բանի <lb/>
+մ<ex resp="#tla">ա</ex>րգ<ex resp="#tla">ար</ex>էին որ ասէ. հարցջիր դու <lb/>
+ցհարս քո և ասա<add place="above">ս</add>ցեն քեզ, և <expan resp="#tla">ընդ</expan> <lb/>
+ծերսն՝ և պատմեսցեն քեզ։ Արդ՝ <lb/>
+այսպ<ex resp="#tla">իս</ex>ի օրինակաւս անհանգիստ <lb/>
+եղեալ մեզ, և զամ<ex resp="#tla">ենայն</ex> հոգս զբա<lb/>
+ղանաց թողեալ էաք, և զամ<ex resp="#tla">ենայն</ex> ցան<lb/>
+կութի<ex resp="#tla">ւն</ex>ս արհամարհեալ էաք, <lb/>
+և միշտ և հան<ex resp="#tla">ա</ex>պ<ex resp="#tla">ա</ex>զ զայս ունէաք <lb/>
+պայքարումն մտաց, զոր դ<ex resp="#tla">ա</ex>րձ<ex resp="#tla">եա</ex>լ <lb/>
+սկսաք ի գործ երկրապատմու<lb/>
+թե<ex resp="#tla">ան</ex>ս ըստ երանելի վ<ex resp="#tla">ար</ex>դ<ex resp="#tla">ա</ex>պ<ex resp="#tla">ետ</ex>ին գրի<lb/>
+գորի նիւսացւոյ որ ասէր։ Դ<ex resp="#tla">ա</ex>րձ<ex resp="#tla">եա</ex>լ <lb/>
+ես ծերունիս յասպարիսի. զո<lb/>
+րս և մեր մնացեալ յայլոց ո֊<lb/>
+մանց թողաք զայս քննել, և֊ <lb/>
+ահա տեսանէաք զամ<ex resp="#tla">ենե</ex>ս<ex resp="#tla">եա</ex>ն հրա<lb/>
+ժարեալ ի պատմագրութ<ex resp="#tla">են</ex>է <lb/>
+աստի. և տեսանէաք մեք զի <lb/>
+ժ<ex resp="#tla">ա</ex>մ<ex resp="#tla">անա</ex>կս գնալով գնայր, և հոսմու<lb/>
+նս և ծորմունս, և զպակասու<lb/>
+թի<ex resp="#tla">ւն</ex>ն մեզ ցուցանէին, և զոչ կալ <lb/>
+դադարման մարդկութե<ex resp="#tla">ան</ex> ի <expan resp="#tla">վերայ</expan> <lb/>
+երկրի՝ այլ զփոփոխմունս յաս<lb/>
+տեացս ի հանդերձեալսն ի֊ <lb/>
+յայտ բերէին. <expan resp="#tla">վասն</expan> զի անց<ex resp="#tla">ա</ex>ւ<ex resp="#tla">ո</ex>ր են <lb/>
+ամքս և ժամ<ex resp="#tla">անա</ex>կքս, այսպէս ան<lb/>
+ցաւոր<add place="above">ք</add> են ծնունդք ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex>, և զոր <lb/>
+օրինակ, մշտնջենաւորք են հան<lb/><cb/>
+դերձեալքն՝ այսպէս և անկա<lb/>
+տարածք են ծնունդք ն<ex resp="#tla">ո</ex>ր<ex resp="#tla">ա</ex>. և֊ <lb/>
+երանի՛ որք հանդիպեսցին <lb/>
+այնմ ուրախութե<ex resp="#tla">ան</ex>ցն, և երա<lb/>
+նի որք կերիցեն ճաշ յար<lb/>
+քայութե<ex resp="#tla">ան</ex>ն ա<ex resp="#tla">ստուծո</ex>յ։ <lb/></p>
+    </body>
+  </text>
+</TEI>
