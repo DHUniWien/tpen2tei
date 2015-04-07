@@ -91,9 +91,9 @@ def from_sc(jsondata, special_chars=_armenian_glyphs):
     # and then add the notes.
     for n in notes:
         xmlstring += '<note type="transcriptional" target="#l%s">%s</note>\n' % n
-    # Report how many columns per page.
-    for n in sorted(columns.keys()):
-        print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
+    # # Report how many columns per page.
+    # for n in sorted(columns.keys()):
+    #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
     return _xmlify("<body><ab>%s</ab></body>" % xmlstring, special_chars=special_chars)
 
 
