@@ -1,10 +1,20 @@
 __author__ = 'tla'
 
+import json
 import unittest
 import wordtokenize
+from parse import from_sc
 
 
 class Test (unittest.TestCase):
+
+    testdoc = None
+
+    def setUp(self):
+        with open('tests/data/M1731.json', encoding='utf-8') as fh:
+            jdata = json.load(fh)
+        self.testdoc = from_sc(jdata)
+
 
     def test_simple(self):
         """Test a plain & simple file without special markup beyond line breaks."""
@@ -16,10 +26,28 @@ class Test (unittest.TestCase):
 
     def test_substitution(self):
         """Test that the correct words are picked out of a subst tag."""
-        pass
+        tokens = wordtokenize.from_etree(self.testdoc)
+        # Find the token that has our substitution
+        found = False
+        for t in tokens:
+            if t['lit'] != 'դե<add xmlns="http://www.tei-c.org/ns/1.0">ռ</add>ևս':
+                continue
+            self.assertEqual(t['t'], 'դեռևս')
+            found = True
+        self.assertTrue(found, "Did not find the testing token")
+
 
     def test_substitution_layer(self):
         """Test that the first_layer option works correctly."""
+        tokens = wordtokenize.from_etree(self.testdoc, first_layer=True)
+        # Find the token that has our substitution
+        found = False
+        for t in tokens:
+            if t['lit'] != 'դե<del xmlns="http://www.tei-c.org/ns/1.0">ղ</del>ևս':
+                continue
+            self.assertEqual(t['t'], 'դեղևս')
+            found = True
+        self.assertTrue(found, "Did not find the testing token")
 
     def test_gap(self):
         """Test that gaps are handled correctly."""

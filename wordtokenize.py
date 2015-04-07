@@ -100,7 +100,8 @@ def _find_words(element, first_layer=False):
             prior['t'] += partial['t']
             prior['n'] += partial['n']
             # Now figure out 'lit'. Did the child have children?
-            if child.text is None:
+            if child.text is None and len(child) == 0:
+                # It's a milestone element. Stick it into 'lit'.
                 prior['lit'] += etree.tostring(child, encoding='unicode', with_tail=False)
             prior['lit'] += partial['lit']
             if 'INCOMPLETE' not in partial:
@@ -114,10 +115,10 @@ def _find_words(element, first_layer=False):
             or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
         tokens = []
     elif _tag_is(element, 'abbr'):
-        # Mark stars in the token 'n' form.
+        # Mark a sort of regular expression in the token 'n' form.
         if len(tokens) == 0:
             pass
-        tokens[0]['n'] = '*%s*' % tokens[0]['t']
+        tokens[0]['n'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
 
     # Finally handle the tail text of this element, if any.
     if element.tail is not None:
