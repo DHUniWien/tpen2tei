@@ -8,37 +8,16 @@ from io import BytesIO
 from lxml import etree
 from warnings import warn
 
-# Our default (and example) list of special characters that might occur as
-# glyph (<g/>) elements. A true list should be passed to the from_sc call.
-# The key is the normalized form; the tuple is (xml:id, description).
-_armenian_glyphs = {
-    'աշխարհ': ('asxarh', 'ARMENIAN ASHXARH SYMBOL'),
-    'ամենայն': ('amenayn', 'ARMENIAN AMENAYN SYMBOL'),
-    'որպէս': ('orpes', 'ARMENIAN ORPES SYMBOL'),
-    'երկիր': ('erkir', 'ARMENIAN ERKIR SYMBOL'),
-    'երկին': ('erkin', 'ARMENIAN ERKIN SYMBOL'),
-    'ընդ': ('und', 'ARMENIAN END SYMBOL'),
-    'ըստ': ('ust', 'ARMENIAN EST SYMBOL'),
-    'պտ': ('ptlig', 'ARMENIAN PEH-TIWN LIGATURE'),
-    'թե': ('techlig', 'ARMENIAN TO-ECH LIGATURE'),
-    'թի': ('tinilig', 'ARMENIAN TO-INI LIGATURE'),
-    'թէ': ('tehlig', 'ARMENIAN TO-EH LIGATURE'),
-    'էս': ('eslig', 'ARMENIAN EH-SEH LIGATURE'),
-    'ես': ('echslig', 'ARMENIAN ECH-SEH LIGATURE'),
-    'յր': ('yrlig', 'ARMENIAN YI-REH LIGATURE'),
-    'զմ': ('zmlig', 'ARMENIAN ZA-MEN LIGATURE'),
-    'թգ': ('tglig', 'ARMENIAN TO-GIM LIGATURE'),
-    'ա': ('avar', 'ARMENIAN AYB VARIANT'),
-    'հ': ('hvar', 'ARMENIAN HO VARIANT'),
-    'յ': ('yabove', 'ARMENIAN YI SUPERSCRIPT VARIANT')
-}
-
-
-def from_sc(jsondata, special_chars=_armenian_glyphs):
+def from_sc(jsondata, special_chars=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
-    each of which is a page."""
+    each of which is a page.
+
+    The optional special_chars parameter is a dictionary of glyphs that have
+    been referenced in the transcription. The dictionary key is the normalized
+    character form of the given glyph; the value is a tuple of the glyph's
+    xml:id and the Unicode-like description of the glyph."""
     if len(jsondata['sequences']) > 1:
         warn("Your data has more than one sequence. Check to see what's going on.", UserWarning)
     pages = jsondata['sequences'][0]['canvases']
