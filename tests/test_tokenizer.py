@@ -49,6 +49,10 @@ class Test (unittest.TestCase):
             found = True
         self.assertTrue(found, "Did not find the testing token")
 
+    def test_del_word_boundary(self):
+        """Test that a strategically placed del doesn't cause erroneous joining of words."""
+        pass
+
     def test_gap(self):
         """Test that gaps are handled correctly."""
         pass

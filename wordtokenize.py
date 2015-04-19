@@ -78,16 +78,6 @@ def _find_words(element, first_layer=False):
     if len(tokens) == 1:
         tokens[0]['lit'] = etree.tostring(element, encoding='unicode', with_tail=False)
 
-    # Now we handle our tag-specific logic.
-    if _tag_is(element, 'num'):
-        # Combine all the word tokens into a single one, and set 'n'.
-        mytoken = {'n': element.get('value'),
-                   't': ' '.join([x['t'] for x in tokens]),
-                   'lit': ' '.join([x['lit'] for x in tokens])}
-        if 'INCOMPLETE' in tokens[-1]:
-            mytoken['INCOMPLETE'] = True
-        tokens = [mytoken]
-
     # Next handle the child elements of this one, if any.
     for child in element:
         child_tokens = _find_words(child, first_layer)
@@ -109,16 +99,32 @@ def _find_words(element, first_layer=False):
         # Add the remaining tokens onto our list.
         tokens.extend(child_tokens)
 
-    # If we are looking at a del tag for the final layer, or an add tag for the
-    # first layer, discard all the tokens we just got and go straight to tail.
+    # Now we handle our tag-specific logic, after the child text and child tags
+    # have been processed but before the tail is processed.
     if (_tag_is(element, 'del') and first_layer is False) \
             or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
-        tokens = []
+        # If we are looking at a del tag for the final layer, or an add tag for the
+        # first layer, discard all the tokens we just got, replacing them with an empty
+        # token that carries the correct 'incomplete' setting.
+        if len(tokens):
+            final = tokens[-1]
+            tokens = [{'t': '', 'n': '', 'lit': final['lit']}]
+            if 'INCOMPLETE' in final:
+                tokens[0]['INCOMPLETE'] = True
     elif _tag_is(element, 'abbr'):
         # Mark a sort of regular expression in the token 'n' form.
         if len(tokens) == 0:
             pass
         tokens[0]['n'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
+    elif _tag_is(element, 'num'):
+        # Combine all the word tokens into a single one, and set 'n' to the number value.
+        mytoken = {'n': element.get('value'),
+                   't': ' '.join([x['t'] for x in tokens]),
+                   'lit': ' '.join([x['lit'] for x in tokens])}
+        if 'INCOMPLETE' in tokens[-1]:
+            mytoken['INCOMPLETE'] = True
+        tokens = [mytoken]
+
 
     # Finally handle the tail text of this element, if any.
     if element.tail is not None:
@@ -182,4 +188,5 @@ if __name__ == '__main__':
         result = from_file(fn, textms)
         if len(result):
             witness_array.append({'id': sigil, 'tokens': result})
-    print(json.dumps({'witnesses': witness_array}, ensure_ascii=False))
+    result = json.dumps({'witnesses': witness_array}, ensure_ascii=False)
+    sys.stdout.buffer.write(result.encode('utf-8'))
