@@ -21,7 +21,9 @@ class Test (unittest.TestCase):
         pass
 
     def test_glyphs(self):
-        """Test the correct detection and markup of glyphs."""
+        """Test the correct detection and rendering of glyphs. The characters in
+        the resulting token should be the characters that are the content of the
+        g tag. """
         pass
 
     def test_substitution(self):
@@ -50,35 +52,43 @@ class Test (unittest.TestCase):
         self.assertTrue(found, "Did not find the testing token")
 
     def test_del_word_boundary(self):
-        """Test that a strategically placed del doesn't cause erroneous joining of words."""
+        """Test that a strategically placed del doesn't cause erroneous joining of words.
+        TODO add testing data"""
         pass
 
     def test_gap(self):
-        """Test that gaps are handled correctly."""
+        """Test that gaps are handled correctly. At the moment this means that no token
+        should be generated for a gap."""
         pass
 
     def test_milestone_element(self):
-        """Test that milestone elements are passed through correctly."""
+        """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
+         are passed through correctly in the token 'lit' field."""
         pass
 
     def test_milestone_option(self):
-        """Test that passing a milestone option gives back only the text to the next milestone."""
+        """Test that passing a milestone option gives back only the text from the
+        relevant <milestone/> element to the next one."""
         pass
 
     def test_arbitrary_element(self):
-        """Test that arbitrary tags are passed into 'lit' correctly."""
+        """Test that arbitrary tags (e.g. <abbr>) are passed into 'lit' correctly."""
         pass
 
     def test_file_input(self):
+        """Make sure we get a result when passing a file path."""
         pass
 
     def test_fh_input(self):
+        """Make sure we get a result when passing an open filehandle object."""
         pass
 
     def test_string_input(self):
+        """Make sure we get a result when passing a string containing XML."""
         pass
 
     def test_object_input(self):
+        """Make sure we get a result when passing an lxml.etree object."""
         pass
 
     def testLegacyTokenization(self):
