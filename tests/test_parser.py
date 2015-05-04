@@ -41,21 +41,30 @@ class Test (unittest.TestCase):
         self.assertEqual(xmltree.getroot().tag, '{%s}TEI' % self.tei_ns)
 
     def test_comment(self):
+        """Need to check that any TPEN annotations on a line get passed as
+        <note> elements linked to the correct line in the @target attribute."""
         pass
 
     def test_glyphs(self):
-        pass
-
-    def test_xml_element(self):
+        """Need to make sure that the glyph elements present in the JSON
+        transcription appear as glyph elements in the charDecl header, and
+        appear correctly referenced as g elements in the text."""
         pass
 
     def test_linebreaks(self):
+        """Need to make sure line breaks are added, while preserving any
+        trailing space on the original transcription line. Also check that
+        line xml:id is being calculated correctly."""
         pass
 
     def test_columns(self):
+        """Need to check that column transitions within the same page are
+        detected and an appropriate XML element is inserted."""
         pass
 
     def test_functioning_namespace(self):
+        """Just need to check that the XML document that gets returned has
+        the correct namespace settings for arbitrary elements in the middle."""
         pass
 
     # Correction code for the early conventions
