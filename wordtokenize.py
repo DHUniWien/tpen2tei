@@ -151,7 +151,8 @@ def _split_text_node(tnode, tokens):
             open_token['n'] += word
             open_token['lit'] += word
             del open_token['INCOMPLETE']
-            tokens.append(open_token)
+            if not _is_blank(open_token):
+                tokens.append(open_token)
         elif word != '':
             token = {'t': word, 'n': word, 'lit': word}
             tokens.append(token)
@@ -169,8 +170,8 @@ def _is_blank(token):
         return False
     if token['t'] != '':
         return False
-    if token['lit'] != '':
-        return False
+    # if token['lit'] != '':
+    #     return False
     return True
 
 
