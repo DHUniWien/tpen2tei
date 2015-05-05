@@ -66,7 +66,7 @@
         "motivation" : "sc:painting",
         "resource" : {
           "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նոս որ գերեցաւ ի յեգիպտոս և ի սիս ձեռնա֊"
+          "cnt:chars" : "նոս որ գերեցաւ ի յեգի<g ref=\"#պտ\"/>ոս և ի սիս ձեռնա֊"
         },
         "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,237,495,25"
       }, {
@@ -115,14 +115,23 @@
         },
         "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,374,495,25"
       }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276877",
+        "@id" : "http://t-pen.org/M1731+%28F%29/line/101280110",
         "@type" : "oa:Annotation",
         "motivation" : "sc:painting",
         "resource" : {
           "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "կամակից ձեռնադրելոյ կ<abbr>թղ</abbr>ս յէջմիածին "
+          "cnt:chars" : "քաղաքն զօրավար եդաք և անտի կամեցաք "
         },
         "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,399,495,27"
+      }, {
+        "@id" : "http://t-pen.org/M1731+%28F%29/note/101280110",
+        "@type" : "oa:Annotation",
+        "motivation" : "oa:commenting",
+        "resource" : {
+          "@type" : "cnt:ContentAsText",
+          "cnt:chars" : "եդաք looks like եռաք"
+        },
+        "on" : "http://t-pen.org/M1731+%28F%29/line/101280110"
       }, {
         "@id" : "http://t-pen.org/M1731+%28F%29/line/101276878",
         "@type" : "oa:Annotation",
@@ -183,7 +192,7 @@
         "motivation" : "sc:painting",
         "resource" : {
           "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "յ<g ref=\"\">աշխարհ</g>ն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
+          "cnt:chars" : "յ<g ref=\"աշխարհ\">աշխար</g>հն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
         },
         "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,581,495,26"
       }, {
@@ -237,7 +246,7 @@
         "motivation" : "sc:painting",
         "resource" : {
           "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "յա՛յնմ <g ref=\"\">աշխարհ</g>ին զա՛մս <num value=\"7\">.է.</num> և անթիւ լինէր կոտո֊"
+          "cnt:chars" : "յա՛յնմ <g ref=\"asxarh\"/>ին զա՛մս <num value=\"7\">.է.</num> և անթիւ լինէր կոտո֊"
         },
         "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,735,495,27"
       }, {
