@@ -1,7 +1,11 @@
+# -*- encoding: utf-8 -*-
 __author__ = 'tla'
 
-import unittest
 import json
+import os
+import unittest
+import sys
+import yaml
 from parse import from_sc
 
 
@@ -34,9 +38,14 @@ class Test (unittest.TestCase):
         'յ': ('yabove', 'ARMENIAN YI SUPERSCRIPT VARIANT')
     }
 
+    def setUp(self):
+        settings = load_config("./config.yaml")
+        self.namespaces = settings['namespaces']
+        self.testfiles = settings['testfiles']
+        self.testdoc = from_sc(load_JSON_file(self.testfiles['json']))
+
     def test_basic(self):
-        with open('tests/data/M1731.json', encoding='utf-8') as testfile:
-            msdata = json.load(testfile)
+        msdata = load_JSON_file(self.testfiles['json'])
         xmltree = from_sc(msdata, special_chars=self._armenian_glyphs)
         self.assertEqual(xmltree.getroot().tag, '{%s}TEI' % self.tei_ns)
 
@@ -79,3 +88,31 @@ class Test (unittest.TestCase):
 
     def test_corr_to_subst(self):
         pass
+
+
+def load_config(filename):
+    if filename and os.path.isfile(filename):
+        try:
+            file_pointer = open(filename, 'r')
+            config = yaml.load(file_pointer)
+            file_pointer.close()
+        except IOError:
+            sys.exit("Invalid or missing config file")
+
+        if 'settings' not in config:
+            sys.exit('No default configuration found')
+        settings = config['settings']
+    return settings
+
+
+def load_JSON_file(filename):
+    data = ""
+    try:
+        with open(filename, encoding='utf-8') as testfile:
+            data = json.load(testfile)
+        testfile.close()
+    except FileNotFoundError:
+        print("""File "{:s}" not found!""".format(filename))
+    except ValueError:
+        print("""File "{:s}" might not be a valid JSON file!""".format(filename))
+    return data

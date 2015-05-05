@@ -1,0 +1,36 @@
+%YAML 1.2
+---
+
+settings:
+    namespaces:
+        xml: "http://www.w3.org/XML/1998/namespace"
+        tei: "http://www.tei-c.org/ns/1.0"
+
+    testfiles:
+        json: "./data/M1731.json"
+        xml: "./data/M5587.xml"
+        matenadaran_xml: "./data/matenadaran_1896.xml"
+        matenadaran_txt: "./data/matenadaran_1896.txt"
+
+    armenian_glyphs: {
+        'աշխարհ': {'glyphName': 'asxarh', 'mapping': 'ARMENIAN ASHXARH SYMBOL'},
+        'ամենայն': {'glyphName': 'amenayn', 'mapping': 'ARMENIAN AMENAYN SYMBOL'},
+        'որպէս': {'glyphName': 'orpes', 'mapping': 'ARMENIAN ORPES SYMBOL'},
+        'երկիր': {'glyphName': 'erkir', 'mapping': 'ARMENIAN ERKIR SYMBOL'},
+        'երկին': {'glyphName': 'erkin', 'mapping': 'ARMENIAN ERKIN SYMBOL'},
+        'ընդ': {'glyphName': 'und', 'mapping': 'ARMENIAN END SYMBOL'},
+        'ըստ': {'glyphName': 'ust', 'mapping': 'ARMENIAN EST SYMBOL'},
+        'պտ': {'glyphName': 'ptlig', 'mapping': 'ARMENIAN PEH-TIWN LIGATURE'},
+        'թե': {'glyphName': 'techlig', 'mapping': 'ARMENIAN TO-ECH LIGATURE'},
+        'թի': {'glyphName': 'tinilig', 'mapping': 'ARMENIAN TO-INI LIGATURE'},
+        'թէ': {'glyphName': 'tehlig', 'mapping': 'ARMENIAN TO-EH LIGATURE'},
+        'էս': {'glyphName': 'eslig', 'mapping': 'ARMENIAN EH-SEH LIGATURE'},
+        'ես': {'glyphName': 'echslig', 'mapping': 'ARMENIAN ECH-SEH LIGATURE'},
+        'յր': {'glyphName': 'yrlig', 'mapping': 'ARMENIAN YI-REH LIGATURE'},
+        'զմ': {'glyphName': 'zmlig', 'mapping': 'ARMENIAN ZA-MEN LIGATURE'},
+        'թգ': {'glyphName': 'tglig', 'mapping': 'ARMENIAN TO-GIM LIGATURE'},
+        'ա': {'glyphName': 'avar', 'mapping': 'ARMENIAN AYB VARIANT'},
+        'հ': {'glyphName': 'hvar', 'mapping': 'ARMENIAN HO VARIANT'},
+        'յ': {'glyphName': 'yabove', 'mapping': 'ARMENIAN YI SUPERSCRIPT VARIANT'}
+    }
+
