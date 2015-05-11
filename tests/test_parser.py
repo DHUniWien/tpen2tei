@@ -257,10 +257,10 @@ def load_config(filename):
     return settings
 
 
-def load_JSON_file(filename):
+def load_JSON_file(filename, encoding='utf-8'):
     data = ""
     try:
-        with open(filename, encoding='utf-8') as testfile:
+        with open(filename, encoding=encoding) as testfile:
             data = json.load(testfile)
         testfile.close()
     except FileNotFoundError:
