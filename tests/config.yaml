@@ -34,3 +34,14 @@ settings:
         'յ': {'glyphName': 'yabove', 'mapping': 'ARMENIAN YI SUPERSCRIPT VARIANT'}
     }
 
+    glyphs_corrections: {
+        'the': 'թե',
+        'thE': 'թէ',
+        'und': 'ընդ',
+        'thi': 'թի',
+        'asxarh': 'աշխարհ',
+        'pt': 'պտ',
+        'yr': 'յր',
+        'orpes': 'որպէս',
+    }
+
