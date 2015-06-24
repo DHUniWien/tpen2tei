@@ -26,6 +26,9 @@ def from_sc(jsondata, glyph_correction=None, special_chars=None):
     notes = []
     columns = {}
     xmlstring = ''
+    if pages:
+        xmlstring = '<sourceDoc>\n  <surfaceGrp>\n'
+
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         pwidth = page['width']
@@ -63,34 +66,34 @@ def from_sc(jsondata, glyph_correction=None, special_chars=None):
                     notes.append((lineid.group(1), transcription))
         # Spit out the text
         if len(thetext):
-            xmlstring += '<facsimile>\n'
-            xmlstring += '  <surface ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}">\n'.format(0, 0, pwidth, pheight)
-            xmlstring += '    <zone xml:id="P{:s}" ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}">\n'.format(pn, 0, 0, pwidth, pheight)
-            xmlstring += '      <graphic url="{:s}" />\n'.format(page['label'])
-            xmlstring += '    </zone>\n'
-            for cn, col in enumerate(thetext):
-                for ln, line in enumerate(col):
-                    xmlstring += '    <zone xml:id="z{:s}" ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}" />\n'. format(line[0], line[2], line[3], line[2]+line[4], line[3]+line[5])
-            xmlstring += '  </surface>\n'
-            xmlstring += '</facsimile>\n'
-            xmlstring += '<pb n="%s" />\n' % (pn)
+            xmlstring += '    <surface ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}">\n'.format(0, 0, pwidth, pheight)
+            xmlstring += '      <zone xml:id="P{:s}" ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}">\n'.format(pn, 0, 0, pwidth, pheight)
+            xmlstring += '        <graphic url="{:s}" />\n'.format(page['label'])
+            xmlstring += '      </zone>\n'
+            xmlstring += '      <pb n="%s" />\n' % (pn)
             for cn, col in enumerate(thetext):
                 if len(thetext) > 1:
-                    xmlstring += '<cb n="%d"/>\n' % (cn+1)
+                    xmlstring += '      <cb n="%d"/>\n' % (cn+1)
                 for ln, line in enumerate(col):
-                    xmlstring += '<lb xml:id="l%s" n="%d" facs="#z%s" />%s\n' % (line[0], ln+1, line[0], line[1])
+                    xmlstring += '      <zone xml:id="z{:s}" ulx="{:d}" uly="{:d}" lrx="{:d}" lry="{:d}">\n'. format(line[0], line[2], line[3], line[2]+line[4], line[3]+line[5])
+                    xmlstring += '        <lb xml:id="l%s" n="%d" />%s\n' % (line[0], ln+1, line[1])
+                    xmlstring += '      </zone>\n'
+            xmlstring += '    </surface>\n'
             # Keep track of the number of columns.
             if len(thetext) in columns:
                 columns[len(thetext)].append(pn)
             else:
                 columns[len(thetext)] = [pn]
     # and then add the notes.
+    if pages:
+        xmlstring += '  </surfaceGrp>\n</sourceDoc>\n'
     for n in notes:
         xmlstring += '<note type="transcriptional" target="#l%s">%s</note>\n' % n
+
     # # Report how many columns per page.
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, glyph_correction=glyph_correction, special_chars=special_chars)
+    return _xmlify("<body><ab>\n%s</ab></body>" % xmlstring, glyph_correction=glyph_correction, special_chars=special_chars)
 
 
 def _xmlify(txdata, glyph_correction=None, special_chars=None):

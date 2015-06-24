@@ -1,0 +1,13 @@
+%YAML 1.2
+---
+
+settings:
+    glyph_correction: {
+        the: 'թե',
+        thE: 'թէ',
+        und: 'ընդ',
+        thi: 'թի',
+        asxarh: 'աշխարհ',
+        pt: 'պտ',
+        yr: 'յր',
+        orpes: 'որպէս'}
