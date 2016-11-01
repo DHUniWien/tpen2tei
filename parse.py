@@ -28,12 +28,21 @@ def from_sc(jsondata, special_chars=None):
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
         xval = 0
-        for line in page['resources']:
+        # Find the annotation list.
+        linelist = None
+        for content in page['otherContent']:
+            if content['@type'] == 'sc:AnnotationList':
+                linelist = content
+                break
+        # Did we find a list of annotations for this page?
+        if linelist is None:
+            continue
+        for line in linelist['resources']:
             if line['resource']['@type'] == 'cnt:ContentAsText':
-                transcription = line['resource']['cnt:chars']
+                transcription = line['resource']['chars']
                 if len(transcription) == 0:
                     continue
-                if line['motivation'] == 'sc:painting':
+                if line['motivation'] == 'http://filteredpush.org/ontologies/oa/oad#transcribing':
                     # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
                     coords = re.match('^.*#xywh=-?(\d+)', line['on'])
