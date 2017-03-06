@@ -39,10 +39,14 @@ def from_sc(jsondata, special_chars=None):
             continue
         for line in linelist['resources']:
             if line['resource']['@type'] == 'cnt:ContentAsText':
-                transcription = line['resource']['chars']
+                transcription = line['resource']['cnt:chars']
                 if len(transcription) == 0:
                     continue
-                if line['motivation'] == 'http://filteredpush.org/ontologies/oa/oad#transcribing':
+                # Get the line ID, for later attachment of notes.
+                lineid = re.match('^.*line/(\d+)$', line['tpen_line_id'])
+                if lineid is None:
+                    raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
+                if line['motivation'] == 'oad:transcribing':
                     # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
                     coords = re.match('^.*#xywh=-?(\d+)', line['on'])
@@ -52,17 +56,10 @@ def from_sc(jsondata, special_chars=None):
                         # Start a new 'column' in thetext.
                         thetext.append([])
                         xval = int(coords.group(1))
-                    # Get the line ID, for later attachment of notes.
-                    lineid = re.match('^.*line/(\d+)$', line['@id'])
-                    if lineid is None:
-                        raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
                     thetext[-1].append((lineid.group(1), transcription))
-                elif line['motivation'] == 'oa:commenting':
+                if '_tpen_note' in line:
                     # This 'transcription' is actually a transcriber's note.
-                    lineid = re.match('^.*line/(\d+)$', line['on'])
-                    if lineid is None:
-                        raise ValueError('Could not find a line ID on comment %s' % json.dumps(line))
-                    notes.append((lineid.group(1), transcription))
+                    notes.append((lineid.group(1), line['_tpen_note']))
         # Spit out the text
         if len(thetext):
             xmlstring += '<pb n="%s"/>\n' % pn
