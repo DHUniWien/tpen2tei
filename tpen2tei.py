@@ -6,6 +6,7 @@
 
 import traceback
 import os
+import fnmatch
 import sys
 import json
 import logging
@@ -25,7 +26,7 @@ logging.basicConfig (
 )
 
 
-for infile in os.listdir (args.indir):
+for infile in fnmatch.filter (os.listdir (args.indir), '*json'):
     outfile = infile + '.tei.xml'
 
     if args.write_stdout_stderr:
