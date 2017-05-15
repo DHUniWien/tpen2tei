@@ -11,7 +11,7 @@ import json
 import logging
 import argparse
 
-from tpen2tei.parse import from_sc
+from parse import from_sc
 
 parser = argparse.ArgumentParser()
 parser.add_argument ("indir", help = "input directory, T-PEN output files")
