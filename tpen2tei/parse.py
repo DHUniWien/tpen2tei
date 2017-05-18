@@ -43,7 +43,7 @@ def from_sc(jsondata, special_chars=None):
                 if len(transcription) == 0:
                     continue
                 # Get the line ID, for later attachment of notes.
-                lineid = re.match('^.*line/(\d+)$', line['tpen_line_id'])
+                lineid = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
                 if lineid is None:
                     raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
                 if line['motivation'] == 'oad:transcribing':
@@ -59,7 +59,8 @@ def from_sc(jsondata, special_chars=None):
                     thetext[-1].append((lineid.group(1), transcription))
                 if '_tpen_note' in line:
                     # This 'transcription' is actually a transcriber's note.
-                    notes.append((lineid.group(1), line['_tpen_note']))
+                    if line['_tpen_note'] != "":
+                        notes.append((lineid.group(1), line['_tpen_note']))
         # Spit out the text
         if len(thetext):
             xmlstring += '<pb n="%s"/>\n' % pn
