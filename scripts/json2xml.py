@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" tpen2tei.py assumes all files in indir to be T-PEN output
+""" json2xml.py assumes all files in indir to be T-PEN output
     and tries to convert them to TEI-XML in outdir
 """
 
@@ -12,7 +12,7 @@ import json
 import logging
 import argparse
 
-from parse import from_sc
+from tpen2tei.parse import from_sc
 
 parser = argparse.ArgumentParser()
 parser.add_argument ("indir", help = "input directory, T-PEN output files")
