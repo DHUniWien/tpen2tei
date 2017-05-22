@@ -1,506 +1,751 @@
 {
   "@context" : "http://www.shared-canvas.org/ns/context.json",
-  "@id" : "http://t-pen.org/M1731+%28F%29/manifest.json",
+  "@id" : "http://t-pen.org/TPEN/manifest/4505/manifest.json",
   "@type" : "sc:Manifest",
-  "label" : "M1731 (F)",
+  "label" : "M1731 (F) 1",
+  "metadata" : [ {
+    "label" : "title",
+    "value" : "M1731 (F) 1"
+  }, {
+    "label" : "subtitle",
+    "value" : " "
+  }, {
+    "label" : "msIdentifier",
+    "value" : "F"
+  }, {
+    "label" : "msSettlement",
+    "value" : "Yerevan"
+  }, {
+    "label" : "msRepository",
+    "value" : "Matenadaran"
+  }, {
+    "label" : "msIdNumber",
+    "value" : "1731"
+  }, {
+    "label" : "subject",
+    "value" : " "
+  }, {
+    "label" : "date",
+    "value" : ""
+  }, {
+    "label" : "language",
+    "value" : "Armenian"
+  }, {
+    "label" : "author",
+    "value" : ""
+  }, {
+    "label" : "description",
+    "value" : " "
+  }, {
+    "label" : "location",
+    "value" : ""
+  }, {
+    "label" : "msCollection",
+    "value" : ""
+  } ],
   "sequences" : [ {
-    "@id" : "http://t-pen.org/M1731+%28F%29/sequence/normal",
+    "@id" : "http://t-pen.org/TPEN/manifest/4505/sequence/normal",
     "@type" : "sc:Sequence",
     "label" : "Current Page Order",
     "canvases" : [ {
-      "@id" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg",
+      "@id" : "http://t-pen.org/TPEN/canvas/13193109",
       "@type" : "sc:Canvas",
       "label" : "page_075r.jpg",
-      "height" : 1000,
       "width" : 801,
-      "resources" : [ {
+      "height" : 1000,
+      "otherContent" : [ {
+        "@id" : "http://t-pen.org/TPEN/project/4505/annotations/13193109",
+        "@type" : "sc:AnnotationList",
+        "label" : "http://t-pen.org/TPEN/canvas/13193109 List",
+        "proj" : 4505,
+        "on" : "http://t-pen.org/TPEN/canvas/13193109",
+        "@context" : "http://iiif.io/api/presentation/2/context.json",
+        "resources" : [ {
+          "@id" : "http://t-pen.org/TPEN/line/101276867",
+          "_tpen_line_id" : "line/101276867",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "եղբայրն ներսէսի ի կարմիր վանգն. և նա՛ յաջ"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,121,509,34",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:44:20.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276868",
+          "_tpen_line_id" : "line/101276868",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "որդեաց ի հոռոմ կլայն. և յետ ն<abbr>ր</abbr> ներսէս "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,155,495,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:44:54.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276869",
+          "_tpen_line_id" : "line/101276869",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "մինչև ի ոհաննէս. և յայնմ ժ<abbr>մկ</abbr>ի դաւիթ "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,182,495,30",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:44:49.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276870",
+          "_tpen_line_id" : "line/101276870",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "անուն ոմն ձեռնադրեա՛լ մինչև ի ստեփա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,212,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:45:10.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276871",
+          "_tpen_line_id" : "line/101276871",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նոս որ գերեցաւ ի յեգիպտոս և ի սիս ձեռնա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,237,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:45:23.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276872",
+          "_tpen_line_id" : "line/101276872",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "դրեալ կ<abbr>թղ</abbr>ս. մինչև ցթումավ<abbr>դպ</abbr>տն. և բաժա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,262,495,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:45:59.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276873",
+          "_tpen_line_id" : "line/101276873",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նեա՛լ ն<abbr>ր</abbr> եղև աթոռն սահման<abbr>ել</abbr> յէջմիածին "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,291,495,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:46:29.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276874",
+          "_tpen_line_id" : "line/101276874",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "և զբունն ոչ խափանեալ զի դե<subst instant=\"true\"><del>ղ</del><add>ռ</add></subst>ևս կենդա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,319,495,30",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:51:03.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276875",
+          "_tpen_line_id" : "line/101276875",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նի էր կաթ<abbr>ղս</abbr>ն սըսա՛. զի <add place=\"above\">ի</add> լուսաւորչէն մինչև "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,349,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:52:57.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276876",
+          "_tpen_line_id" : "line/101276876",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ի նայ էր հասեալ կթ<abbr>ղ</abbr>սութ<abbr>ի</abbr>. և նա՛ ոչ եղև, "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,374,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:53:39.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276877",
+          "_tpen_line_id" : "line/101276877",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "կամակից ձեռնադրելոյ կ<abbr>թղ</abbr>ս յէջմիածին "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,399,495,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:54:02.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276878",
+          "_tpen_line_id" : "line/101276878",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "զի նա՛ դեռևս կենդանի էր։ <num value=\"9\">թ.</num> եղբայրք զա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,426,495,24",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:54:30.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276879",
+          "_tpen_line_id" : "line/101276879",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "քարիայ և իւանա՛ դարձաւ վրացի և եղբայ"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,450,495,26",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:54:57.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276880",
+          "_tpen_line_id" : "line/101276880",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "րըն ոչ. նա՛ խնդրէր վրան զի պատարագ ա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,476,495,24",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:55:10.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276881",
+          "_tpen_line_id" : "line/101276881",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "րասցեն։ "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,500,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 11:55:15.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276882",
+          "_tpen_line_id" : "line/101276882",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "<milestone unit=\"section\" n=\"401\"/><hi rend=\"red\">Ի</hi>սկ ընդ աւուրսն ընդ այնոսիկ, և ի ամին "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,525,495,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 13:03:59.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276883",
+          "_tpen_line_id" : "line/101276883",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "<num value=\"401\">ն՟ա՟.</num> եղև սով սաստիկ ի բ<abbr>զ</abbr>մ տեղիս. բայց "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,553,495,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 12:48:05.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276884",
+          "_tpen_line_id" : "line/101276884",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "յ<g ref=\"\">աշխարհ</g>ն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,581,495,26",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2015-03-31 23:38:01.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276885",
+          "_tpen_line_id" : "line/101276885",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ղութ<abbr>ի</abbr> մեծ և առաւել քան զ<abbr>ամ</abbr> ի միջա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,607,495,26",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:24:32.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276886",
+          "_tpen_line_id" : "line/101276886",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "գետս. և ի խստութ<abbr>ե</abbr> սովոյն տագնապ և "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,633,495,22",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:24:52.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276887",
+          "_tpen_line_id" : "line/101276887",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "տատանում լինէր ի բ<abbr>զ</abbr>մ տեղիս, և ի հռչա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,655,495,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:25:17.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276888",
+          "_tpen_line_id" : "line/101276888",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "կաւոր մայրաք<abbr>ղ</abbr>քն ուռհայ, զորս կանգը"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,680,495,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:25:38.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276889",
+          "_tpen_line_id" : "line/101276889",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նեաց տիգրան արքայ հայոց և կացեալ սովն "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,707,495,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:26:01.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276890",
+          "_tpen_line_id" : "line/101276890",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "յա՛յնմ <g ref=\"\">աշխարհ</g>ին զա՛մս <num value=\"7\">.է՟.</num> և անթիւ լինէր կոտո֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,735,495,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 12:49:13.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276891",
+          "_tpen_line_id" : "line/101276891",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "րածն յերեսաց սովոյն այն. և <g ref=\"\">աշխարհ</g>ին տաճը"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,762,495,39",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 12:27:34.0"
+        } ]
+      } ],
+      "images" : [ {
         "@type" : "oa:Annotation",
         "motivation" : "sc:painting",
         "resource" : {
-          "@id" : "http://t-pen.org/TPEN/imageResize?folioNum=13193109&height=1000",
+          "@id" : "http://t-pen.org/TPEN/imageResize?folioNum=13193109&height=2000&user=null",
           "@type" : "dctypes:Image",
-          "format" : "image/jpeg",
-          "height" : 2000,
-          "width" : 1602
+          "format" : "image/jpeg"
         },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276867",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "եղբայրն ներսէսի ի կարմիր վանգն. և նա՛ յաջ"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,121,509,34"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276868",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "որդեաց ի հոռոմ կլայն. և յետ ն<abbr>ր</abbr> ներսէս "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,155,495,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276869",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "մինչև ի ոհաննէս. և յայնմ ժ<abbr>մկ</abbr>ի դաւիթ "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,182,495,30"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276870",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "անուն ոմն ձեռնադրեա՛լ մինչև ի ստեփա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,212,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276871",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նոս որ գերեցաւ ի յեգի<g ref=\"#պտ\"/>ոս և ի սիս ձեռնա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,237,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276872",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "դրեալ կ<abbr>թղ</abbr>ս. մինչև ցթումավ<abbr>դպ</abbr>տն. և բաժա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,262,495,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276873",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նեա՛լ ն<abbr>ր</abbr> եղև աթոռն սահման<abbr>ել</abbr> յէջմիածին "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,291,495,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276874",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "և զբունն ոչ խափանեալ զի դե<subst instant=\"true\"><del>ղ</del><add>ռ</add></subst>ևս կենդա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,319,495,30"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276875",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նի էր կաթ<abbr>ղս</abbr>ն սըսա՛. զի <add place=\"above\">ի</add> լուսաւորչէն մինչև "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,349,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276876",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ի նայ էր հասեալ կթ<abbr>ղ</abbr>սութ<abbr>ի</abbr>. և նա՛ ոչ եղև, "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,374,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101280110",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "քաղաքն զօրավար եդաք և անտի կամեցաք "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,399,495,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/note/101280110",
-        "@type" : "oa:Annotation",
-        "motivation" : "oa:commenting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "եդաք looks like եռաք"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/line/101280110"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276878",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "զի նա՛ դեռևս կենդանի էր։ <num value=\"9\">թ.</num> եղբայրք զա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,426,495,24"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276879",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "քարիայ և իւանա՛ դարձաւ վրացի և եղբայ"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,450,495,26"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276880",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "րըն ոչ. նա՛ խնդրէր վրան զի պատարագ ա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,476,495,24"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276881",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "րասցեն։ "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,500,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276882",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "<milestone unit=\"section\" n=\"401\"/><hi rend=\"red\">Ի</hi>սկ ընդ աւուրսն ընդ այնոսիկ, և ի ամին "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,525,495,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276883",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "<num value=\"401\">նա.</num> եղև սով սաստիկ ի բ<abbr>զ</abbr>մ տեղիս. բայց "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,553,495,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276884",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "յ<g ref=\"աշխարհ\">աշխար</g>հն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,581,495,26"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276885",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ղութ<abbr>ի</abbr> մեծ և առաւել քան զ<abbr>ամ</abbr> ի միջա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,607,495,26"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276886",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "գետս. և ի խստութ<abbr>ե</abbr> սովոյն տագնապ և "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,633,495,22"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276887",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "տատանում լինէր ի բ<abbr>զ</abbr>մ տեղիս, և ի հռչա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,655,495,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276888",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "կաւոր մայրաք<abbr>ղ</abbr>քն ուռհայ, զորս կանգը"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,680,495,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276889",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նեաց տիգրան արքայ հայոց և կացեալ սովն "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,707,495,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276890",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "յա՛յնմ <g ref=\"asxarh\"/>ին զա՛մս <num value=\"7\">.է.</num> և անթիւ լինէր կոտո֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,735,495,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276891",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "րածն յերեսաց սովոյն այն. և <g ref=\"\">աշխարհ</g>ին տաճը"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075r.jpg#xywh=86,762,495,39"
+        "on" : "http://t-pen.org/TPEN/canvas/13193109"
       } ]
     }, {
-      "@id" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg",
+      "@id" : "http://t-pen.org/TPEN/canvas/13193080",
       "@type" : "sc:Canvas",
       "label" : "page_075v.jpg",
-      "height" : 1000,
       "width" : 801,
-      "resources" : [ {
+      "height" : 1000,
+      "otherContent" : [ {
+        "@id" : "http://t-pen.org/TPEN/project/4505/annotations/13193080",
+        "@type" : "sc:AnnotationList",
+        "label" : "http://t-pen.org/TPEN/canvas/13193080 List",
+        "proj" : 4505,
+        "on" : "http://t-pen.org/TPEN/canvas/13193080",
+        "@context" : "http://iiif.io/api/presentation/2/context.json",
+        "resources" : [ {
+          "@id" : "http://t-pen.org/TPEN/line/101276826",
+          "_tpen_line_id" : "line/101276826",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "կաց լինէր անցումն մեծ <add place=\"above\">և</add> քրիստոնէիցն ան"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,122,498,31",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:13:18.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276922",
+          "_tpen_line_id" : "line/101276922",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "թիւք մեռան յերեսաց բարկութ<abbr>ե</abbr> սովոյն. "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,153,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:14:07.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276923",
+          "_tpen_line_id" : "line/101276923",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "և զկնի <abbr>ե</abbr> ամի եկեալ մորեխ յայնմ գաւա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,182,498,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:14:42.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276924",
+          "_tpen_line_id" : "line/101276924",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ռէն որ<abbr>պ</abbr> զաւազ ծովու և ապականեաց, զը"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,207,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:15:12.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276925",
+          "_tpen_line_id" : "line/101276925",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "երկիր. և սաստկանայր սովն առաւել քան զը"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,236,498,31",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:15:39.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276926",
+          "_tpen_line_id" : "line/101276926",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "առաւեն, և զայրացեալ բազմացան և գա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,267,498,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:16:07.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276834",
+          "_tpen_line_id" : "line/101276834",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "զանաբար անողորմ յարձակեալ զմիմեանսս "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,294,498,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:16:25.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276927",
+          "_tpen_line_id" : "line/101276927",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ուտէին, և իշխանքն և մեծամեծքն ընդաւք "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,322,498,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:16:39.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276928",
+          "_tpen_line_id" : "line/101276928",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "և մ<subst instant=\"true\"><del cert=\"low\">ո</del><add>ը</add></subst>րգաւք կերակրէին. և եղև անցումն ա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,350,498,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:19:07.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276929",
+          "_tpen_line_id" : "line/101276929",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նասնոցն. բ<abbr>զ</abbr>մ գեղք և գաւառք յանմարդ "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,378,498,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:19:40.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276930",
+          "_tpen_line_id" : "line/101276930",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "լինէին, և այլ ոչ շինեցան մինչև ցայսօր "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,403,498,25",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:20:02.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276931",
+          "_tpen_line_id" : "line/101276931",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ժա<abbr>մկ</abbr>ի։ <milestone unit=\"section\" n=\"407\"/>Դարձ<abbr>լ</abbr> ի թվականութ<abbr>ե</abbr>ս հայոց ի "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,428,498,21",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 13:04:28.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276840",
+          "_tpen_line_id" : "line/101276840",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "<num value=\"407\">ն՟ և է՟.</num> ամին զօրա՛ժողով լինէր ազգն ար<g ref=\"\">ա</g>պ"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,449,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 13:04:48.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276841",
+          "_tpen_line_id" : "line/101276841",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "կաց ուռհայ և <abbr>ամ</abbr> եդեսացոց <g ref=\"\">աշխարհ</g>ն ահա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,478,498,27",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:22:42.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276932",
+          "_tpen_line_id" : "line/101276932",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "գին բազմութ<abbr>բ</abbr> անցխալ ընդ մեծ գետն "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,505,498,24",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:23:00.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276843",
+          "_tpen_line_id" : "line/101276843",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "եփրատ և եկեա՛լ ի վ<abbr>ր</abbr> ամուր քաղաքին <add place=\"below\">որ</add> կոչի "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,529,498,30",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:23:42.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276933",
+          "_tpen_line_id" : "line/101276933",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "սամուսատ. և ելանէր ի պ<abbr>տզ</abbr>մն, զօրապե֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,559,498,23",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:24:09.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276845",
+          "_tpen_line_id" : "line/101276845",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "տըն հոռոմոց, որում անուն ասէին պա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,582,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:24:22.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276934",
+          "_tpen_line_id" : "line/101276934",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ռակամանոս, ա՛յր զօրաւոր և քաջ. և ի դու"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,611,498,26",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:24:43.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276848",
+          "_tpen_line_id" : "line/101276848",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "ռըն քաղաքին բախէին զմիմեանս և աւուր "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,637,498,22",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:24:58.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276935",
+          "_tpen_line_id" : "line/101276935",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "յայնմիկ հարին տաճկունք զօրսն հոռոմոց "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,659,498,20",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:25:13.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276850",
+          "_tpen_line_id" : "line/101276850",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "և արարին կոտորած առ դրան քաղաքին. "
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,679,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:25:25.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276936",
+          "_tpen_line_id" : "line/101276936",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "և յե՛տ աւուրց ինչ առաւ քաղաքն սամու"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,708,498,28",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2014-11-26 14:25:40.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276937",
+          "_tpen_line_id" : "line/101276937",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "սատ մերձ ի ք<abbr>ղ</abbr>ք ուռհայ։ <milestone unit=\"section\" n=\"408\"/>Իսկ ի թուակա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,736,498,26",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 13:05:02.0"
+        }, {
+          "@id" : "http://t-pen.org/TPEN/line/101276853",
+          "_tpen_line_id" : "line/101276853",
+          "@type" : "oa:Annotation",
+          "motivation" : "oad:transcribing",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "նու<abbr>թե</abbr>ս ազգիս հայոց ի <num value=\"408\">դ՟ճ՟ և ի ը՟</num> ամին, զօրա֊"
+          },
+          "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,762,498,29",
+          "_tpen_note" : "",
+          "_tpen_creator" : 281,
+          "modified" : "2017-03-10 13:05:08.0"
+        } ]
+      } ],
+      "images" : [ {
         "@type" : "oa:Annotation",
         "motivation" : "sc:painting",
         "resource" : {
-          "@id" : "http://t-pen.org/TPEN/imageResize?folioNum=13193080&height=1000",
+          "@id" : "http://t-pen.org/TPEN/imageResize?folioNum=13193080&height=2000&user=null",
           "@type" : "dctypes:Image",
-          "format" : "image/jpeg",
-          "height" : 2000,
-          "width" : 1602
+          "format" : "image/jpeg"
         },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276826",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "կաց լինէր անցումն մեծ <add place=\"above\">և</add> քրիստոնէիցն ան"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,122,498,31"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276922",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "թիւք մեռան յերեսաց բարկութ<abbr>ե</abbr> սովոյն. "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,153,498,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276923",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "և զկնի <abbr>ե</abbr> ամի եկեալ մորեխ յայնմ գաւա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,182,498,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276924",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ռէն որ<abbr>պ</abbr> զաւազ ծովու և ապականեաց, զը"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,207,498,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276925",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "երկիր. և սաստկանայր սովն առաւել քան զը"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,236,498,31"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276926",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "առաւեն, և զայրացեալ բազմացան և գա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,267,498,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276834",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "զանաբար անողորմ յարձակեալ զմիմեանսս "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,294,498,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276927",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ուտէին, և իշխանքն և մեծամեծքն ընդաւք "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,322,498,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276928",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "և մ<subst instant=\"true\"><del cert=\"low\">ո</del><add>ը</add></subst>րգաւք կերակրէին. և եղև անցումն ա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,350,498,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276929",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նասնոցն. բ<abbr>զ</abbr>մ գեղք և գաւառք յանմարդ "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,378,498,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276930",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "լինէին, և այլ ոչ շինեցան մինչև ցայսօր "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,403,498,25"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276931",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ժա<abbr>մկ</abbr>ի։ <milestone unit=\"section\" n=\"407\"/>Դարձ<abbr>լ</abbr> ի թվականութ<abbr>ե</abbr>ս հայոց ի "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,428,498,21"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276840",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "<num value=\"407\">ն և է.</num> ամին զօրա՛ժողով լինէր ազգն ար<g ref=\"\">ա</g>պ"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,449,498,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276841",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "կաց ուռհայ և <abbr>ամ</abbr> եդեսացոց <g ref=\"\">աշխարհ</g>ն ահա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,478,498,27"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276932",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "գին բազմութ<abbr>բ</abbr> անցխալ ընդ մեծ գետն "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,505,498,24"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276843",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "եփրատ և եկեա՛լ ի վ<abbr>ր</abbr> ամուր քաղաքին <add place=\"below\">որ</add> կոչի "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,529,498,30"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276933",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "սամուսատ. և ելանէր ի պ<abbr>տզ</abbr>մն, զօրապե֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,559,498,23"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276845",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "տըն հոռոմոց, որում անուն ասէին պա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,582,498,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276934",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ռակամանոս, ա՛յր զօրաւոր և քաջ. և ի դու"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,611,498,26"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276848",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "ռըն քաղաքին բախէին զմիմեանս և աւուր "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,637,498,22"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276935",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "յայնմիկ հարին տաճկունք զօրսն հոռոմոց "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,659,498,20"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276850",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "և արարին կոտորած առ դրան քաղաքին. "
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,679,498,29"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276936",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "և յե՛տ աւուրց ինչ առաւ քաղաքն սամու"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,708,498,28"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276937",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "սատ մերձ ի ք<abbr>ղ</abbr>ք ուռհայ։ <milestone unit=\"section\" n=\"408\"/>Իսկ ի թուակա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,736,498,26"
-      }, {
-        "@id" : "http://t-pen.org/M1731+%28F%29/line/101276853",
-        "@type" : "oa:Annotation",
-        "motivation" : "sc:painting",
-        "resource" : {
-          "@type" : "cnt:ContentAsText",
-          "cnt:chars" : "նու<abbr>թե</abbr>ս ազգիս հայոց ի <num value=\"408\">դճ և ի ը</num> ամին, զօրա֊"
-        },
-        "on" : "http://t-pen.org/M1731+%28F%29/canvas/page_075v.jpg#xywh=249,762,498,29"
+        "on" : "http://t-pen.org/TPEN/canvas/13193080"
       } ]
     } ]
   } ]

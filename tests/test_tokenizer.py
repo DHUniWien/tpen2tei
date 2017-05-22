@@ -6,10 +6,11 @@ import os
 import unittest
 import sys
 
-import wordtokenize
 import yaml
 
-from parse import from_sc
+from tpen2tei.parse import from_sc
+import tpen2tei.wordtokenize as wordtokenize
+from config import config as config
 
 
 class Test (unittest.TestCase):
@@ -42,10 +43,10 @@ class Test (unittest.TestCase):
     testdoc = None
 
     def setUp(self):
-        settings = load_config("./config.yaml")
+        self.settings = config()
 
-        self.tei_ns = settings['namespaces']['tei']
-        self.xml_ns = settings['namespaces']['xml']
+        self.tei_ns = self.settings['namespaces']['tei']
+        self.xml_ns = self.settings['namespaces']['xml']
 
         # self.ns_id = '{{{:s}}}id'.format(self.xml_ns)
         # self.ns_lb = '{{{:s}}}lb'.format(self.tei_ns)
@@ -53,7 +54,7 @@ class Test (unittest.TestCase):
         # self.ns_pb = "{{{:s}}}pb".format(self.tei_ns)
         # self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
 
-        self.testfiles = settings['testfiles']
+        self.testfiles = self.settings['testfiles']
         msdata = load_JSON_file(self.testfiles['json'])
         self.testdoc = from_sc(msdata)
         self.testdoc_special = from_sc(msdata, special_chars=self._armenian_glyphs)
@@ -170,28 +171,14 @@ class Test (unittest.TestCase):
     def testLegacyTokenization(self):
         """Test with legacy TEI files from 2009, to make sure the tokenizer
         works with them."""
-        testfile = './data/matenadaran_1896.xml'
-        with open('./data/matenadaran_1896_reference.txt', encoding='utf-8') as rfh:
+        testfile = self.testfiles['tei_2009']
+        with open(self.testfiles['tei_2009_reference'], encoding='utf-8') as rfh:
             rtext = rfh.read()
+
         reference = rtext.rstrip().split(' ')
         tokens = wordtokenize.from_file(testfile)
         for i, t in enumerate(tokens):
             self.assertEqual(t['t'], reference[i], "Mismatch at index %d: %s - %s" % (i, t, reference[i]))
-
-
-def load_config(filename):
-    if filename and os.path.isfile(filename):
-        try:
-            file_pointer = open(filename, 'r')
-            config = yaml.load(file_pointer)
-            file_pointer.close()
-        except IOError:
-            sys.exit("Invalid or missing config file")
-
-        if 'settings' not in config:
-            sys.exit('No default configuration found')
-        settings = config['settings']
-    return settings
 
 
 def load_JSON_file(filename, encoding='utf-8'):

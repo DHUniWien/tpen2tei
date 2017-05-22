@@ -7,10 +7,13 @@ settings:
         tei: "http://www.tei-c.org/ns/1.0"
 
     testfiles:
-        json: "./data/M1731.json"
-        xml: "./data/M5587.xml"
-        matenadaran_xml: "./data/matenadaran_1896.xml"
-        matenadaran_txt: "./data/matenadaran_1896.txt"
+        json: "./tests/data/M1731.json"
+        xml: "./tests/data/M5587.xml"
+        matenadaran_xml: "./tests/data/matenadaran_1896.xml"
+        matenadaran_txt: "./tests/data/matenadaran_1896.txt"
+
+        tei_2009: "./tests/data/matenadaran_1896.xml"
+        tei_2009_reference: "./tests/data/matenadaran_1896_reference.txt"
 
     armenian_glyphs: {
         'աշխարհ': {'glyphName': 'asxarh', 'mapping': 'ARMENIAN ASHXARH SYMBOL'},

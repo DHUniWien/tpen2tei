@@ -7,7 +7,8 @@ import unittest
 import sys
 import yaml
 
-from parse import from_sc
+from tpen2tei.parse import from_sc
+from config import config as config
 
 class Test (unittest.TestCase):
 
@@ -37,7 +38,7 @@ class Test (unittest.TestCase):
     }
 
     def setUp(self):
-        settings = load_config("./config.yaml")
+        settings = config()
 
         self.tei_ns = settings['namespaces']['tei']
         self.xml_ns = settings['namespaces']['xml']
@@ -240,21 +241,6 @@ class Test (unittest.TestCase):
 
     def test_corr_to_subst(self):
         pass
-
-
-def load_config(filename):
-    if filename and os.path.isfile(filename):
-        try:
-            file_pointer = open(filename, 'r')
-            config = yaml.load(file_pointer)
-            file_pointer.close()
-        except IOError:
-            sys.exit("Invalid or missing config file")
-
-        if 'settings' not in config:
-            sys.exit('No default configuration found')
-        settings = config['settings']
-    return settings
 
 
 def load_JSON_file(filename, encoding='utf-8'):
