@@ -2,10 +2,7 @@
 __author__ = 'tla'
 
 import json
-import os
 import unittest
-import sys
-import yaml
 
 from tpen2tei.parse import from_sc
 from config import config as config
@@ -51,13 +48,11 @@ class Test (unittest.TestCase):
 
         self.testfiles = settings['testfiles']
         msdata = load_JSON_file(self.testfiles['json'])
-        self.testdoc = from_sc(msdata)
-        self.testdoc_special = from_sc(msdata, special_chars=self._armenian_glyphs)
+        self.testdoc = from_sc(msdata, special_chars=self._armenian_glyphs)
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
-        self.assertIsNotNone(self.testdoc_special.getroot())
-        self.assertEqual(self.testdoc_special.getroot().tag, '{{{:s}}}TEI'.format(self.tei_ns))
+        self.assertEqual(self.testdoc.getroot().tag, '{{{:s}}}TEI'.format(self.tei_ns))
 
     def test_comment(self):
         """Need to check that any TPEN annotations on a line get passed as
@@ -81,7 +76,7 @@ class Test (unittest.TestCase):
         test_input = [('#պտ', ''), ('աշխարհ', 'աշխար'), ('#asxarh', ''), ('', 'աշխարհ'), ('', 'ա'), ('', 'աշխարհ')]
 
         # check if 'char_decl' exists and is defined at the right place
-        root = self.testdoc_special.getroot()
+        root = self.testdoc.getroot()
         tei_header = root.find("{{{:s}}}teiHeader".format(self.tei_ns))
         self.assertIsNotNone(tei_header)
         encoding_desc = tei_header.find("{{{:s}}}encodingDesc".format(self.tei_ns))
@@ -223,7 +218,7 @@ class Test (unittest.TestCase):
         tei_ns = "{{{:s}}}".format(self.tei_ns)
         xml_ns = "{{{:s}}}".format(self.xml_ns)
 
-        for element in self.testdoc_special.getroot().getiterator():
+        for element in self.testdoc.getroot().getiterator():
             self.assertEqual(element.nsmap, {None: '{:s}'.format(self.tei_ns)})
             for key in element.attrib.keys():
                 if key.startswith('{'):

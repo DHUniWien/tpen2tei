@@ -1,0 +1,52 @@
+diff --git a/tests/data/M1731.json b/tests/data/M1731.json
+index b8dda9d..6b7c0d0 100644
+--- a/tests/data/M1731.json
++++ b/tests/data/M1731.json
+@@ -119,7 +119,7 @@
+           "motivation" : "oad:transcribing",
+           "resource" : {
+             "@type" : "cnt:ContentAsText",
+-            "cnt:chars" : "նոս որ գերեցաւ ի յեգիպտոս և ի սիս ձեռնա֊"
++            "cnt:chars" : "նոս որ գերեցաւ ի յեգի<g ref=\"#պտ\"/>ոս և ի սիս ձեռնա֊"
+           },
+           "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,237,495,25",
+           "_tpen_note" : "",
+@@ -191,16 +191,16 @@
+           "_tpen_creator" : 281,
+           "modified" : "2014-11-26 11:53:39.0"
+         }, {
+-          "@id" : "http://t-pen.org/TPEN/line/101276877",
+-          "_tpen_line_id" : "line/101276877",
++          "@id" : "http://t-pen.org/TPEN/line/101280110",
++          "_tpen_line_id" : "line/101280110",
+           "@type" : "oa:Annotation",
+           "motivation" : "oad:transcribing",
+           "resource" : {
+             "@type" : "cnt:ContentAsText",
+-            "cnt:chars" : "կամակից ձեռնադրելոյ կ<abbr>թղ</abbr>ս յէջմիածին "
++            "cnt:chars" : "քաղաքն զօրավար եդաք և անտի կամեցաք "
+           },
+           "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,399,495,27",
+-          "_tpen_note" : "",
++          "_tpen_note" : "եդաք looks like եռաք",
+           "_tpen_creator" : 281,
+           "modified" : "2014-11-26 11:54:02.0"
+         }, {
+@@ -288,7 +288,7 @@
+           "motivation" : "oad:transcribing",
+           "resource" : {
+             "@type" : "cnt:ContentAsText",
+-            "cnt:chars" : "յ<g ref=\"\">աշխարհ</g>ն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
++            "cnt:chars" : "յ<g ref=\"աշխարհ\">աշխար</g>հն հարաւոյ ի յերկրին տաճկա՛ց եղև նե"
+           },
+           "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,581,495,26",
+           "_tpen_note" : "",
+@@ -366,7 +366,7 @@
+           "motivation" : "oad:transcribing",
+           "resource" : {
+             "@type" : "cnt:ContentAsText",
+-            "cnt:chars" : "յա՛յնմ <g ref=\"\">աշխարհ</g>ին զա՛մս <num value=\"7\">.է՟.</num> և անթիւ լինէր կոտո֊"
++            "cnt:chars" : "յա՛յնմ <g ref=\"asxarh\">աշխարհ</g>ին զա՛մս <num value=\"7\">.է՟.</num> և անթիւ լինէր կոտո֊"
+           },
+           "on" : "http://t-pen.org/TPEN/canvas/13193109#xywh=86,735,495,27",
+           "_tpen_note" : "",

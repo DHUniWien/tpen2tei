@@ -2,11 +2,7 @@
 __author__ = 'tla'
 
 import json
-import os
 import unittest
-import sys
-
-import yaml
 
 from tpen2tei.parse import from_sc
 import tpen2tei.wordtokenize as wordtokenize
@@ -41,6 +37,7 @@ class Test (unittest.TestCase):
     }
 
     testdoc = None
+    testdoc_noglyphs = None
 
     def setUp(self):
         self.settings = config()
@@ -56,8 +53,8 @@ class Test (unittest.TestCase):
 
         self.testfiles = self.settings['testfiles']
         msdata = load_JSON_file(self.testfiles['json'])
-        self.testdoc = from_sc(msdata)
-        self.testdoc_special = from_sc(msdata, special_chars=self._armenian_glyphs)
+        self.testdoc_noglyphs = from_sc(msdata)
+        self.testdoc = from_sc(msdata, special_chars=self._armenian_glyphs)
 
     # def setUp(self):
     #     with open('./data/M1731.json', encoding='utf-8') as fh:
@@ -72,37 +69,38 @@ class Test (unittest.TestCase):
         """Test the correct detection and rendering of glyphs. The characters in
         the resulting token should be the characters that are the content of the
         g tag. """
-        testdata = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
+        testdata_noglyphs = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
                     'յ<g xmlns="http://www.tei-c.org/ns/1.0" ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
+                    '<g xmlns="http://www.tei-c.org/ns/1.0" ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
                     '<g xmlns="http://www.tei-c.org/ns/1.0" ref="">աշխարհ</g>ին': 'աշխարհին',
                     'ար<g xmlns="http://www.tei-c.org/ns/1.0" ref="">ա</g>պ<lb xmlns="http://www.tei-c.org/ns/1.0" xml:id="l101276841" n="14"/>կաց': 'արապկաց',
                     '<g xmlns="http://www.tei-c.org/ns/1.0" ref="">աշխարհ</g>ն': 'աշխարհն'}
 
-        testdata_special = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
+        testdata_glyphs = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
                             'յ<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
                             '<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
                             'ար<g xmlns="http://www.tei-c.org/ns/1.0" ref="#avar">ա</g>պ<lb xmlns="http://www.tei-c.org/ns/1.0" xml:id="l101276841" n="14"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
                             '<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
 
+        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)
+        # Find the token that has our substitution
+        for t in tokens:
+            if '<g xmlns="http://www.tei-c.org/ns/1.0" ref="' in t['lit']:
+                self.assertIsNotNone(testdata_noglyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
+                self.assertTrue(t['t'] == testdata_noglyphs.get(t['lit']), "Error in rendering glyphs")
+                del testdata_noglyphs[t['lit']]
+        self.assertEqual(len(testdata_noglyphs), 0, "Did not find any test token")
+
         tokens = wordtokenize.from_etree(self.testdoc)
         # Find the token that has our substitution
         for t in tokens:
             if '<g xmlns="http://www.tei-c.org/ns/1.0" ref="' in t['lit']:
-                self.assertIsNotNone(testdata.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
-                self.assertTrue(t['t'] == testdata.get(t['lit']), "Error in rendering glyphs")
-                del testdata[t['lit']]
-        self.assertEqual(len(testdata), 0, "Did not find any test token")
-
-        tokens = wordtokenize.from_etree(self.testdoc_special)
-        # Find the token that has our substitution
-        for t in tokens:
-            if '<g xmlns="http://www.tei-c.org/ns/1.0" ref="' in t['lit']:
-                self.assertIsNotNone(testdata_special.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
-                self.assertTrue(t['t'] == testdata_special.get(t['lit'])['token'], "Error in rendering glyphs")
-                testdata_special[t['lit']]['occurrence'] -= 1
-                if testdata_special[t['lit']]['occurrence'] == 0:
-                    del testdata_special[t['lit']]
-        self.assertEqual(len(testdata_special), 0, "Did not find any test token")
+                self.assertIsNotNone(testdata_glyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
+                self.assertTrue(t['t'] == testdata_glyphs.get(t['lit'])['token'], "Error in rendering glyphs")
+                testdata_glyphs[t['lit']]['occurrence'] -= 1
+                if testdata_glyphs[t['lit']]['occurrence'] == 0:
+                    del testdata_glyphs[t['lit']]
+        self.assertEqual(len(testdata_glyphs), 0, "Did not find any test token")
 
     def test_substitution(self):
         """Test that the correct words are picked out of a subst tag."""
