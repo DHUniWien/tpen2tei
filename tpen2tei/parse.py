@@ -111,33 +111,34 @@ def _xmlify(txdata, special_chars=None):
         for glyph in content.xpath('//g'):
             # Find the characters that we have glyph-marked. It could have been done
             # in a couple of different ways.
-            gchars = ''
-            gtext_explicit = ''
+            glyphid = ''
+            gtext_explicit = False
+            # There might be an explicit 'ref' attribute, which may or may not have a non-empty value.
             if glyph.get('ref'):
-                gchars = glyph.get('ref')
-                if gchars.find('#') == 0:
-                    gchars = gchars[1:]
+                glyphid = glyph.get('ref')
+                if glyphid.find('#') == 0: # The ref is meaningful and should be preserved.
+                    glyphid = glyphid[1:]
             if glyph.text:
-                if gchars == '':
-                    gchars = glyph.text
+                if glyphid == '':  # The glyph should be identified from the element text content.
+                    glyphid = glyph.text
                 else:
-                    gtext_explicit = True
-            if gchars in glyph_correction:
-                gchars = glyph_correction[gchars]
+                    gtext_explicit = True    # We have set a real ref and also text; both should be preserved.
+            if glyphid in glyph_correction:  # Check whether we need to use the hardcoded hack.
+                glyphid = glyph_correction[glyphid]
             # Now figure out what the reference is for this glyph. Make the
             # XML element if necessary.
-            if gchars not in glyphs_seen:
+            if glyphid not in glyphs_seen:
                 try:
-                    glyphs_seen[gchars] = _get_glyph(gchars, special_chars)
+                    glyphs_seen[glyphid] = _get_glyph(glyphid, special_chars)
                 except ValueError as e:
                     print("In g element %s:" % etree.tostring(glyph, encoding='unicode', with_tail=False),
                           file=sys.stderr)
                     raise e
-            gref = '#%s' % glyphs_seen[gchars].get('{http://www.w3.org/XML/1998/namespace}id')
+            gref = '#%s' % glyphs_seen[glyphid].get('{http://www.w3.org/XML/1998/namespace}id')
             # Finally, fix the 'g' element here so that it is canonical.
             glyph.set('ref', gref)
             if not gtext_explicit:
-                glyph.text = gchars
+                glyph.text = glyphid
 
     for el in content.xpath('//corr'):
         el.tag = 'subst'
