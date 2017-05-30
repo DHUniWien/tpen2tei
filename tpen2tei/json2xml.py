@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 logging.basicConfig (
     format = '%(asctime)s %(message)s',
-    filename = '%s.log' % sys.argv[0],
+    filename = '%s.log' % os.path.basename (sys.argv[0]),
 )
 
 
