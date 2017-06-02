@@ -46,7 +46,7 @@ for infile in fnmatch.filter (os.listdir (args.indir), '*json'):
                     encoding = 'utf8',
                     pretty_print = True,
                 )
-            else
+            else:
                 logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
 
         except Exception as e:
