@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 __author__ = 'tla'
 
 import json
@@ -6,38 +5,11 @@ import unittest
 
 from tpen2tei.parse import from_sc
 import tpen2tei.wordtokenize as wordtokenize
-from config import config as config
 
+from config import config as config
+import helpers
 
 class Test (unittest.TestCase):
-
-    # Our default (and example) list of special characters that might occur as
-    # glyph (<g/>) elements. A true list should be passed to the from_sc call.
-    # The key is the normalized form; the tuple is (xml:id, description).
-    _armenian_glyphs = {
-        'աշխարհ': ('asxarh', 'ARMENIAN ASHXARH SYMBOL'),
-        'ամենայն': ('amenayn', 'ARMENIAN AMENAYN SYMBOL'),
-        'որպէս': ('orpes', 'ARMENIAN ORPES SYMBOL'),
-        'երկիր': ('erkir', 'ARMENIAN ERKIR SYMBOL'),
-        'երկին': ('erkin', 'ARMENIAN ERKIN SYMBOL'),
-        'ընդ': ('und', 'ARMENIAN END SYMBOL'),
-        'ըստ': ('ust', 'ARMENIAN EST SYMBOL'),
-        'պտ': ('ptlig', 'ARMENIAN PEH-TIWN LIGATURE'),
-        'թե': ('techlig', 'ARMENIAN TO-ECH LIGATURE'),
-        'թի': ('tinilig', 'ARMENIAN TO-INI LIGATURE'),
-        'թէ': ('tehlig', 'ARMENIAN TO-EH LIGATURE'),
-        'էս': ('eslig', 'ARMENIAN EH-SEH LIGATURE'),
-        'ես': ('echslig', 'ARMENIAN ECH-SEH LIGATURE'),
-        'յր': ('yrlig', 'ARMENIAN YI-REH LIGATURE'),
-        'զմ': ('zmlig', 'ARMENIAN ZA-MEN LIGATURE'),
-        'թգ': ('tglig', 'ARMENIAN TO-GIM LIGATURE'),
-        'ա': ('avar', 'ARMENIAN AYB VARIANT'),
-        'հ': ('hvar', 'ARMENIAN HO VARIANT'),
-        'յ': ('yabove', 'ARMENIAN YI SUPERSCRIPT VARIANT')
-    }
-
-    testdoc = None
-    testdoc_noglyphs = None
 
     def setUp(self):
         self.settings = config()
@@ -52,9 +24,12 @@ class Test (unittest.TestCase):
         # self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
 
         self.testfiles = self.settings['testfiles']
-        msdata = load_JSON_file(self.testfiles['json'])
+        msdata = helpers.load_JSON_file(self.testfiles['json'])
         self.testdoc_noglyphs = from_sc(msdata)
-        self.testdoc = from_sc(msdata, special_chars=self._armenian_glyphs)
+        self.testdoc = from_sc (
+            msdata,
+            special_chars = helpers.armenian_glyphs(),
+        )
 
     # def setUp(self):
     #     with open('./data/M1731.json', encoding='utf-8') as fh:
@@ -126,45 +101,45 @@ class Test (unittest.TestCase):
         else:
             self.assertTrue(False, "Did not find the testing token")
 
-    def test_del_word_boundary(self):
-        """Test that a strategically placed del doesn't cause erroneous joining of words.
-        TODO add testing data"""
-        pass
+    # def test_del_word_boundary(self):
+    #     """Test that a strategically placed del doesn't cause erroneous joining of words.
+    #     TODO add testing data"""
+    #     pass
 
-    def test_gap(self):
-        """Test that gaps are handled correctly. At the moment this means that no token
-        should be generated for a gap."""
-        pass
+    # def test_gap(self):
+    #     """Test that gaps are handled correctly. At the moment this means that no token
+    #     should be generated for a gap."""
+    #     pass
 
-    def test_milestone_element(self):
-        """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
-         are passed through correctly in the token 'lit' field."""
-        pass
+    # def test_milestone_element(self):
+    #     """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
+    #      are passed through correctly in the token 'lit' field."""
+    #     pass
 
-    def test_milestone_option(self):
-        """Test that passing a milestone option gives back only the text from the
-        relevant <milestone/> element to the next one."""
-        pass
+    # def test_milestone_option(self):
+    #     """Test that passing a milestone option gives back only the text from the
+    #     relevant <milestone/> element to the next one."""
+    #     pass
 
-    def test_arbitrary_element(self):
-        """Test that arbitrary tags (e.g. <abbr>) are passed into 'lit' correctly."""
-        pass
+    # def test_arbitrary_element(self):
+    #     """Test that arbitrary tags (e.g. <abbr>) are passed into 'lit' correctly."""
+    #     pass
 
-    def test_file_input(self):
-        """Make sure we get a result when passing a file path."""
-        pass
+    # def test_file_input(self):
+    #     """Make sure we get a result when passing a file path."""
+    #     pass
 
-    def test_fh_input(self):
-        """Make sure we get a result when passing an open filehandle object."""
-        pass
+    # def test_fh_input(self):
+    #     """Make sure we get a result when passing an open filehandle object."""
+    #     pass
 
-    def test_string_input(self):
-        """Make sure we get a result when passing a string containing XML."""
-        pass
+    # def test_string_input(self):
+    #     """Make sure we get a result when passing a string containing XML."""
+    #     pass
 
-    def test_object_input(self):
-        """Make sure we get a result when passing an lxml.etree object."""
-        pass
+    # def test_object_input(self):
+    #     """Make sure we get a result when passing an lxml.etree object."""
+    #     pass
 
     def testLegacyTokenization(self):
         """Test with legacy TEI files from 2009, to make sure the tokenizer
@@ -177,16 +152,3 @@ class Test (unittest.TestCase):
         tokens = wordtokenize.from_file(testfile)
         for i, t in enumerate(tokens):
             self.assertEqual(t['t'], reference[i], "Mismatch at index %d: %s - %s" % (i, t, reference[i]))
-
-
-def load_JSON_file(filename, encoding='utf-8'):
-    data = ""
-    try:
-        with open(filename, encoding=encoding) as testfile:
-            data = json.load(testfile)
-        testfile.close()
-    except FileNotFoundError:
-        print("""File "{:s}" not found!""".format(filename))
-    except ValueError:
-        print("""File "{:s}" might not be a valid JSON file!""".format(filename))
-    return data

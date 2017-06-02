@@ -1,43 +1,12 @@
-# -*- encoding: utf-8 -*-
 __author__ = 'tla'
 
-import json
 import unittest
 
 from tpen2tei.parse import from_sc
-from lxml import etree
 from config import config as config
+import helpers
 
 class Test (unittest.TestCase):
-
-    # Our default (and example) list of special characters that might occur as
-    # glyph (<g/>) elements. A true list should be passed to the from_sc call.
-    # The key is the normalized form; the tuple is (xml:id, description).
-    _armenian_glyphs = {
-        'աշխարհ': ('asxarh', 'ARMENIAN ASHXARH SYMBOL'),
-        'ամենայն': ('amenayn', 'ARMENIAN AMENAYN SYMBOL'),
-        'արեգակն': ('aregakn', 'ARMENIAN AREGAKN SYMBOL'),
-        'լուսին': ('lusin', 'ARMENIAN LUSIN SYMBOL'),
-        'որպէս': ('orpes', 'ARMENIAN ORPES SYMBOL'),
-        'երկիր': ('erkir', 'ARMENIAN ERKIR SYMBOL'),
-        'երկին': ('erkin', 'ARMENIAN ERKIN SYMBOL'),
-        'ընդ': ('und', 'ARMENIAN END SYMBOL'),
-        'ըստ': ('ust', 'ARMENIAN EST SYMBOL'),
-        'պտ': ('ptlig', 'ARMENIAN PEH-TIWN LIGATURE'),
-        'թե': ('techlig', 'ARMENIAN TO-ECH LIGATURE'),
-        'թի': ('tinilig', 'ARMENIAN TO-INI LIGATURE'),
-        'թէ': ('tehlig', 'ARMENIAN TO-EH LIGATURE'),
-        'թբ': ('tblig', 'ARMENIAN TO-BEN LIGATURE'),
-        'էս': ('eslig', 'ARMENIAN EH-SEH LIGATURE'),
-        'ես': ('echslig', 'ARMENIAN ECH-SEH LIGATURE'),
-        'յր': ('yrlig', 'ARMENIAN YI-REH LIGATURE'),
-        'զմ': ('zmlig', 'ARMENIAN ZA-MEN LIGATURE'),
-        'թգ': ('tglig', 'ARMENIAN TO-GIM LIGATURE'),
-        'րզ': ('rzlig', 'ARMENIAN REH-ZA LIGATURE'),
-        'ա': ('avar', 'ARMENIAN AYB VARIANT'),
-        'հ': ('hvar', 'ARMENIAN HO VARIANT'),
-        'յ': ('yabove', 'ARMENIAN YI SUPERSCRIPT VARIANT')
-    }
 
     def setUp(self):
         settings = config()
@@ -53,12 +22,15 @@ class Test (unittest.TestCase):
         self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
 
         self.testfiles = settings['testfiles']
-        msdata = load_JSON_file(self.testfiles['json'])
-        self.testdoc = from_sc(msdata, special_chars=self._armenian_glyphs)
+        msdata = helpers.load_JSON_file(self.testfiles['json'])
+        self.testdoc = from_sc (
+            msdata,
+            special_chars = helpers.armenian_glyphs(),
+        )
 
         user_defined = {'title': 'Ժամանակագրութիւն', 'author': 'Մատթէոս Ուռհայեցի'}
-        legacydata = load_JSON_file(self.testfiles['legacy'])
-        self.legacydoc = from_sc(legacydata, metadata=user_defined, special_chars=self._armenian_glyphs)
+        legacydata = helpers.load_JSON_file(self.testfiles['legacy'])
+        self.legacydoc = from_sc(legacydata, metadata=user_defined, special_chars=helpers.armenian_glyphs())
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
@@ -344,16 +316,3 @@ class Test (unittest.TestCase):
         substs = self.legacydoc.getroot().findall('.//{%s}subst' % self.tei_ns)
         self.assertEqual(len(corrs), 0)
         self.assertEqual(len(substs), 115)
-
-
-def load_JSON_file(filename, encoding='utf-8'):
-    data = ""
-    try:
-        with open(filename, encoding=encoding) as testfile:
-            data = json.load(testfile)
-        testfile.close()
-    except FileNotFoundError:
-        print("""File "{:s}" not found!""".format(filename))
-    except ValueError:
-        print("""File "{:s}" might not be a valid JSON file!""".format(filename))
-    return data

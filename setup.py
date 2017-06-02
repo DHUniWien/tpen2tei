@@ -31,6 +31,6 @@ setup(
     ],
 
     keywords='TEI-XML SC-JSON manuscript transcription',
-    packages=find_packages(exclude=['contrib', 'scripts', 'tests']),
+    packages=find_packages(exclude=['contrib', 'tests']),
     install_requires=['lxml']
 )
