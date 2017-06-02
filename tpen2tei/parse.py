@@ -227,13 +227,13 @@ def _tei_wrap(content, metadata, glyphs):
                 etree.SubElement(desc_container, 'idno').text = metadata['msIdNumber']
         else:  # If not, use the text content of the identifier as the XML msIdentifier content.
             desc_container.text = metadata['msIdentifier']
-    has_history = 'date' in metadata or 'location' in metadata
-    if has_history:
-        history = etree.SubElement(msdesc, 'history')
+    has_origin = 'date' in metadata or 'location' in metadata
+    if has_origin:
+        origin = etree.SubElement(etree.SubElement(msdesc, 'history'), 'origin')
         if 'date' in metadata:
-            etree.SubElement(history, 'origDate').text = metadata['date']
+            etree.SubElement(origin, 'origDate').text = metadata['date']
         if 'location' in metadata:
-            etree.SubElement(history, 'origPlace').text = metadata['location']
+            etree.SubElement(origin, 'origPlace').text = metadata['location']
     if 'description' in metadata:
         etree.SubElement(msdesc, 'p').text = metadata['description']
     # TODO consider filling out msContents / msItem
