@@ -44,7 +44,7 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None):
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
-        xval = 0
+        xval = -1
         # Find the annotation list.
         linelist = None
         for content in page['otherContent']:
