@@ -42,6 +42,7 @@ class Test (unittest.TestCase):
     def setUp(self):
         settings = config()
 
+        self.namespaces = settings['namespaces']
         self.tei_ns = settings['namespaces']['tei']
         self.xml_ns = settings['namespaces']['xml']
 
@@ -300,16 +301,49 @@ class Test (unittest.TestCase):
 
     # Correction code for the early conventions
     def test_cert_correction(self):
-        pass
+        """Test that all numeric 'cert' values in a transcription are converted to one of high/medium/low."""
+        cert_attributes = self.legacydoc.getroot().xpath('.//attribute::cert')
+        self.assertEquals(len(cert_attributes), 32)
+        cert_values = {'low': 11, 'medium': 20, 'high': 1}
+        for attr in cert_attributes:
+            self.assertIn(attr, ['high', 'medium', 'low'])
+            cert_values[attr] -= 1
+        for v in cert_values.values():
+            self.assertEqual(v, 0)
 
     def test_glyph_correction(self):
-        pass
+        """Test that the various old ways glyphs got encoded in the transcription have the correct end result"""
+        # աշխարհ: 134 + 6
+        # թե: 114 + 10
+        # թէ: 210 + 4
+        # պտ: 320 + 18
+        # ընդ: 57 + 9
+        # որպէս: 17 + 2
+        # Get the allowed glyphs
+        glyphs = set(['#%s' % x.get('{%s}id' % self.xml_ns) for x in self.legacydoc.getroot().findall('.//{%s}glyph' % self.tei_ns)])
+        # Get all the 'g' elements and check that they have valid refs
+        gs = self.legacydoc.getroot().findall('.//{%s}g' % self.tei_ns)
+        for g in gs:
+            self.assertIn(g.get('ref'), glyphs)
+
+        expected = {'#asxarh': 140, '#techlig': 124, '#tehlig': 214, '#ptlig': 338, '#und': 66, '#orpes': 19}
+        for k, v in expected.items():
+            thisg = self.legacydoc.getroot().xpath('.//tei:g[@ref="%s"]' % k, namespaces=self.namespaces)
+            self.assertEqual(len(thisg), v)
 
     def test_type_to_rend(self):
-        pass
+        """Test that the erroneous 'type' attribute on the 'del' element gets corrected to 'rend'"""
+        dels = self.legacydoc.getroot().findall('.//{%s}del' % self.tei_ns)
+        self.assertEqual(len(dels), 241)
+        for d in dels:
+            self.assertTrue('type' not in d)
 
     def test_corr_to_subst(self):
-        pass
+        """Tests that the erroneous 'corr' elements were turned into 'subst' ones"""
+        corrs = self.legacydoc.getroot().findall('.//{%s}corr' % self.tei_ns)
+        substs = self.legacydoc.getroot().findall('.//{%s}subst' % self.tei_ns)
+        self.assertEqual(len(corrs), 0)
+        self.assertEqual(len(substs), 115)
 
 
 def load_JSON_file(filename, encoding='utf-8'):

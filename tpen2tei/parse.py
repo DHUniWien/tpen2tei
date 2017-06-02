@@ -162,7 +162,9 @@ def _xmlify(txdata, metadata, special_chars=None):
     for el in content.xpath('//*[@cert]'):
         certval = el.get('cert')
         if re.match('^\d+$', certval):
-            if int(certval) > 40:
+            if int(certval) >= 70:
+                el.set('cert', 'high')
+            elif int(certval) >= 45:
                 el.set('cert', 'medium')
             else:
                 el.set('cert', 'low')
