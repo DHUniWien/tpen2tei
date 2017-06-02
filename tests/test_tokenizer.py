@@ -1,6 +1,5 @@
 __author__ = 'tla'
 
-import json
 import unittest
 
 from tpen2tei.parse import from_sc
@@ -17,18 +16,14 @@ class Test (unittest.TestCase):
         self.tei_ns = self.settings['namespaces']['tei']
         self.xml_ns = self.settings['namespaces']['xml']
 
-        # self.ns_id = '{{{:s}}}id'.format(self.xml_ns)
-        # self.ns_lb = '{{{:s}}}lb'.format(self.tei_ns)
-        # self.ns_note = '{{{:s}}}note'.format(self.tei_ns)
-        # self.ns_pb = "{{{:s}}}pb".format(self.tei_ns)
-        # self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
+        self.glyphs = helpers.glyph_struct(self.settings['armenian_glyphs'])
 
         self.testfiles = self.settings['testfiles']
         msdata = helpers.load_JSON_file(self.testfiles['json'])
         self.testdoc_noglyphs = from_sc(msdata)
         self.testdoc = from_sc (
             msdata,
-            special_chars = helpers.armenian_glyphs(),
+            special_chars = self.glyphs,
         )
 
     # def setUp(self):

@@ -1,10 +1,11 @@
-__author__ = 'tla'
-
 import unittest
 
 from tpen2tei.parse import from_sc
 from config import config as config
 import helpers
+
+__author__ = 'tla'
+
 
 class Test (unittest.TestCase):
 
@@ -21,20 +22,35 @@ class Test (unittest.TestCase):
         self.ns_pb = "{{{:s}}}pb".format(self.tei_ns)
         self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
 
+        self.glyphs = helpers.glyph_struct(settings['armenian_glyphs'])
+
         self.testfiles = settings['testfiles']
         msdata = helpers.load_JSON_file(self.testfiles['json'])
-        self.testdoc = from_sc (
+        self.testdoc = from_sc(
             msdata,
-            special_chars = helpers.armenian_glyphs(),
+            special_chars=self.glyphs
         )
 
         user_defined = {'title': 'Ժամանակագրութիւն', 'author': 'Մատթէոս Ուռհայեցի'}
         legacydata = helpers.load_JSON_file(self.testfiles['legacy'])
-        self.legacydoc = from_sc(legacydata, metadata=user_defined, special_chars=helpers.armenian_glyphs())
+        self.legacydoc = from_sc(legacydata, metadata=user_defined,
+                                 special_chars=self.glyphs,
+                                 numeric_parser=helpers.armenian_numbers)
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
         self.assertEqual(self.testdoc.getroot().tag, '{{{:s}}}TEI'.format(self.tei_ns))
+
+    def test_armenian_numbers(self):
+        """This actually tests my number parsing algorithm in the helpers module. It should eventually
+        move outside tpen2tei."""
+        self.assertEqual(helpers.armenian_numbers('ա'), 1)
+        self.assertEqual(helpers.armenian_numbers('ի'), 20)
+        self.assertEqual(helpers.armenian_numbers('ո'), 600)
+        self.assertEqual(helpers.armenian_numbers('վ'), 3000)
+        self.assertEqual(helpers.armenian_numbers('ճիա'), 121)
+        self.assertEqual(helpers.armenian_numbers('դ՟ճ՟. և լ՟գ՟.'), 433)
+        self.assertEqual(helpers.armenian_numbers('.ժ՟ե՟ \nռ՟'), 15000)
 
     def test_comment(self):
         """Need to check that any TPEN annotations on a line get passed as
@@ -45,6 +61,16 @@ class Test (unittest.TestCase):
         for tag in text_part.iterfind(".//{:s}".format(self.ns_note)):
             target = tag.attrib.get('target')
             self.assertTrue(target and target == '#l101280110')
+
+    def test_numbers(self):
+        """Check that all the 'num' elements have well-defined values when we have used a number parser.
+        Ideally this would check against the xsd: datatypes but I am not sure how to easily accomplish that."""
+        for number in self.legacydoc.getroot().findall(".//{%s}num" % self.tei_ns):
+            self.assertIn('value', number.keys())
+            try:
+                self.assertIsInstance(float(number.get('value')), float)
+            except ValueError:
+                self.fail()
 
     def test_glyphs(self):
         """Need to make sure that the glyph elements present in the JSON
@@ -292,7 +318,8 @@ class Test (unittest.TestCase):
         # ընդ: 57 + 9
         # որպէս: 17 + 2
         # Get the allowed glyphs
-        glyphs = set(['#%s' % x.get('{%s}id' % self.xml_ns) for x in self.legacydoc.getroot().findall('.//{%s}glyph' % self.tei_ns)])
+        glyphs = set(['#%s' % x.get('{%s}id' % self.xml_ns)
+                      for x in self.legacydoc.getroot().findall('.//{%s}glyph' % self.tei_ns)])
         # Get all the 'g' elements and check that they have valid refs
         gs = self.legacydoc.getroot().findall('.//{%s}g' % self.tei_ns)
         for g in gs:

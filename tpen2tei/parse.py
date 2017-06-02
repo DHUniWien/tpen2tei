@@ -8,16 +8,24 @@ from warnings import warn
 __author__ = 'tla'
 
 
-def from_sc(jsondata, metadata=None, special_chars=None):
+def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
     each of which is a page.
 
+    The optional metadata parameter is a dictionary of keys whose values should
+    appear in certain places in the TEI header. This is not yet fully documented.
+
     The optional special_chars parameter is a dictionary of glyphs that have
     been referenced in the transcription. The dictionary key is the normalized
     character form of the given glyph; the value is a tuple of the glyph's
-    xml:id and the Unicode-like description of the glyph."""
+    xml:id and the Unicode-like description of the glyph.
+
+    The optional numeric_parser parameter is a function that takes a string and
+    is expected to return a numeric value. It will be passed the text content of
+    any <num> elements that have no 'value' attribute, or an empty 'value'.
+    """
     if len(jsondata['sequences']) > 1:
         warn("Your data has more than one sequence. Check to see what's going on.", UserWarning)
     # Merge the JSON-supplied metadata into the user-supplied. If a user has
@@ -89,10 +97,11 @@ def from_sc(jsondata, metadata=None, special_chars=None):
     # # Report how many columns per page.
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, metadata, special_chars=special_chars)
+    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, metadata,
+                   special_chars=special_chars, numeric_parser=numeric_parser)
 
 
-def _xmlify(txdata, metadata, special_chars=None):
+def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
     """Take the extracted XML structure of from_sc and make sure it is
     well-formed. Also fix any shortcuts, e.g. for the glyph tags."""
     try:
@@ -101,6 +110,24 @@ def _xmlify(txdata, metadata, special_chars=None):
         print("Parsing error in the JSON: %s" % e.msg, file=sys.stderr)
         print("Full string was %s" % txdata, file=sys.stderr)
         return
+
+    # First add values to the numbers if we have a way to.
+    if numeric_parser is not None:
+        for num in content.xpath('//num'):
+            if 'value' in num.keys():
+                try:
+                    float(num.get('value'))
+                    continue
+                except ValueError:
+                    pass
+            # If we get here, we haven't got a valid value.
+            numtext = etree.tostring(num, method='text', with_tail=False, encoding='utf-8').decode('utf-8')
+            try:
+                numval = numeric_parser(numtext)
+                float(numval)
+                num.set('value', numval.__str__())
+            except ValueError:
+                warn("Numeric parser could not parse data %s" % numtext)
 
     # Now fix the glyph references.
     glyphs_seen = {}

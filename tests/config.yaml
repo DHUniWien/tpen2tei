@@ -19,6 +19,8 @@ settings:
     armenian_glyphs: {
         'աշխարհ': {'glyphName': 'asxarh', 'mapping': 'ARMENIAN ASHXARH SYMBOL'},
         'ամենայն': {'glyphName': 'amenayn', 'mapping': 'ARMENIAN AMENAYN SYMBOL'},
+        'արեգակն': {'glyphName': 'aregakn', 'mapping': 'ARMENIAN AREGAKN SYMBOL'},
+        'լուսին': {'glyphName': 'lusin', 'mapping': 'ARMENIAN LUSIN SYMBOL'},
         'որպէս': {'glyphName': 'orpes', 'mapping': 'ARMENIAN ORPES SYMBOL'},
         'երկիր': {'glyphName': 'erkir', 'mapping': 'ARMENIAN ERKIR SYMBOL'},
         'երկին': {'glyphName': 'erkin', 'mapping': 'ARMENIAN ERKIN SYMBOL'},
@@ -28,24 +30,17 @@ settings:
         'թե': {'glyphName': 'techlig', 'mapping': 'ARMENIAN TO-ECH LIGATURE'},
         'թի': {'glyphName': 'tinilig', 'mapping': 'ARMENIAN TO-INI LIGATURE'},
         'թէ': {'glyphName': 'tehlig', 'mapping': 'ARMENIAN TO-EH LIGATURE'},
+        'թբ': {'glyphName': 'tblig', 'mapping': 'ARMENIAN TO-BEN LIGATURE'},
         'էս': {'glyphName': 'eslig', 'mapping': 'ARMENIAN EH-SEH LIGATURE'},
         'ես': {'glyphName': 'echslig', 'mapping': 'ARMENIAN ECH-SEH LIGATURE'},
         'յր': {'glyphName': 'yrlig', 'mapping': 'ARMENIAN YI-REH LIGATURE'},
         'զմ': {'glyphName': 'zmlig', 'mapping': 'ARMENIAN ZA-MEN LIGATURE'},
         'թգ': {'glyphName': 'tglig', 'mapping': 'ARMENIAN TO-GIM LIGATURE'},
+        'րզ': {'glyphName': 'rzlig', 'mapping': 'ARMENIAN REH-ZA LIGATURE'},
         'ա': {'glyphName': 'avar', 'mapping': 'ARMENIAN AYB VARIANT'},
         'հ': {'glyphName': 'hvar', 'mapping': 'ARMENIAN HO VARIANT'},
         'յ': {'glyphName': 'yabove', 'mapping': 'ARMENIAN YI SUPERSCRIPT VARIANT'}
     }
 
-    glyphs_corrections: {
-        'the': 'թե',
-        'thE': 'թէ',
-        'und': 'ընդ',
-        'thi': 'թի',
-        'asxarh': 'աշխարհ',
-        'pt': 'պտ',
-        'yr': 'յր',
-        'orpes': 'որպէս',
-    }
+
 
