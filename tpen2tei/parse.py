@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-__author__ = 'tla'
-
 import json
 import re
 import sys
@@ -8,7 +5,10 @@ from io import BytesIO
 from lxml import etree
 from warnings import warn
 
-def from_sc(jsondata, special_chars=None):
+__author__ = 'tla'
+
+
+def from_sc(jsondata, metadata=None, special_chars=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
@@ -20,6 +20,15 @@ def from_sc(jsondata, special_chars=None):
     xml:id and the Unicode-like description of the glyph."""
     if len(jsondata['sequences']) > 1:
         warn("Your data has more than one sequence. Check to see what's going on.", UserWarning)
+    # Merge the JSON-supplied metadata into the user-supplied. If a user has
+    # supplied a key, don't override it.
+    if 'metadata' in jsondata:
+        if metadata is None:
+            metadata = {}
+        for item in jsondata['metadata']:
+            if item['label'] not in metadata and len(item['value']) > 0 and not item['value'].isspace():
+                metadata[item['label']] = item['value']
+
     pages = jsondata['sequences'][0]['canvases']
     notes = []
     columns = {}
@@ -80,10 +89,10 @@ def from_sc(jsondata, special_chars=None):
     # # Report how many columns per page.
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, special_chars=special_chars)
+    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, metadata, special_chars=special_chars)
 
 
-def _xmlify(txdata, special_chars=None):
+def _xmlify(txdata, metadata, special_chars=None):
     """Take the extracted XML structure of from_sc and make sure it is
     well-formed. Also fix any shortcuts, e.g. for the glyph tags."""
     try:
@@ -116,7 +125,7 @@ def _xmlify(txdata, special_chars=None):
             # There might be an explicit 'ref' attribute, which may or may not have a non-empty value.
             if glyph.get('ref'):
                 glyphid = glyph.get('ref')
-                if glyphid.find('#') == 0: # The ref is meaningful and should be preserved.
+                if glyphid.find('#') == 0:  # The ref is meaningful and should be preserved.
                     glyphid = glyphid[1:]
             if glyph.text:
                 if glyphid == '':  # The glyph should be identified from the element text content.
@@ -158,8 +167,9 @@ def _xmlify(txdata, special_chars=None):
             else:
                 el.set('cert', 'low')
 
-    return _tei_wrap(content, sorted(glyphs_seen.values(),
-                                     key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')))
+    return _tei_wrap(content, metadata,
+                     sorted(glyphs_seen.values(),
+                            key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')))
 
 
 def _get_glyph(gname, special_chars):
@@ -175,14 +185,57 @@ def _get_glyph(gname, special_chars):
     return glyph_el
 
 
-def _tei_wrap(content, glyphs):
+def _tei_wrap(content, metadata, glyphs):
     """Wraps the content, and the glyphs that were found, into TEI XML format."""
-    # First make the skeleton
+    # Set some trivial default TEI header values, if they are not already set
+    defaults = {
+        'title': 'A manuscript transcribed with T-PEN',
+        'publicationStmt': 'Unpublished manuscript',
+        'teiSchema': 'http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng'
+    }
+    if metadata is None:
+        metadata = {}
+    for key in defaults.keys():
+        if key not in metadata:
+            metadata[key] = defaults[key]
+
+    # Now make the outer TEI wrapper and the header for the content we have been passed.
     tei = etree.Element('TEI')
     file_desc = etree.SubElement(etree.SubElement(tei, 'teiHeader'), 'fileDesc')
-    etree.SubElement(etree.SubElement(file_desc, 'titleStmt'), 'title').text = 'This is the title'
-    etree.SubElement(etree.SubElement(file_desc, 'publicationStmt'), 'p').text = 'This is the publication statement'
-    etree.SubElement(etree.SubElement(file_desc, 'sourceDesc'), 'p').text = 'This is the source description'
+    title_stmt = etree.SubElement(file_desc, 'titleStmt')
+    etree.SubElement(title_stmt, 'title').text = metadata['title']
+    if 'author' in metadata:
+        etree.SubElement(title_stmt, 'author').text = metadata['author']
+    etree.SubElement(etree.SubElement(file_desc, 'publicationStmt'), 'p').text = metadata['publicationStmt']
+    # TODO handle responsibility notations
+
+    # Source and manuscript description
+    msdesc = etree.SubElement(etree.SubElement(file_desc, 'sourceDesc'), 'msDesc')
+    # Do we have a settlement/repository/ID defined? If so make the msIdentifier an XML ID.
+    has_rich_id = 'msSettlement' in metadata or 'msRepository' in metadata or 'msIdNumber' in metadata
+    if 'msIdentifier' in metadata:
+        desc_container = etree.SubElement(msdesc, 'msIdentifier')
+        if has_rich_id:
+            msdesc.set('{http://www.w3.org/XML/1998/namespace}id', metadata['msIdentifier'])
+            if 'msSettlement' in metadata:
+                etree.SubElement(desc_container, 'settlement').text = metadata['msSettlement']
+            if 'msRepository' in metadata:
+                etree.SubElement(desc_container, 'repository').text = metadata['msRepository']
+            if 'msIdNumber' in metadata:
+                etree.SubElement(desc_container, 'idno').text = metadata['msIdNumber']
+        else:  # If not, use the text content of the identifier as the XML msIdentifier content.
+            desc_container.text = metadata['msIdentifier']
+    has_history = 'date' in metadata or 'location' in metadata
+    if has_history:
+        history = etree.SubElement(msdesc, 'history')
+        if 'date' in metadata:
+            etree.SubElement(history, 'origDate').text = metadata['date']
+        if 'location' in metadata:
+            etree.SubElement(history, 'origPlace').text = metadata['location']
+    if 'description' in metadata:
+        etree.SubElement(msdesc, 'p').text = metadata['description']
+    # TODO consider filling out msContents / msItem
+
     # Then add the glyphs we used
     if len(glyphs):
         etree.SubElement(etree.SubElement(tei.find('teiHeader'), 'encodingDesc'), 'charDecl').extend(glyphs)
@@ -191,7 +244,8 @@ def _tei_wrap(content, glyphs):
     # Finally, set the appropriate namespace and schema.
     tei.set('xmlns', 'http://www.tei-c.org/ns/1.0')
     tei_doc = etree.ElementTree(tei)
-    schema = etree.ProcessingInstruction('xml-model', 'href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"')
+    schema = etree.ProcessingInstruction('xml-model',
+                                         'href="%s" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"' % metadata['teiSchema'])
     tei.addprevious(schema)
     # Now that we've done this, serialize and re-parse the entire TEI doc
     # so that the namespace functionality works.
@@ -202,6 +256,7 @@ def _tei_wrap(content, glyphs):
 if __name__ == '__main__':
     with open(sys.argv[1], encoding='utf-8') as jfile:
         msdata = json.load(jfile)
-    xmltree = from_sc(msdata)
+    default_metadata = {'title': 'A text generated by tpen2tei'}
+    xmltree = from_sc(msdata, metadata=default_metadata)
     if xmltree is not None:
         sys.stdout.buffer.write(etree.tostring(xmltree, encoding='utf-8', pretty_print=True, xml_declaration=True))

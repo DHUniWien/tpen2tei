@@ -5,6 +5,7 @@ import json
 import unittest
 
 from tpen2tei.parse import from_sc
+from lxml import etree
 from config import config as config
 
 class Test (unittest.TestCase):
@@ -15,6 +16,8 @@ class Test (unittest.TestCase):
     _armenian_glyphs = {
         'աշխարհ': ('asxarh', 'ARMENIAN ASHXARH SYMBOL'),
         'ամենայն': ('amenayn', 'ARMENIAN AMENAYN SYMBOL'),
+        'արեգակն': ('aregakn', 'ARMENIAN AREGAKN SYMBOL'),
+        'լուսին': ('lusin', 'ARMENIAN LUSIN SYMBOL'),
         'որպէս': ('orpes', 'ARMENIAN ORPES SYMBOL'),
         'երկիր': ('erkir', 'ARMENIAN ERKIR SYMBOL'),
         'երկին': ('erkin', 'ARMENIAN ERKIN SYMBOL'),
@@ -24,11 +27,13 @@ class Test (unittest.TestCase):
         'թե': ('techlig', 'ARMENIAN TO-ECH LIGATURE'),
         'թի': ('tinilig', 'ARMENIAN TO-INI LIGATURE'),
         'թէ': ('tehlig', 'ARMENIAN TO-EH LIGATURE'),
+        'թբ': ('tblig', 'ARMENIAN TO-BEN LIGATURE'),
         'էս': ('eslig', 'ARMENIAN EH-SEH LIGATURE'),
         'ես': ('echslig', 'ARMENIAN ECH-SEH LIGATURE'),
         'յր': ('yrlig', 'ARMENIAN YI-REH LIGATURE'),
         'զմ': ('zmlig', 'ARMENIAN ZA-MEN LIGATURE'),
         'թգ': ('tglig', 'ARMENIAN TO-GIM LIGATURE'),
+        'րզ': ('rzlig', 'ARMENIAN REH-ZA LIGATURE'),
         'ա': ('avar', 'ARMENIAN AYB VARIANT'),
         'հ': ('hvar', 'ARMENIAN HO VARIANT'),
         'յ': ('yabove', 'ARMENIAN YI SUPERSCRIPT VARIANT')
@@ -49,6 +54,10 @@ class Test (unittest.TestCase):
         self.testfiles = settings['testfiles']
         msdata = load_JSON_file(self.testfiles['json'])
         self.testdoc = from_sc(msdata, special_chars=self._armenian_glyphs)
+
+        user_defined = {'title': 'Ժամանակագրութիւն', 'author': 'Մատթէոս Ուռհայեցի'}
+        legacydata = load_JSON_file(self.testfiles['legacy'])
+        self.legacydoc = from_sc(legacydata, metadata=user_defined, special_chars=self._armenian_glyphs)
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
@@ -91,8 +100,8 @@ class Test (unittest.TestCase):
         char_decls = []
         for declaration in char_decl:
             self.assertEqual(declaration.tag, "{{{:s}}}glyph".format(self.tei_ns))
-            id = declaration.attrib.get(self.ns_id)
-            self.assertTrue(id)
+            charid = declaration.attrib.get(self.ns_id)
+            self.assertTrue(charid)
 
             values = {}
             for child in declaration:
@@ -102,7 +111,7 @@ class Test (unittest.TestCase):
             # check, if the declaration contains a 'mapping' and 'glyphName' part
             for entry in focused_tags:
                 self.assertTrue(values.get(entry))
-            char_decls.append((id, values['mapping']))
+            char_decls.append((charid, values['mapping']))
 
         # check if all tags from test_input are declared
         for tag in test_input:
@@ -200,7 +209,7 @@ class Test (unittest.TestCase):
                 pb = False
                 for sibling in lb_element.itersiblings():
                     if sibling.tag == "{{{:s}}}lb".format(self.tei_ns):
-                        self.assertTrue(pb == True)
+                        self.assertTrue(pb)
                         self.assertEqual(sibling.attrib.get('n'), "1", "Unexpected line")
                         self.assertEqual(sibling.attrib.get(self.ns_id), "l101276826", "Unexpected line")
                         break
@@ -223,6 +232,71 @@ class Test (unittest.TestCase):
             for key in element.attrib.keys():
                 if key.startswith('{'):
                     self.assertTrue(key.startswith(tei_ns) or key.startswith(xml_ns), 'Undefined Namespace')
+
+    def test_included_metadata_M1731(self):
+        """Check that the TPEN-supplied metadata ends up in the TEI header of the output."""
+
+        # Check for correct TEI schema
+        pis = self.testdoc.xpath('//processing-instruction()')
+        self.assertEqual(len(pis), 1)
+        for pi in pis:
+            if pi.target is 'xml-model':
+                self.assertEqual(pi.get('href'),
+                                 'http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
+
+        # Check for correct title
+        titlestmt = self.testdoc.getroot().find(".//{%s}titleStmt" % self.tei_ns)
+        for child in titlestmt:
+            if child.tag is 'title':
+                self.assertEqual(child.text, "M1731 (F) 1")
+
+        # Check for correct MS description
+        msdesc = self.testdoc.getroot().find(".//{%s}msDesc" % self.tei_ns)
+        self.assertEqual(len(msdesc), 1)
+        for child in msdesc:
+            if child.tag is 'msIdentifier':
+                self.assertEqual(child['{%s}id' % self.xml_ns], 'F')
+                self.assertEqual(len(child), 3)
+                for grandchild in child:
+                    if grandchild.tag is 'settlement':
+                        self.assertEqual(grandchild.text, "Yerevan")
+                    if grandchild.tag is 'repository':
+                        self.assertEqual(grandchild.text, "Matenadaran")
+                    if grandchild.tag is 'idno':
+                        self.assertEqual(grandchild.text, "1731")
+
+    def test_passed_metadata_M1896(self):
+        """Check that user-supplied metadata has its effect on the TEI header."""
+        # Check for correct title
+        titlestmt = self.legacydoc.getroot().find(".//{%s}titleStmt" % self.tei_ns)
+        self.assertEqual(len(titlestmt), 2)
+        for child in titlestmt:
+            if child.tag is 'title':
+                self.assertEqual(child.text, "Ժամանակագրութիւն")
+            if child.tag is 'author':
+                self.assertEqual(child.text, "Մատթէոս Ուռհայեցի")
+
+        # Check for correct MS description
+        msdesc = self.legacydoc.getroot().find(".//{%s}msDesc" % self.tei_ns)
+        self.assertEqual(len(msdesc), 2)
+        for child in msdesc:
+            if child.tag is 'msIdentifier':
+                self.assertEqual(child['{%s}id' % self.xml_ns], 'A')
+                self.assertEqual(len(child), 3)
+                for grandchild in child:
+                    if grandchild.tag is 'settlement':
+                        self.assertEqual(grandchild.text, "Yerevan")
+                    if grandchild.tag is 'repository':
+                        self.assertEqual(grandchild.text, "Matenadaran")
+                    if grandchild.tag is 'idno':
+                        self.assertEqual(grandchild.text, "1896")
+            if child.tag is 'history':
+                self.assertEqual(len(child), 2)
+                for grandchild in child:
+                    if grandchild.tag is 'origDate':
+                        self.assertEqual(grandchild.text, "1689")
+                    if grandchild.tag is 'origPlace':
+                        self.assertEqual(grandchild.text, "Bitlis")
 
     # Correction code for the early conventions
     def test_cert_correction(self):
