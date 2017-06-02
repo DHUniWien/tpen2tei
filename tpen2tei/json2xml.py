@@ -40,11 +40,14 @@ for infile in fnmatch.filter (os.listdir (args.indir), '*json'):
             tei = from_sc (data)
 
             # just ignore tei==None
-            tei and tei.write (
-                args.outdir + '/' + outfile,
-                encoding = 'utf8',
-                pretty_print = True,
-            )
+            if tei:
+                tei.write (
+                    args.outdir + '/' + outfile,
+                    encoding = 'utf8',
+                    pretty_print = True,
+                )
+            else
+                logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
 
         except Exception as e:
             logging.error ('error with file <%s>: %s\n' % (infile, traceback.format_exc()))
