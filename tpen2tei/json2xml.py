@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-""" json2xml.py assumes all files in indir to be T-PEN output
-    and tries to convert them to TEI-XML in outdir
-"""
-
 import traceback
 import os
 import fnmatch
@@ -14,42 +10,83 @@ import argparse
 
 from tpen2tei.parse import from_sc
 
-parser = argparse.ArgumentParser()
-parser.add_argument ("indir", help = "input directory, T-PEN output files")
-parser.add_argument ("outdir", help = "output directory")
-parser.add_argument ("-w", "--write_stdout_stderr", action = "store_true", help = "write stdout and stderr to separate files in outdir")
-args = parser.parse_args()
 
-logging.basicConfig (
-    format = '%(asctime)s %(message)s',
-    filename = '%s.log' % os.path.basename (sys.argv[0]),
-)
+def json2xml (**kwa):
+    """ json2xml assumes all files in indir to be T-PEN output
+        and tries to convert them to TEI-XML in outdir
+    """
 
+    indir          = kwa.get ('indir')
+    outdir         = kwa.get ('outdir')
+    metadata       = kwa.get ('metadata')
+    special_chars  = kwa.get ('special_chars')
+    numeric_parser = kwa.get ('numeric_parser')
+    write_stdout_stderr = kwa.get ('write_stdout_stderr')
 
-for infile in fnmatch.filter (os.listdir (args.indir), '*json'):
-    outfile = infile + '.tei.xml'
+    for infile in fnmatch.filter (os.listdir (indir), '*json'):
+        outfile = infile + '.tei.xml'
 
-    if args.write_stdout_stderr:
-        sys.stdout = open (args.outdir + '/' + infile + '.stdout', 'w')
-        sys.stderr = open (args.outdir + '/' + infile + '.stderr', 'w')
+        if write_stdout_stderr:
+            sys.stdout = open (outdir + '/' + infile + '.stdout', 'w')
+            sys.stderr = open (outdir + '/' + infile + '.stderr', 'w')
 
-    with open (args.indir + '/' + infile, 'r') as fh:
-        data = json.load (fh)
+        with open (indir + '/' + infile, 'r') as fh:
+            data = json.load (fh)
 
-        try:
-            tei = from_sc (data)
-
-            # just ignore tei==None
-            if tei:
-                tei.write (
-                    args.outdir + '/' + outfile,
-                    encoding = 'utf8',
-                    pretty_print = True,
+            try:
+                tei = from_sc (
+                    data,
+                    metadata       = metadata,
+                    special_chars  = special_chars,
+                    numeric_parser = numeric_parser,
                 )
-            else:
-                logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
 
-        except Exception as e:
-            logging.error ('error with file <%s>: %s\n' % (infile, traceback.format_exc()))
-        else:
-            logging.error ('file <%s> looks good' % infile)
+                # just ignore tei==None
+                if tei:
+                    tei.write (
+                        outdir + '/' + outfile,
+                        encoding = 'utf8',
+                        pretty_print = True,
+                    )
+                else:
+                    logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
+
+            except Exception as e:
+                logging.error ('error with file <%s>: %s\n' % (infile, traceback.format_exc()))
+            else:
+                logging.error ('file <%s> looks good' % infile)
+
+
+if __name__ == '__main__':
+
+    parser = argparse.argumentparser()
+    parser.add_argument (
+         "indir",
+         help = "input directory t-pen output files",
+    )
+    parser.add_argument (
+        "outdir",
+        help = "output directory",
+    )
+    parser.add_argument (
+        "-w",
+        "--write_stdout_stderr",
+        action = "store_true",
+        help = "write stdout and stderr to separate files in outdir",
+    )
+
+    args = parser.parse_args()
+
+    #  logging.basicConfig (
+    #      format = '%(asctime)s %(message)s',
+    #      filename = '%s.log' % os.path.basename (sys.argv[0]),
+    #  )
+
+    json2xml (
+        indir               = args.get ('indir'),
+        outdir              = args.get ('outdir'),
+        write_stdout_stderr = args.get ('write_stdout_stderr'),
+        metadata            = None,
+        special_chars       = None,
+        numeric_parser      = None,
+    )
