@@ -14,6 +14,8 @@ from tpen2tei.parse import from_sc
 def json2xml (**kwa):
     """ json2xml assumes all files in indir to be T-PEN output
         and tries to convert them to TEI-XML in outdir
+
+        see moe-data/ci/resources/json2xml.py for an example usage
     """
 
     indir          = kwa.get ('indir')
