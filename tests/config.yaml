@@ -9,6 +9,7 @@ settings:
     testfiles:
         json: "./tests/data/M1731.json"
         legacy: "./tests/data/M1896.json"
+        broken: "./tests/data/Bz430.json"
         xml: "./tests/data/M5587.xml"
         matenadaran_xml: "./tests/data/matenadaran_1896.xml"
         matenadaran_txt: "./tests/data/matenadaran_1896.txt"

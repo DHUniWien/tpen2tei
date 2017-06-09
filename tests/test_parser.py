@@ -1,8 +1,10 @@
 import unittest
 
 from tpen2tei.parse import from_sc
+from contextlib import redirect_stderr
 from config import config as config
 import helpers
+import io
 
 __author__ = 'tla'
 
@@ -36,6 +38,7 @@ class Test (unittest.TestCase):
         self.legacydoc = from_sc(legacydata, metadata=user_defined,
                                  special_chars=self.glyphs,
                                  numeric_parser=helpers.armenian_numbers)
+        self.brokendata = helpers.load_JSON_file(self.testfiles['broken'])
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
@@ -51,6 +54,17 @@ class Test (unittest.TestCase):
         self.assertEqual(helpers.armenian_numbers('ճիա'), 121)
         self.assertEqual(helpers.armenian_numbers('դ՟ճ՟. և լ՟գ՟.'), 433)
         self.assertEqual(helpers.armenian_numbers('.ժ՟ե՟ \nռ՟'), 15000)
+
+    def test_parse_error(self):
+        """Check that a reasonable error message is returned from a JSON file that
+        contains badly-formed XML."""
+        with io.StringIO() as buf, redirect_stderr(buf):
+            badresult = from_sc(self.brokendata)
+            errormsg = buf.getvalue()
+        self.assertRegex(errormsg, 'Parsing error in the JSON')
+        errorlines = errormsg.splitlines()[1:]
+        self.assertEqual(len(errorlines), 55)
+        self.assertRegex(errorlines[0], 'Affected portion of XML is 493: \<pb')
 
     def test_comment(self):
         """Need to check that any TPEN annotations on a line get passed as
