@@ -50,13 +50,13 @@ def json2xml (**kwa):
                         encoding = 'utf8',
                         pretty_print = True,
                     )
+
+                    logging.error ('file <%s> looks good' % infile)
                 else:
                     logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
 
             except Exception as e:
                 logging.error ('error with file <%s>: %s\n' % (infile, traceback.format_exc()))
-            else:
-                logging.error ('file <%s> looks good' % infile)
 
 
 if __name__ == '__main__':
