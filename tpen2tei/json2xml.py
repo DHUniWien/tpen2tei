@@ -7,6 +7,7 @@ import sys
 import json
 import logging
 import argparse
+import copy
 
 from tpen2tei.parse import from_sc
 
@@ -38,7 +39,9 @@ def json2xml (**kwa):
             try:
                 tei = from_sc (
                     data,
-                    metadata       = metadata,
+                    # from_sc will modify the supplied param metadata
+                    # which would stick without deepcopy'ing every turn
+                    metadata       = copy.deepcopy (metadata),
                     special_chars  = special_chars,
                     numeric_parser = numeric_parser,
                 )
