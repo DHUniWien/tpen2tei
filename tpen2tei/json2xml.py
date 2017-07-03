@@ -37,6 +37,8 @@ def json2xml (**kwa):
             data = json.load (fh)
 
             try:
+                logging.error ('starting on file <%s>' % infile)
+
                 tei = from_sc (
                     data,
                     # from_sc will modify the supplied param metadata
