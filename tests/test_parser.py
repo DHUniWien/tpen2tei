@@ -58,8 +58,9 @@ class Test (unittest.TestCase):
     def test_parse_error(self):
         """Check that a reasonable error message is returned from a JSON file that
         contains badly-formed XML."""
+        md = {'short_error': True}
         with io.StringIO() as buf, redirect_stderr(buf):
-            badresult = from_sc(self.brokendata)
+            badresult = from_sc(self.brokendata, md)
             errormsg = buf.getvalue()
         self.assertRegex(errormsg, 'Parsing error in the JSON')
         errorlines = errormsg.splitlines()[1:]

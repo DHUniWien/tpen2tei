@@ -107,22 +107,25 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
     try:
         content = etree.fromstring(txdata)
     except etree.XMLSyntaxError as e:
-        # Figure out where the error is
-        txlines = txdata.splitlines()
-        problemstart = e.position[0] - 1
-        # Is it an error that spans multiple lines? If so figure out where it starts
-        tagmismatch = re.search('Opening and ending tag mismatch: \w+ line (\d+)', e.msg)
-        if tagmismatch is not None:
-            problemstart = int(tagmismatch.group(1)) - 1
-        # Look up the page where the error starts
-        for i in range(problemstart, -1, -1):
-            if '<pb n=' in txlines[i]:
-                problemstart = i
-                break
-
         print("Parsing error in the JSON: %s" % e.msg, file=sys.stderr)
-        diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(problemstart, e.position[0])]
-        print("Affected portion of XML is %s" % '\n'.join(diagnostic_loc), file=sys.stderr)
+        # This is an option, not default, to reduce the amount of XML parsing error data generated.
+        if 'short_error' in metadata:
+            # Figure out where the error is
+            txlines = txdata.splitlines()
+            problemstart = e.position[0] - 1
+            # Is it an error that spans multiple lines? If so figure out where it starts
+            tagmismatch = re.search('Opening and ending tag mismatch: \w+ line (\d+)', e.msg)
+            if tagmismatch is not None:
+                problemstart = int(tagmismatch.group(1)) - 1
+            # Look up the page where the error starts
+            for i in range(problemstart, -1, -1):
+                if '<pb n=' in txlines[i]:
+                    problemstart = i
+                    break
+            diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(problemstart, e.position[0])]
+            print("Affected portion of XML is %s" % '\n'.join(diagnostic_loc), file=sys.stderr)
+        else:
+            print("Full string was %s" % txdata, file=sys.stderr)
         return
 
     # First add values to the numbers if we have a way to.
