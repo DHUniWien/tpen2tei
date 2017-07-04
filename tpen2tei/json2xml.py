@@ -7,6 +7,7 @@ import sys
 import json
 import logging
 import argparse
+import copy
 
 from tpen2tei.parse import from_sc
 
@@ -36,9 +37,13 @@ def json2xml (**kwa):
             data = json.load (fh)
 
             try:
+                logging.error ('starting on file <%s>' % infile)
+
                 tei = from_sc (
                     data,
-                    metadata       = metadata,
+                    # from_sc will modify the supplied param metadata
+                    # which would stick without deepcopy'ing every turn
+                    metadata       = copy.deepcopy (metadata),
                     special_chars  = special_chars,
                     numeric_parser = numeric_parser,
                 )
@@ -50,13 +55,13 @@ def json2xml (**kwa):
                         encoding = 'utf8',
                         pretty_print = True,
                     )
+
+                    logging.error ('file <%s> looks good' % infile)
                 else:
                     logging.error ('error with file <%s>: tpen2tei.parse.from_sc did not return anything' % infile)
 
             except Exception as e:
                 logging.error ('error with file <%s>: %s\n' % (infile, traceback.format_exc()))
-            else:
-                logging.error ('file <%s> looks good' % infile)
 
 
 if __name__ == '__main__':
