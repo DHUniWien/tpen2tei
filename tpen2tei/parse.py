@@ -184,7 +184,11 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                 try:
                     glyphs_seen[glyphid] = _get_glyph(glyphid, special_chars)
                 except ValueError as e:
-                    print("In g element %s:" % etree.tostring(glyph, encoding='unicode', with_tail=False),
+                    print("In g element %s, line %s, page %s:" %
+                          (etree.tostring(glyph, encoding='unicode', with_tail=False),
+                           glyph.xpath('./preceding-sibling::lb[1]')[0].get(
+                               '{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
+                           glyph.xpath('./preceding-sibling::pb[1]')[0].get('n')),
                           file=sys.stderr)
                     raise e
             gref = '#%s' % glyphs_seen[glyphid].get('{http://www.w3.org/XML/1998/namespace}id')
