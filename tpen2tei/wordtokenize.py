@@ -35,9 +35,9 @@ def from_element(xml_object, milestone=None, first_layer=False):
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
     thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
 
-    # For each paragraph-like block in the text, break it up into words.
+    # For each section-like block in the text, break it up into words.
     tokens = []
-    blocks = thetext.xpath('.//t:p | .//t:ab', namespaces=ns)
+    blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
     if milestone is not None:
         # Find all the content starting from the given milestone up to
         # the next milestone of the same unit.
