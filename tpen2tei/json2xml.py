@@ -24,6 +24,7 @@ def json2xml (**kwa):
     metadata       = kwa.get ('metadata')
     special_chars  = kwa.get ('special_chars')
     numeric_parser = kwa.get ('numeric_parser')
+    text_filter    = kwa.get ('text_filter')
     write_stdout_stderr = kwa.get ('write_stdout_stderr')
 
     for infile in fnmatch.filter (os.listdir (indir), '*json'):
@@ -46,6 +47,7 @@ def json2xml (**kwa):
                     metadata       = copy.deepcopy (metadata),
                     special_chars  = special_chars,
                     numeric_parser = numeric_parser,
+                    text_filter    = text_filter
                 )
 
                 # just ignore tei==None
@@ -96,4 +98,5 @@ if __name__ == '__main__':
         metadata            = None,
         special_chars       = None,
         numeric_parser      = None,
+        text_filter         = None
     )
