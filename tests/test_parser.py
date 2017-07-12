@@ -37,7 +37,8 @@ class Test (unittest.TestCase):
         legacydata = helpers.load_JSON_file(self.testfiles['legacy'])
         self.legacydoc = from_sc(legacydata, metadata=user_defined,
                                  special_chars=self.glyphs,
-                                 numeric_parser=helpers.armenian_numbers)
+                                 numeric_parser=helpers.armenian_numbers,
+                                 text_filter=helpers.tpen_filter)
         self.brokendata = helpers.load_JSON_file(self.testfiles['broken'])
 
     def test_basic(self):
@@ -86,6 +87,16 @@ class Test (unittest.TestCase):
                 self.assertIsInstance(float(number.get('value')), float)
             except ValueError:
                 self.fail()
+
+    def test_filter(self):
+        """Check that the text filter is producing the desired output in the transcription."""
+        testlb = self.legacydoc.getroot().find(".//tei:lb[@xml:id='l100784691']",
+                                               namespaces={'tei': 'http://www.tei-c.org/ns/1.0',
+                                                           'xml':'http://www.w3.org/XML/1998/namespace'})
+        self.assertEqual(testlb.getnext().tag, '{http://www.tei-c.org/ns/1.0}num')
+        self.assertEqual(testlb.getnext().tail, " վանք. և ե՛տ զայս ")
+        self.assertEqual(testlb.getnext().getnext().tail, " գը֊\n")
+
 
     def test_glyphs(self):
         """Need to make sure that the glyph elements present in the JSON

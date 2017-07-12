@@ -2,8 +2,8 @@ import json
 
 
 def load_JSON_file(filename, encoding = 'utf-8'):
-    with open (filename, encoding=encoding) as testfile:
-        return json.load (testfile)
+    with open(filename, encoding=encoding) as testfile:
+        return json.load(testfile)
 
 
 def glyph_struct(glyphdict):
@@ -17,10 +17,10 @@ def glyph_struct(glyphdict):
     return glyphs
 
 
-def armenian_numbers (val):
+def armenian_numbers(val):
     """Given the text content of a <num> element, try to turn it into a number."""
     # Create the stack of characters
-    sigfigs = [ord(c) for c in val.replace('և', '').upper() if ord(c) > 1328 and ord(c) < 1365]
+    sigfigs = [ord(c) for c in val.replace('և', '').upper() if 1328 < ord(c) < 1365]
     total = 0
     last = None
     for ch in sigfigs:
@@ -42,3 +42,7 @@ def armenian_numbers (val):
         last = chval
     return total
 
+
+def tpen_filter(str):
+    result = str.replace('_', '֊').replace('“', '"').replace('”', '"').replace(',', '.')
+    return result

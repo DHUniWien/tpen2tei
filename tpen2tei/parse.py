@@ -9,7 +9,7 @@ from warnings import warn
 __author__ = 'tla'
 
 
-def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None):
+def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, text_filter=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
@@ -26,6 +26,11 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None):
     The optional numeric_parser parameter is a function that takes a string and
     is expected to return a numeric value. It will be passed the text content of
     any <num> elements that have no 'value' attribute, or an empty 'value'.
+
+    The optional text_filter parameter is a function that takes a string and is
+    expected to return a string. It will be passed the text content of each line
+    of transcription in the canvas, and its return value will be stored as the
+    content of that line.
     """
     if len(jsondata['sequences']) > 1:
         warn("Your data has more than one sequence. Check to see what's going on.", UserWarning)
@@ -58,6 +63,8 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None):
         for line in linelist['resources']:
             if line['resource']['@type'] == 'cnt:ContentAsText':
                 transcription = line['resource']['cnt:chars']
+                if text_filter is not None:
+                    transcription = text_filter(transcription)
                 if len(transcription) == 0:
                     continue
                 # Get the line ID, for later attachment of notes.
