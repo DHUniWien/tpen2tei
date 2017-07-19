@@ -23,7 +23,7 @@ class Test (unittest.TestCase):
         self.testdoc_noglyphs = from_sc(msdata)
         self.testdoc = from_sc (
             msdata,
-            special_chars = self.glyphs,
+            special_chars = self.glyphs
         )
 
     # def setUp(self):
@@ -111,10 +111,18 @@ class Test (unittest.TestCase):
     #      are passed through correctly in the token 'lit' field."""
     #     pass
 
-    # def test_milestone_option(self):
+    def test_milestone_option(self):
     #     """Test that passing a milestone option gives back only the text from the
     #     relevant <milestone/> element to the next one."""
-    #     pass
+        tokens = wordtokenize.from_etree(self.testdoc, milestone="401")
+        self.assertEqual(len(tokens), 132)
+        self.assertEqual(tokens[0]['t'], 'Իսկ')
+        self.assertEqual(tokens[-1]['t'], 'ժամկի։')
+
+        tokens407 = wordtokenize.from_etree(self.testdoc, milestone="407")
+        self.assertEqual(len(tokens407), 76)
+        self.assertEqual(tokens407[0]['t'], 'Դարձլ')
+        self.assertEqual(tokens407[-1]['t'], 'ուռհայ։')
 
     # def test_arbitrary_element(self):
     #     """Test that arbitrary tags (e.g. <abbr>) are passed into 'lit' correctly."""

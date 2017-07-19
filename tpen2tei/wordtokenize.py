@@ -2,6 +2,7 @@
 __author__ = 'tla'
 
 import json
+from copy import deepcopy
 from lxml import etree
 from os.path import basename
 import re
@@ -37,21 +38,22 @@ def from_element(xml_object, milestone=None, first_layer=False):
 
     # For each section-like block in the text, break it up into words.
     tokens = []
-    blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
     if milestone is not None:
+        # Make a copy of thetext, so that we don't clobber xmlobject.
+        usetext = deepcopy(thetext)
         # Find all the content starting from the given milestone up to
         # the next milestone of the same unit.
         try:
-            msel = thetext.xpath('.//t:milestone[@n="%s"]' % milestone, namespaces=ns)[0]
+            msel = usetext.xpath('.//t:milestone[@n="%s"]' % milestone, namespaces=ns)[0]
         except IndexError:
             return tokens
         xpathexpr = './/t:milestone[@n="%s"]/following-sibling::t:milestone[@unit="%s"]' % (milestone, msel.get('unit'))
-        nextmsel = thetext.xpath(xpathexpr, namespaces=ns)
+        nextmsel = usetext.xpath(xpathexpr, namespaces=ns)
         msend = None
         if len(nextmsel):
             msend = nextmsel[0]
         in_milestone = False
-        for block in blocks:
+        for block in usetext.xpath('.//t:div | .//t:ab', namespaces=ns):
             for el in block.iterchildren():
                 if el is msel:
                     in_milestone = True
@@ -60,7 +62,8 @@ def from_element(xml_object, milestone=None, first_layer=False):
                 # TODO handle nested milestones
                 if not in_milestone:
                     el.getparent().remove(el)
-    for block in blocks:
+        thetext = usetext
+    for block in thetext.xpath('.//t:div | .//t:ab', namespaces=ns):
         tokens.extend(_find_words(block, first_layer))
 
     return tokens
