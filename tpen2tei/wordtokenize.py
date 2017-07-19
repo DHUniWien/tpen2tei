@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
-__author__ = 'tla'
-
 import json
 from copy import deepcopy
 from lxml import etree
 from os.path import basename
 import re
 import sys
+
+__author__ = 'tla'
 
 # IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
 
@@ -35,10 +35,11 @@ def from_element(xml_object, milestone=None, first_layer=False):
     for passing to CollateX."""
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
     thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
-
-    # For each section-like block in the text, break it up into words.
     tokens = []
+
     if milestone is not None:
+        # We will thin out the XML tree to include only those elements
+        # between the selected milestone and the next.
         # Make a copy of thetext, so that we don't clobber xmlobject.
         usetext = deepcopy(thetext)
         # Find all the content starting from the given milestone up to
@@ -47,23 +48,34 @@ def from_element(xml_object, milestone=None, first_layer=False):
             msel = usetext.xpath('.//t:milestone[@n="%s"]' % milestone, namespaces=ns)[0]
         except IndexError:
             return tokens
-        xpathexpr = './/t:milestone[@n="%s"]/following-sibling::t:milestone[@unit="%s"]' % (milestone, msel.get('unit'))
-        nextmsel = usetext.xpath(xpathexpr, namespaces=ns)
-        msend = None
+
+        xpathexpr = './following::t:milestone[@unit="%s"]' % (msel.get('unit'))
+        nextmsel = msel.xpath(xpathexpr, namespaces=ns)
+        # Now we want to remove all the preceding non-parent elements from the block
+        # that occur before msel and after msend.
+        for prior_el in msel.xpath('./preceding::*'):
+            prior_el.clear()
+            if prior_el.getparent() is not None:
+                prior_el.getparent().remove(prior_el)
         if len(nextmsel):
             msend = nextmsel[0]
-        in_milestone = False
-        for block in usetext.xpath('.//t:div | .//t:ab', namespaces=ns):
-            for el in block.iterchildren():
-                if el is msel:
-                    in_milestone = True
-                elif el is msend:
-                    in_milestone = False
-                # TODO handle nested milestones
-                if not in_milestone:
-                    el.getparent().remove(el)
+            # Clear out all following elements
+            for next_el in msend.xpath('./following::*'):
+                next_el.clear()
+                if next_el.getparent() is not None:
+                    next_el.getparent().remove(next_el)
+            # Clear out the text tails of ancestor elements up to
+            # the original milestone level
+            for ancestor in reversed(msend.xpath('./ancestor::*')):
+                if msel in ancestor:
+                    break
+                ancestor.tail = None
+            msend.getparent().remove(msend)
         thetext = usetext
-    for block in thetext.xpath('.//t:div | .//t:ab', namespaces=ns):
+
+    # For each section-like block remaining in the text, break it up into words.
+    blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
+    for block in blocks:
         tokens.extend(_find_words(block, first_layer))
 
     return tokens
@@ -126,7 +138,6 @@ def _find_words(element, first_layer=False):
         if 'INCOMPLETE' in tokens[-1]:
             mytoken['INCOMPLETE'] = True
         tokens = [mytoken]
-
 
     # Finally handle the tail text of this element, if any.
     if element.tail is not None:

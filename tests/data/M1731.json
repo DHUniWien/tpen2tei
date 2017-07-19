@@ -716,7 +716,7 @@
           "motivation" : "oad:transcribing",
           "resource" : {
             "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "սատ մերձ ի ք<abbr>ղ</abbr>ք ուռհայ։ <milestone unit=\"section\" n=\"408\"/>Իսկ ի թուակա֊"
+            "cnt:chars" : "սատ մերձ ի ք<abbr>ղ</abbr>ք <add place=\"margin\">ուռհայ։ <milestone unit=\"section\" n=\"408\"/>Իսկ</add> ի թուակա֊"
           },
           "on" : "http://t-pen.org/TPEN/canvas/13193080#xywh=249,736,498,26",
           "_tpen_note" : "",
