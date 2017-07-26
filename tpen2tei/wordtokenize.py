@@ -11,28 +11,34 @@ __author__ = 'tla'
 # IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
 
 
-def from_file(xmlfile, milestone=None, first_layer=False, encoding='utf-8'):
+def from_file(xmlfile, milestone=None, first_layer=False, normalisation=None, encoding='utf-8'):
     with open(xmlfile, encoding=encoding) as fh:
-        return from_fh(fh, milestone=milestone, first_layer=first_layer)
+        return from_fh(fh, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
 
 
-def from_fh(xml_fh, milestone=None, first_layer=False):
+def from_fh(xml_fh, milestone=None, first_layer=False, normalisation=None):
     xmldoc = etree.parse(xml_fh)            # returns an ETree
-    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer)
+    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
 
 
-def from_string(xml_string, milestone=None, first_layer=False):
+def from_string(xml_string, milestone=None, first_layer=False, normalisation=None):
     xmldoc = etree.fromstring(xml_string)   # returns an Element
-    return from_element(xmldoc, milestone=milestone, first_layer=first_layer)
+    return from_element(xmldoc, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
 
 
-def from_etree(xml_doc, milestone=None, first_layer=False):
-    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer)
+def from_etree(xml_doc, milestone=None, first_layer=False, normalisation=None):
+    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer, normalisation=normalisation)
 
 
-def from_element(xml_object, milestone=None, first_layer=False):
+def from_element(xml_object, milestone=None, first_layer=False, normalisation=None):
     """Take a TEI XML file as input, and return a JSON structure suitable
-    for passing to CollateX."""
+    for passing to CollateX. Options include:
+
+    * milestone: Restrict the output to text between the given milestone number and the next.
+    * first_layer: Instead of using the final layer (e.g. <add> tags, use the first (a.c.)
+      layer of the text.
+    * normalisation: A function that takes a token and rewrites that token's normalised form,
+      if desired."""
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
     thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
     tokens = []
@@ -77,6 +83,11 @@ def from_element(xml_object, milestone=None, first_layer=False):
     blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
     for block in blocks:
         tokens.extend(_find_words(block, first_layer))
+
+    # Now go through all the tokens and apply our function, if any, to normalise
+    # the token.
+    if normalisation is not None:
+        [normalisation(t) for t in tokens]
 
     return tokens
 

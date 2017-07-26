@@ -96,6 +96,18 @@ class Test (unittest.TestCase):
         else:
             self.assertTrue(False, "Did not find the testing token")
 
+    def test_normalisation(self):
+        tokens = wordtokenize.from_etree(self.testdoc, milestone='401', normalisation=helpers.normalise)
+        normal = {0: 'իսկ',
+                  4: 'այնոսիկ',
+                  8: '401',
+                  13: 'բ.*զ.*մ',
+                  17: 'հարօոյ',
+                  20: 'տաճկաց',
+                  43: 'հռչակօոր'}
+        for i, n in normal.items():
+            self.assertEqual(tokens[i]['n'], n)
+
     # def test_del_word_boundary(self):
     #     """Test that a strategically placed del doesn't cause erroneous joining of words.
     #     TODO add testing data"""

@@ -1,4 +1,5 @@
 import json
+import re
 
 
 def load_JSON_file(filename, encoding = 'utf-8'):
@@ -41,6 +42,13 @@ def armenian_numbers(val):
             total *= chval
         last = chval
     return total
+
+
+def normalise(token):
+    if token['n'] == token['t']:
+        str = token['n'].lower().replace('եւ', 'և').replace('աւ', 'օ')
+        str = re.sub(r'[\W]', '', str)
+        token['n'] = str
 
 
 def tpen_filter(str):
