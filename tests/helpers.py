@@ -46,11 +46,11 @@ def armenian_numbers(val):
 
 def normalise(token):
     if token['n'] == token['t']:
-        str = token['n'].lower().replace('եւ', 'և').replace('աւ', 'օ')
-        str = re.sub(r'[\W]', '', str)
-        token['n'] = str
+        st = token['n'].lower().replace('եւ', 'և').replace('աւ', 'օ')
+        st = re.sub(r'[\W]', '', st)
+        token['n'] = st
 
 
-def tpen_filter(str):
-    result = str.replace('_', '֊').replace('“', '"').replace('”', '"').replace(',', '.')
+def tpen_filter(st):
+    result = st.replace('_', '֊').replace('“', '"').replace('”', '"').replace(',', '.')
     return result
