@@ -138,9 +138,9 @@ def _find_words(element, first_layer=False):
             if 'INCOMPLETE' in final:
                 tokens[0]['INCOMPLETE'] = True
     elif _tag_is(element, 'abbr'):
-        # Mark a sort of regular expression in the token 'n' form.
+        # Mark a sort of regular expression in the token data, for matching.
         if len(tokens) > 0:
-            tokens[0]['n'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
+            tokens[0]['re'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
     elif _tag_is(element, 'num'):
         # Combine all the word tokens into a single one, and set 'n' to the number value.
         mytoken = {'n': element.get('value'),
