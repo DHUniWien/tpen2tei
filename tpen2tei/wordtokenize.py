@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 import json
-from copy import deepcopy
 from lxml import etree
 from os.path import basename
 import re
@@ -9,6 +8,8 @@ import sys
 __author__ = 'tla'
 
 # IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
+MILESTONE = None
+INMILESTONE = False
 
 
 def from_file(xmlfile, milestone=None, first_layer=False, normalisation=None, encoding='utf-8'):
@@ -43,41 +44,13 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
     thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
     tokens = []
 
-    if milestone is not None:
-        # We will thin out the XML tree to include only those elements
-        # between the selected milestone and the next.
-        # Make a copy of thetext, so that we don't clobber xmlobject.
-        usetext = deepcopy(thetext)
-        # Find all the content starting from the given milestone up to
-        # the next milestone of the same unit.
-        try:
-            msel = usetext.xpath('.//t:milestone[@n="%s"]' % milestone, namespaces=ns)[0]
-        except IndexError:
-            return tokens
-
-        xpathexpr = './following::t:milestone[@unit="%s"]' % (msel.get('unit'))
-        nextmsel = msel.xpath(xpathexpr, namespaces=ns)
-        # Now we want to remove all the preceding non-parent elements from the block
-        # that occur before msel and after msend.
-        for prior_el in msel.xpath('./preceding::*'):
-            prior_el.clear()
-            if prior_el.getparent() is not None:
-                prior_el.getparent().remove(prior_el)
-        if len(nextmsel):
-            msend = nextmsel[0]
-            # Clear out all following elements
-            for next_el in msend.xpath('./following::*'):
-                next_el.clear()
-                if next_el.getparent() is not None:
-                    next_el.getparent().remove(next_el)
-            # Clear out the text tails of ancestor elements up to
-            # the original milestone level
-            for ancestor in reversed(msend.xpath('./ancestor::*')):
-                if msel in ancestor:
-                    break
-                ancestor.tail = None
-            msend.getparent().remove(msend)
-        thetext = usetext
+    global MILESTONE
+    global INMILESTONE
+    if milestone is None:
+        INMILESTONE = True
+    else:
+        MILESTONE = milestone
+        INMILESTONE = False
 
     # For each section-like block remaining in the text, break it up into words.
     blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
@@ -128,6 +101,17 @@ def _find_words(element, first_layer=False):
 
     # Now we handle our tag-specific logic, after the child text and child tags
     # have been processed but before the tail is processed.
+    # First, are we in the milestone we want?
+    global INMILESTONE
+    if _tag_is(element, 'milestone'):
+        if element.get('n') == MILESTONE:
+            INMILESTONE = True
+        elif MILESTONE is not None:
+            INMILESTONE = False
+    if not INMILESTONE:
+        return tokens
+
+    # Move on with life
     if (_tag_is(element, 'del') and first_layer is False) \
             or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
         # If we are looking at a del tag for the final layer, or an add tag for the
@@ -167,6 +151,8 @@ def _find_words(element, first_layer=False):
 
 
 def _split_text_node(tnode, tokens):
+    if not INMILESTONE:
+        return tokens
     tnode = tnode.rstrip('\n')
     words = re.split('\s+', tnode)
     for word in words:
