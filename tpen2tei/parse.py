@@ -115,7 +115,7 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
     try:
         content = etree.fromstring(txdata)
     except etree.XMLSyntaxError as e:
-        print("Parsing error in the JSON: %s" % e.msg, file=sys.stderr)
+        message = "Parsing error in the JSON: %s\n" % e.msg
         # This is an option, not default, to reduce the amount of XML parsing error data generated.
         if metadata.get('short_error', False):
             # Figure out where the error is
@@ -131,9 +131,10 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                     problemstart = i
                     break
             diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(problemstart, e.position[0])]
-            print("Affected portion of XML is %s" % '\n'.join(diagnostic_loc), file=sys.stderr)
+            message += "Affected portion of XML is %s" % '\n'.join(diagnostic_loc)
         else:
-            print("Full string was %s" % txdata, file=sys.stderr)
+            message += "Full string was %s" % txdata
+        safeerrmsg(message)
         return
 
     # First add values to the numbers if we have a way to.
@@ -193,13 +194,14 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                     glyphs_seen[glyphid] = _get_glyph(glyphid, special_chars)
                 except ValueError as e:
                     l = glyph.xpath('./preceding::lb[1]')[0]
-                    print("In g element %s, line %s / %s, page %s:" %
-                          (etree.tostring(glyph, encoding='unicode', with_tail=False),
+                    message = "In g element %s, line %s / %s, page %s:\n" % \
+                          (etree.tostring(glyph, encoding='utf-8', with_tail=False).decode('utf-8'),
                            l.get('{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
                            l.get('n'),
-                           glyph.xpath('./preceding::pb[1]')[0].get('n')),
-                          file=sys.stderr)
-                    raise e
+                           glyph.xpath('./preceding::pb[1]')[0].get('n'))
+                    message += e.__str__() + "\n"
+                    safeerrmsg(message)
+                    return None
             gref = '#%s' % glyphs_seen[glyphid].get('{http://www.w3.org/XML/1998/namespace}id')
             # Finally, fix the 'g' element here so that it is canonical.
             glyph.set('ref', gref)
@@ -242,6 +244,10 @@ def _get_glyph(gname, special_chars):
     etree.SubElement(glyph_el, 'glyphName').text = special_chars[gname][1]
     etree.SubElement(glyph_el, 'mapping').text = gname
     return glyph_el
+
+
+def safeerrmsg(message):
+    sys.stdout.buffer.write(message.encode(sys.getdefaultencoding()))
 
 
 def _tei_wrap(content, metadata, glyphs):
