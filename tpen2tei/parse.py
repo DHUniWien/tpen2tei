@@ -126,11 +126,15 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
             if tagmismatch is not None:
                 problemstart = int(tagmismatch.group(1)) - 1
             # Look up the page where the error starts
+            pagestart = problemstart
             for i in range(problemstart, -1, -1):
                 if '<pb n=' in txlines[i]:
-                    problemstart = i
+                    pagestart = i
                     break
-            diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(problemstart, e.position[0])]
+            diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(pagestart, e.position[0])]
+            if e.position[0] - problemstart > 100:
+                firstn = problemstart + 100 - pagestart
+                diagnostic_loc = diagnostic_loc[:firstn]
             message += "Affected portion of XML is %s" % '\n'.join(diagnostic_loc)
         else:
             message += "Full string was %s" % txdata
@@ -247,7 +251,10 @@ def _get_glyph(gname, special_chars):
 
 
 def safeerrmsg(message):
-    sys.stdout.buffer.write(message.encode(sys.getdefaultencoding()))
+    if sys.platform.startswith("win"):
+        sys.stdout.buffer.write(message.encode(sys.getdefaultencoding()))
+    else:
+        print(message, file=sys.stderr)
 
 
 def _tei_wrap(content, metadata, glyphs):
