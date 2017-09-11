@@ -87,7 +87,8 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
     # Now go through all the tokens and apply our function, if any, to normalise
     # the token.
     if normalisation is not None:
-        [normalisation(t) for t in tokens]
+        normed = [normalisation(t) for t in tokens]
+        tokens = normed
 
     return tokens
 
