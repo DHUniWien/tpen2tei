@@ -91,9 +91,9 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
             xmlstring += '<pb n="%s"/>\n' % pn
             for cn, col in enumerate(thetext):
                 if len(thetext) > 1:
-                    xmlstring += '<cb n="%d"/>\n' % (cn+1)
+                    xmlstring += '<cb n="%d"/>\n' % (cn + 1)
                 for ln, line in enumerate(col):
-                    xmlstring += '<lb xml:id="l%s" n="%d"/>%s\n' % (line[0], ln+1, line[1])
+                    xmlstring += '<lb xml:id="l%s" n="%d"/>%s\n' % (line[0], ln + 1, line[1])
             # Keep track of the number of columns.
             if len(thetext) in columns:
                 columns[len(thetext)].append(pn)
@@ -131,10 +131,13 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                 if '<pb n=' in txlines[i]:
                     pagestart = i
                     break
-            diagnostic_loc = ["%d: %s" % (i+1, txlines[i]) for i in range(pagestart, e.position[0])]
+            diagnostic_loc = ["%d: %s" % (i + 1, txlines[i]) for i in range(pagestart, e.position[0])]
             if e.position[0] - problemstart > 100:
-                firstn = problemstart + 100 - pagestart
-                diagnostic_loc = diagnostic_loc[:firstn]
+                # Restrict the output to the single page of the problem
+                for i in range(1, len(diagnostic_loc)):
+                    if '<pb n=' in diagnostic_loc[i]:
+                        diagnostic_loc = diagnostic_loc[:i]
+                        break
             message += "Affected portion of XML is %s" % '\n'.join(diagnostic_loc)
         else:
             message += "Full string was %s" % txdata
@@ -188,7 +191,7 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                 if glyphid == '':  # The glyph should be identified from the element text content.
                     glyphid = glyph.text
                 else:
-                    gtext_explicit = True    # We have set a real ref and also text; both should be preserved.
+                    gtext_explicit = True  # We have set a real ref and also text; both should be preserved.
             if glyphid in glyph_correction:  # Check whether we need to use the hardcoded hack.
                 glyphid = glyph_correction[glyphid]
             # Now figure out what the reference is for this glyph. Make the
@@ -199,10 +202,10 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                 except ValueError as e:
                     l = glyph.xpath('./preceding::lb[1]')[0]
                     message = "In g element %s, line %s / %s, page %s:\n" % \
-                          (etree.tostring(glyph, encoding='utf-8', with_tail=False).decode('utf-8'),
-                           l.get('{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
-                           l.get('n'),
-                           glyph.xpath('./preceding::pb[1]')[0].get('n'))
+                              (etree.tostring(glyph, encoding='utf-8', with_tail=False).decode('utf-8'),
+                               l.get('{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
+                               l.get('n'),
+                               glyph.xpath('./preceding::pb[1]')[0].get('n'))
                     message += e.__str__() + "\n"
                     safeerrmsg(message)
                     return None
@@ -316,8 +319,8 @@ def _tei_wrap(content, metadata, glyphs):
     # Finally, set the appropriate namespace and schema.
     tei.set('xmlns', 'http://www.tei-c.org/ns/1.0')
     tei_doc = etree.ElementTree(tei)
-    schema = etree.ProcessingInstruction('xml-model',
-                                         'href="%s" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"' % metadata['teiSchema'])
+    pi = 'href="%s" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"' % metadata['teiSchema']
+    schema = etree.ProcessingInstruction('xml-model', pi)
     tei.addprevious(schema)
     # Now that we've done this, serialize and re-parse the entire TEI doc
     # so that the namespace functionality works.
