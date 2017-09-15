@@ -108,6 +108,12 @@ class Test (unittest.TestCase):
         for i, n in normal.items():
             self.assertEqual(tokens[i]['n'], n)
 
+    def test_location(self):
+        tokens = wordtokenize.from_etree(self.testdoc, milestone='407')
+        self.assertEqual(tokens[0]['page'], {'n': '075v'})
+        self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'n': '12'})
+
+
     # def test_del_word_boundary(self):
     #     """Test that a strategically placed del doesn't cause erroneous joining of words.
     #     TODO add testing data"""

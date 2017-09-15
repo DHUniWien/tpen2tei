@@ -37,7 +37,7 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
 
     * milestone: Restrict the output to text between the given milestone number and the next.
     * first_layer: Instead of using the final layer (e.g. <add> tags, use the first (a.c.)
-      layer of the text.
+      layer of the text (e.g. <del> tags).
     * normalisation: A function that takes a token and rewrites that token's normalised form,
       if desired."""
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
@@ -71,7 +71,7 @@ def _find_words(element, first_layer=False):
     tokens = []
     # First handle the text of the element, if any
     if element.tag is not etree.Comment and element.text is not None:
-        _split_text_node(element.text, tokens)
+        _split_text_node(element, element.text, tokens)
 
     # Now tokens has only the tokenized contents of the element itself.
     # If there is a single token, then we 'lit' the entire element.
@@ -142,7 +142,7 @@ def _find_words(element, first_layer=False):
         if re.match('.*\}[clp]b$', str(element.tag)):
             tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
         if tnode != '':
-            _split_text_node(tnode, tokens)
+            _split_text_node(element, tnode, tokens)
 
     # Get rid of any final empty tokens.
     if len(tokens) and _is_blank(tokens[-1]):
@@ -150,9 +150,10 @@ def _find_words(element, first_layer=False):
     return tokens
 
 
-def _split_text_node(tnode, tokens):
+def _split_text_node(context, tnode, tokens):
     if not INMILESTONE:
         return tokens
+    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
     tnode = tnode.rstrip('\n')
     words = re.split('\s+', tnode)
     for word in words:
@@ -166,14 +167,56 @@ def _split_text_node(tnode, tokens):
                 tokens.append(open_token)
         elif word != '':
             token = {'t': word, 'n': word, 'lit': word}
+            # Put the word location into the token
+            divisions = {
+                'section': ('./ancestor::t:div', 'div'),
+                'paragraph': ('./ancestor::t:p', 'p'),
+                'page': ('./preceding::t:pb[1]', 'pb'),
+                'column': ('./preceding::t:cb[1]', 'cb'),
+                'line': ('./preceding::t:lb[1]', 'lb')
+            }
+            for k in divisions.keys():
+                xmlpath = divisions.get(k)
+                mydiv = context.xpath(xmlpath[0], namespaces=ns)
+                if len(mydiv):
+                    token[k] = _xmljson(mydiv[-1]).get('attr')
+                elif _tag_is(context, xmlpath[1]):
+                    token[k] = _xmljson(context).get('attr')
+            # Stash the token
             tokens.append(token)
     if len(tokens) and re.search('\s+$', tnode) is None:
         tokens[-1]['INCOMPLETE'] = True
     return tokens
 
 
+# Helper function to look up TEI tags with full namespace
 def _tag_is(el, tag):
     return el.tag == '{http://www.tei-c.org/ns/1.0}%s' % tag
+
+
+def _xmljson(el):
+    tag = _shortform(el.tag)
+    attr = {}
+    for k in el.attrib.keys():
+        attr[_shortform(k)] = el.get(k)
+    return {'tag': tag, 'attr': attr}
+
+
+# Helper function to convert namespaces back to short forms
+def _shortform(tag):
+    nsmap = {
+        'http://www.w3.org/XML/1998/namespace': 'xml',
+        'http://www.tei-c.org/ns/1.0': None
+    }
+
+    for k in nsmap.keys():
+        if tag.startswith('{%s}' % k):
+            v = nsmap.get(k)
+            if v is None:
+                return tag.replace('{%s}' % k, '')
+            else:
+                return tag.replace('{%s}' % k, v + ':')
+    return tag
 
 
 def _is_blank(token):
