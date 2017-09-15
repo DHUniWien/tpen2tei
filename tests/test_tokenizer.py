@@ -32,8 +32,37 @@ class Test (unittest.TestCase):
     #     self.testdoc = from_sc(jdata)
 
     def test_simple(self):
-        """Test a plain & simple file without special markup beyond line breaks."""
-        pass
+        """Test that basic parsing with no specified options works properly."""
+        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)
+        first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն',
+                 'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
+        last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'INCOMPLETE': True,
+                 'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
+        self.assertEqual(tokens[0], first)
+        self.assertEqual(tokens[-1], last)
+        self.assertEqual(313, len(tokens))
+        origtext = 'եղբայրն ներսէսի ի կարմիր վանգն. և նա՛ յաջորդեաց ի հոռոմ կլայն. և յետ նր ներսէս մինչև ի ոհաննէս. ' \
+                   'և յայնմ ժմկի դաւիթ անուն ոմն ձեռնադրեա՛լ մինչև ի ստեփա֊նոս որ գերեցաւ ի յեգիոս և ի սիս ձեռնա֊' \
+                   'դրեալ կթղս. մինչև ցթումավդպտն. և բաժա֊նեա՛լ նր եղև աթոռն սահմանել յէջմիածին և զբունն ոչ ' \
+                   'խափանեալ զի դեռևս կենդա֊նի էր կաթղսն սըսա՛. զի ի լուսաւորչէն մինչև ի նայ էր հասեալ կթղսութի. և ' \
+                   'նա՛ ոչ եղև, քաղաքն զօրավար եդաք և անտի կամեցաք զի նա՛ դեռևս կենդանի էր։ թ. եղբայրք զա֊' \
+                   'քարիայ և իւանա՛ դարձաւ վրացի և եղբայրըն ոչ. նա՛ խնդրէր վրան զի պատարագ ա֊րասցեն։ Իսկ ընդ ' \
+                   'աւուրսն ընդ այնոսիկ, և ի ամին ն՟ա՟. եղև սով սաստիկ ի բզմ տեղիս. բայց յաշխարհն հարաւոյ ի յերկրին ' \
+                   'տաճկա՛ց եղև նեղութի մեծ և առաւել քան զամ ի միջա֊գետս. և ի խստութե սովոյն տագնապ և տատանում ' \
+                   'լինէր ի բզմ տեղիս, և ի հռչա֊կաւոր մայրաքղքն ուռհայ, զորս կանգընեաց տիգրան արքայ հայոց և կացեալ ' \
+                   'սովն յա՛յնմ աշխարհին զա՛մս .է՟. և անթիւ լինէր կոտո֊րածն յերեսաց սովոյն այն. և աշխարհին տաճըկաց ' \
+                   'լինէր անցումն մեծ և քրիստոնէիցն անթիւք մեռան յերեսաց բարկութե սովոյն. և զկնի ե ամի եկեալ մորեխ ' \
+                   'յայնմ գաւա֊ռէն որպ զաւազ ծովու և ապականեաց, զըերկիր. և սաստկանայր սովն առաւել քան զըառաւեն, և ' \
+                   'զայրացեալ բազմացան և գա֊զանաբար անողորմ յարձակեալ զմիմեանսս ուտէին, և իշխանքն և մեծամեծքն ' \
+                   'ընդաւք և մըրգաւք կերակրէին. և եղև անցումն ա֊նասնոցն. բզմ գեղք և գաւառք յանմարդ լինէին, և այլ ոչ ' \
+                   'շինեցան մինչև ցայսօր ժամկի։ Դարձլ ի թվականութես հայոց ի ն՟ և է՟. ամին զօրա՛ժողով լինէր ազգն ' \
+                   'արապկաց ուռհայ և ամ եդեսացոց աշխարհն ահա֊գին բազմութբ անցխալ ընդ մեծ գետն եփրատ և եկեա՛լ ի վր ' \
+                   'ամուր քաղաքին որ կոչի սամուսատ. և ելանէր ի պտզմն, զօրապե֊տըն հոռոմոց, որում անուն ասէին պա֊' \
+                   'ռակամանոս, ա՛յր զօրաւոր և քաջ. և ի դուռըն քաղաքին բախէին զմիմեանս և աւուր յայնմիկ հարին ' \
+                   'տաճկունք զօրսն հոռոմոց և արարին կոտորած առ դրան քաղաքին. և յե՛տ աւուրց ինչ առաւ քաղաքն ' \
+                   'սամուսատ մերձ ի քղք ուռհայ։ Իսկ ի թուակա֊նութես ազգիս հայոց ի դ՟ճ՟ և ի ը՟ ամին, զօրա֊'
+        tokentext = ' '.join(x['t'] for x in tokens)
+        self.assertEqual(tokentext, origtext)
 
     def test_glyphs(self):
         """Test the correct detection and rendering of glyphs. The characters in
@@ -111,8 +140,9 @@ class Test (unittest.TestCase):
     def test_location(self):
         tokens = wordtokenize.from_etree(self.testdoc, milestone='407')
         self.assertEqual(tokens[0]['page'], {'n': '075v'})
-        self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'n': '12'})
-
+        self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'n': '12'})   # first token
+        self.assertEqual(tokens[10]['line'], {'xml:id': 'l101276840', 'n': '13'})  # line broken
+        self.assertEqual(tokens[22]['line'], {'xml:id': 'l101276843', 'n': '16'})    # beginning of line
 
     # def test_del_word_boundary(self):
     #     """Test that a strategically placed del doesn't cause erroneous joining of words.
@@ -124,14 +154,14 @@ class Test (unittest.TestCase):
     #     should be generated for a gap."""
     #     pass
 
-    # def test_milestone_element(self):
-    #     """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
-    #      are passed through correctly in the token 'lit' field."""
-    #     pass
+    def test_milestone_element(self):
+        """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
+         are passed through correctly in the token 'lit' field."""
+        pass
 
     def test_milestone_option(self):
-    #     """Test that passing a milestone option gives back only the text from the
-    #     relevant <milestone/> element to the next one."""
+        """Test that passing a milestone option gives back only the text from the
+        relevant <milestone/> element to the next one."""
         tokens = wordtokenize.from_etree(self.testdoc, milestone="401")
         self.assertEqual(len(tokens), 132)
         self.assertEqual(tokens[0]['t'], 'Իսկ')
@@ -146,9 +176,21 @@ class Test (unittest.TestCase):
     #     """Test that arbitrary tags (e.g. <abbr>) are passed into 'lit' correctly."""
     #     pass
 
-    # def test_file_input(self):
-    #     """Make sure we get a result when passing a file path."""
-    #     pass
+    def test_file_input(self):
+        """Make sure we get a result when passing a file path."""
+        filename = './tests/data/m1896_real.xml'
+        tokens = wordtokenize.from_file(filename, milestone="412")
+        first_word = {'t': 'Իսկ', 'n': 'Իսկ',
+                      'lit': '<supplied reason="missing highlight">Ի</supplied>սկ',
+                      'page': {'n': '002v'}, 'column': {'n': '1'},
+                      'line': {'xml:id': 'l101252792', 'n': '3'}}
+        last_word = {'t': 'փառւրութբ։', 'n': 'փառւրութբ։',
+                     'lit': 'փառ<abbr>ւ</abbr>րու<abbr>թբ</abbr>։',
+                     'page': {'n': '002v'}, 'column': {'n': '2'},
+                     'line': {'xml:id': 'l101252825', 'n': '5'}}
+        self.assertEqual(len(tokens), 155)
+        self.assertEqual(tokens[0], first_word)
+        self.assertEqual(tokens[-1], last_word)
 
     # def test_fh_input(self):
     #     """Make sure we get a result when passing an open filehandle object."""

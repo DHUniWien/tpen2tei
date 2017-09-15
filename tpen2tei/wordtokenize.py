@@ -47,6 +47,7 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
     global MILESTONE
     global INMILESTONE
     if milestone is None:
+        MILESTONE = None
         INMILESTONE = True
     else:
         MILESTONE = milestone
@@ -102,6 +103,7 @@ def _find_words(element, first_layer=False):
     # Now we handle our tag-specific logic, after the child text and child tags
     # have been processed but before the tail is processed.
     # First, are we in the milestone we want?
+    global MILESTONE
     global INMILESTONE
     if _tag_is(element, 'milestone'):
         if element.get('n') == MILESTONE:
@@ -151,6 +153,7 @@ def _find_words(element, first_layer=False):
 
 
 def _split_text_node(context, tnode, tokens):
+    global INMILESTONE
     if not INMILESTONE:
         return tokens
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
@@ -178,10 +181,10 @@ def _split_text_node(context, tnode, tokens):
             for k in divisions.keys():
                 xmlpath = divisions.get(k)
                 mydiv = context.xpath(xmlpath[0], namespaces=ns)
-                if len(mydiv):
-                    token[k] = _xmljson(mydiv[-1]).get('attr')
-                elif _tag_is(context, xmlpath[1]):
+                if _tag_is(context, xmlpath[1]):
                     token[k] = _xmljson(context).get('attr')
+                elif len(mydiv):
+                    token[k] = _xmljson(mydiv[-1]).get('attr')
             # Stash the token
             tokens.append(token)
     if len(tokens) and re.search('\s+$', tnode) is None:
