@@ -39,23 +39,23 @@ class Test (unittest.TestCase):
         """Test the correct detection and rendering of glyphs. The characters in
         the resulting token should be the characters that are the content of the
         g tag. """
-        testdata_noglyphs = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
-                    'յ<g xmlns="http://www.tei-c.org/ns/1.0" ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
-                    '<g xmlns="http://www.tei-c.org/ns/1.0" ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
-                    '<g xmlns="http://www.tei-c.org/ns/1.0" ref="">աշխարհ</g>ին': 'աշխարհին',
-                    'ար<g xmlns="http://www.tei-c.org/ns/1.0" ref="">ա</g>պ<lb xmlns="http://www.tei-c.org/ns/1.0" xml:id="l101276841" n="14"/>կաց': 'արապկաց',
-                    '<g xmlns="http://www.tei-c.org/ns/1.0" ref="">աշխարհ</g>ն': 'աշխարհն'}
+        testdata_noglyphs = {'յեգի<g ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
+                    'յ<g ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
+                    '<g ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
+                    '<g ref="">աշխարհ</g>ին': 'աշխարհին',
+                    'ար<g ref="">ա</g>պ<lb xml:id="l101276841" n="14"/>կաց': 'արապկաց',
+                    '<g ref="">աշխարհ</g>ն': 'աշխարհն'}
 
-        testdata_glyphs = {'յեգի<g xmlns="http://www.tei-c.org/ns/1.0" ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
-                            'յ<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
-                            '<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
-                            'ար<g xmlns="http://www.tei-c.org/ns/1.0" ref="#avar">ա</g>պ<lb xmlns="http://www.tei-c.org/ns/1.0" xml:id="l101276841" n="14"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
-                            '<g xmlns="http://www.tei-c.org/ns/1.0" ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
+        testdata_glyphs = {'յեգի<g ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
+                            'յ<g ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
+                            '<g ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
+                            'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" n="14"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
+                            '<g ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
 
         tokens = wordtokenize.from_etree(self.testdoc_noglyphs)
         # Find the token that has our substitution
         for t in tokens:
-            if '<g xmlns="http://www.tei-c.org/ns/1.0" ref="' in t['lit']:
+            if '<g ref="' in t['lit']:
                 self.assertIsNotNone(testdata_noglyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
                 self.assertTrue(t['t'] == testdata_noglyphs.get(t['lit']), "Error in rendering glyphs")
                 del testdata_noglyphs[t['lit']]
@@ -64,7 +64,7 @@ class Test (unittest.TestCase):
         tokens = wordtokenize.from_etree(self.testdoc)
         # Find the token that has our substitution
         for t in tokens:
-            if '<g xmlns="http://www.tei-c.org/ns/1.0" ref="' in t['lit']:
+            if '<g ref="' in t['lit']:
                 self.assertIsNotNone(testdata_glyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
                 self.assertTrue(t['t'] == testdata_glyphs.get(t['lit'])['token'], "Error in rendering glyphs")
                 testdata_glyphs[t['lit']]['occurrence'] -= 1
@@ -77,7 +77,7 @@ class Test (unittest.TestCase):
         tokens = wordtokenize.from_etree(self.testdoc)
         # Find the token that has our substitution
         for t in tokens:
-            if t['lit'] != 'դե<add xmlns="http://www.tei-c.org/ns/1.0">ռ</add>ևս':
+            if t['lit'] != 'դե<add>ռ</add>ևս':
                 continue
             self.assertEqual(t['t'], 'դեռևս')
             break
@@ -89,7 +89,7 @@ class Test (unittest.TestCase):
         tokens = wordtokenize.from_etree(self.testdoc, first_layer=True)
         # Find the token that has our substitution
         for t in tokens:
-            if t['lit'] != 'դե<del xmlns="http://www.tei-c.org/ns/1.0">ղ</del>ևս':
+            if t['lit'] != 'դե<del>ղ</del>ևս':
                 continue
             self.assertEqual(t['t'], 'դեղևս')
             break

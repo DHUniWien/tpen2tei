@@ -76,7 +76,7 @@ def _find_words(element, first_layer=False):
     # Now tokens has only the tokenized contents of the element itself.
     # If there is a single token, then we 'lit' the entire element.
     if len(tokens) == 1:
-        tokens[0]['lit'] = etree.tostring(element, encoding='unicode', with_tail=False)
+        tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
 
     # Next handle the child elements of this one, if any.
     for child in element:
@@ -92,7 +92,7 @@ def _find_words(element, first_layer=False):
             # Now figure out 'lit'. Did the child have children?
             if child.text is None and len(child) == 0:
                 # It's a milestone element. Stick it into 'lit'.
-                prior['lit'] += etree.tostring(child, encoding='unicode', with_tail=False)
+                prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
             prior['lit'] += partial['lit']
             if 'INCOMPLETE' not in partial:
                 del prior['INCOMPLETE']
@@ -203,20 +203,24 @@ def _xmljson(el):
 
 
 # Helper function to convert namespaces back to short forms
-def _shortform(tag):
+def _shortform(xmlstr):
     nsmap = {
         'http://www.w3.org/XML/1998/namespace': 'xml',
         'http://www.tei-c.org/ns/1.0': None
     }
 
     for k in nsmap.keys():
-        if tag.startswith('{%s}' % k):
-            v = nsmap.get(k)
+        v = nsmap.get(k)
+        # Undo lxml namespace handling
+        if xmlstr.startswith('{%s}' % k):
             if v is None:
-                return tag.replace('{%s}' % k, '')
+                return xmlstr.replace('{%s}' % k, '')
             else:
-                return tag.replace('{%s}' % k, v + ':')
-    return tag
+                return xmlstr.replace('{%s}' % k, v + ':')
+        # Undo explicit namespace declaration in string ouptut
+        elif k in xmlstr and v is None:
+            return xmlstr.replace(' xmlns="%s"' % k, '')
+    return xmlstr
 
 
 def _is_blank(token):
