@@ -178,7 +178,7 @@ class Test (unittest.TestCase):
 
     def test_file_input(self):
         """Make sure we get a result when passing a file path."""
-        filename = './tests/data/m1896_real.xml'
+        filename = self.testfiles['xmlreal']
         tokens = wordtokenize.from_file(filename, milestone="412")
         first_word = {'t': 'Իսկ', 'n': 'Իսկ',
                       'lit': '<supplied reason="missing highlight">Ի</supplied>սկ',
