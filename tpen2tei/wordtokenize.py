@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import json
 from lxml import etree
-from os.path import basename
 import re
 import sys
 
@@ -12,26 +11,30 @@ MILESTONE = None
 INMILESTONE = False
 
 
-def from_file(xmlfile, milestone=None, first_layer=False, normalisation=None, encoding='utf-8'):
+def from_file(xmlfile, milestone=None, first_layer=False, normalisation=None, encoding='utf-8', id_xpath=None):
     with open(xmlfile, encoding=encoding) as fh:
-        return from_fh(fh, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
+        return from_fh(fh, milestone=milestone, first_layer=first_layer,
+                       normalisation=normalisation, id_xpath=id_xpath)
 
 
-def from_fh(xml_fh, milestone=None, first_layer=False, normalisation=None):
+def from_fh(xml_fh, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
     xmldoc = etree.parse(xml_fh)            # returns an ETree
-    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
+    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer,
+                      normalisation=normalisation, id_xpath=id_xpath)
 
 
-def from_string(xml_string, milestone=None, first_layer=False, normalisation=None):
+def from_string(xml_string, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
     xmldoc = etree.fromstring(xml_string)   # returns an Element
-    return from_element(xmldoc, milestone=milestone, first_layer=first_layer, normalisation=normalisation)
+    return from_element(xmldoc, milestone=milestone, first_layer=first_layer,
+                        normalisation=normalisation, id_xpath=id_xpath)
 
 
-def from_etree(xml_doc, milestone=None, first_layer=False, normalisation=None):
-    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer, normalisation=normalisation)
+def from_etree(xml_doc, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
+    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer,
+                        normalisation=normalisation, id_xpath=id_xpath)
 
 
-def from_element(xml_object, milestone=None, first_layer=False, normalisation=None):
+def from_element(xml_object, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
     """Take a TEI XML file as input, and return a JSON structure suitable
     for passing to CollateX. Options include:
 
@@ -41,6 +44,15 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
     * normalisation: A function that takes a token and rewrites that token's normalised form,
       if desired."""
     ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+    
+    # Extract a witness ID from the XML
+    sigil = "TEI MS"
+    if id_xpath is not None:
+        ids = xml_object.xpath(id_xpath, namespaces=ns)
+        if len(ids):
+            sigil = ids[0]
+    
+    # Extract the text itself from the XML
     thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
     tokens = []
 
@@ -64,7 +76,7 @@ def from_element(xml_object, milestone=None, first_layer=False, normalisation=No
         normed = [normalisation(t) for t in tokens]
         tokens = normed
 
-    return tokens
+    return {'id': sigil, 'tokens': tokens}
 
 
 def _find_words(element, first_layer=False):
@@ -246,9 +258,9 @@ if __name__ == '__main__':
     else:
         xmlfiles = sys.argv[1:]
     for fn in xmlfiles:
-        sigil = re.sub('\.xml$', '', basename(fn))
-        result = from_file(fn, textms)
+        idxp = '//t:msDesc/@xml:id'
+        result = from_file(fn, textms, id_xpath=idxp)
         if len(result):
-            witness_array.append({'id': sigil, 'tokens': result})
+            witness_array.append(result)
     result = json.dumps({'witnesses': witness_array}, ensure_ascii=False)
     sys.stdout.buffer.write(result.encode('utf-8'))

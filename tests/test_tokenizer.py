@@ -33,7 +33,7 @@ class Test (unittest.TestCase):
 
     def test_simple(self):
         """Test that basic parsing with no specified options works properly."""
-        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)
+        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)['tokens']
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
         last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'INCOMPLETE': True,
@@ -64,6 +64,11 @@ class Test (unittest.TestCase):
         tokentext = ' '.join(x['t'] for x in tokens)
         self.assertEqual(tokentext, origtext)
 
+    def test_witnessid(self):
+        struct = wordtokenize.from_etree(self.testdoc_noglyphs, id_xpath='//t:msDesc/@xml:id')
+        self.assertEqual(struct['id'], 'F')
+
+
     def test_glyphs(self):
         """Test the correct detection and rendering of glyphs. The characters in
         the resulting token should be the characters that are the content of the
@@ -81,7 +86,7 @@ class Test (unittest.TestCase):
                             'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" n="14"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
                             '<g ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
 
-        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)
+        tokens = wordtokenize.from_etree(self.testdoc_noglyphs)['tokens']
         # Find the token that has our substitution
         for t in tokens:
             if '<g ref="' in t['lit']:
@@ -90,7 +95,7 @@ class Test (unittest.TestCase):
                 del testdata_noglyphs[t['lit']]
         self.assertEqual(len(testdata_noglyphs), 0, "Did not find any test token")
 
-        tokens = wordtokenize.from_etree(self.testdoc)
+        tokens = wordtokenize.from_etree(self.testdoc)['tokens']
         # Find the token that has our substitution
         for t in tokens:
             if '<g ref="' in t['lit']:
@@ -103,7 +108,7 @@ class Test (unittest.TestCase):
 
     def test_substitution(self):
         """Test that the correct words are picked out of a subst tag."""
-        tokens = wordtokenize.from_etree(self.testdoc)
+        tokens = wordtokenize.from_etree(self.testdoc)['tokens']
         # Find the token that has our substitution
         for t in tokens:
             if t['lit'] != 'դե<add>ռ</add>ևս':
@@ -115,7 +120,7 @@ class Test (unittest.TestCase):
 
     def test_substitution_layer(self):
         """Test that the first_layer option works correctly."""
-        tokens = wordtokenize.from_etree(self.testdoc, first_layer=True)
+        tokens = wordtokenize.from_etree(self.testdoc, first_layer=True)['tokens']
         # Find the token that has our substitution
         for t in tokens:
             if t['lit'] != 'դե<del>ղ</del>ևս':
@@ -126,7 +131,7 @@ class Test (unittest.TestCase):
             self.assertTrue(False, "Did not find the testing token")
 
     def test_normalisation(self):
-        tokens = wordtokenize.from_etree(self.testdoc, milestone='401', normalisation=helpers.normalise)
+        tokens = wordtokenize.from_etree(self.testdoc, milestone='401', normalisation=helpers.normalise)['tokens']
         normal = {0: 'իսկ',
                   4: 'այնոսիկ',
                   8: '401',
@@ -138,7 +143,7 @@ class Test (unittest.TestCase):
             self.assertEqual(tokens[i]['n'], n)
 
     def test_location(self):
-        tokens = wordtokenize.from_etree(self.testdoc, milestone='407')
+        tokens = wordtokenize.from_etree(self.testdoc, milestone='407')['tokens']
         self.assertEqual(tokens[0]['page'], {'n': '075v'})
         self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'n': '12'})   # first token
         self.assertEqual(tokens[10]['line'], {'xml:id': 'l101276840', 'n': '13'})  # line broken
@@ -162,12 +167,12 @@ class Test (unittest.TestCase):
     def test_milestone_option(self):
         """Test that passing a milestone option gives back only the text from the
         relevant <milestone/> element to the next one."""
-        tokens = wordtokenize.from_etree(self.testdoc, milestone="401")
+        tokens = wordtokenize.from_etree(self.testdoc, milestone="401")['tokens']
         self.assertEqual(len(tokens), 132)
         self.assertEqual(tokens[0]['t'], 'Իսկ')
         self.assertEqual(tokens[-1]['t'], 'ժամկի։')
 
-        tokens407 = wordtokenize.from_etree(self.testdoc, milestone="407")
+        tokens407 = wordtokenize.from_etree(self.testdoc, milestone="407")['tokens']
         self.assertEqual(len(tokens407), 76)
         self.assertEqual(tokens407[0]['t'], 'Դարձլ')
         self.assertEqual(tokens407[-1]['t'], 'ուռհայ։')
@@ -179,7 +184,7 @@ class Test (unittest.TestCase):
     def test_file_input(self):
         """Make sure we get a result when passing a file path."""
         filename = self.testfiles['xmlreal']
-        tokens = wordtokenize.from_file(filename, milestone="412")
+        tokens = wordtokenize.from_file(filename, milestone="412")['tokens']
         first_word = {'t': 'Իսկ', 'n': 'Իսկ',
                       'lit': '<supplied reason="missing highlight">Ի</supplied>սկ',
                       'page': {'n': '002v'}, 'column': {'n': '1'},
@@ -212,6 +217,6 @@ class Test (unittest.TestCase):
             rtext = rfh.read()
 
         reference = rtext.rstrip().split(' ')
-        tokens = wordtokenize.from_file(testfile)
+        tokens = wordtokenize.from_file(testfile)['tokens']
         for i, t in enumerate(tokens):
             self.assertEqual(t['t'], reference[i], "Mismatch at index %d: %s - %s" % (i, t, reference[i]))
