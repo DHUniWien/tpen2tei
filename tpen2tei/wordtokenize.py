@@ -6,209 +6,212 @@ import sys
 
 __author__ = 'tla'
 
-# IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
-MILESTONE = None
-INMILESTONE = False
 
+class Tokenizer:
+    """Instantiate a word/reading tokenizer that reads a TEI XML file and returns JSON output
+    suitable for passing to CollateX. Options include:
 
-def from_file(xmlfile, milestone=None, first_layer=False, normalisation=None, encoding='utf-8', id_xpath=None):
-    with open(xmlfile, encoding=encoding) as fh:
-        return from_fh(fh, milestone=milestone, first_layer=first_layer,
-                       normalisation=normalisation, id_xpath=id_xpath)
-
-
-def from_fh(xml_fh, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
-    xmldoc = etree.parse(xml_fh)            # returns an ETree
-    return from_etree(xmldoc, milestone=milestone, first_layer=first_layer,
-                      normalisation=normalisation, id_xpath=id_xpath)
-
-
-def from_string(xml_string, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
-    xmldoc = etree.fromstring(xml_string)   # returns an Element
-    return from_element(xmldoc, milestone=milestone, first_layer=first_layer,
-                        normalisation=normalisation, id_xpath=id_xpath)
-
-
-def from_etree(xml_doc, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
-    return from_element(xml_doc.getroot(), milestone=milestone, first_layer=first_layer,
-                        normalisation=normalisation, id_xpath=id_xpath)
-
-
-def from_element(xml_object, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
-    """Take a TEI XML file as input, and return a JSON structure suitable
-    for passing to CollateX. Options include:
-
-    * milestone: Restrict the output to text between the given milestone number and the next.
+    * milestone: Restrict the output to text between the given milestone ID and the next.
     * first_layer: Instead of using the final layer (e.g. <add> tags, use the first (a.c.)
       layer of the text (e.g. <del> tags).
     * normalisation: A function that takes a token and rewrites that token's normalised form,
-      if desired."""
-    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
-    
-    # Extract a witness ID from the XML
-    sigil = "TEI MS"
-    if id_xpath is not None:
-        ids = xml_object.xpath(id_xpath, namespaces=ns)
-        if len(ids):
-            sigil = ids[0]
-    
-    # Extract the text itself from the XML
-    thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
-    tokens = []
+      if desired.
+    * id_xpath: An XPath expression that returns a string that should be used as the manuscript's
+      identifier in CollateX output. Defaults to '//t:msDesc/@xml:id'. (Note that the TEI namespace
+      should be abbreviated as 't'.)"""
 
-    global MILESTONE
-    global INMILESTONE
-    if milestone is None:
-        MILESTONE = None
-        INMILESTONE = True
-    else:
-        MILESTONE = milestone
-        INMILESTONE = False
+    # IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
+    MILESTONE = None
+    INMILESTONE = True
+    first_layer = None
+    normalisation = None
+    id_xpath = None
+    xml_doc = None
 
-    # For each section-like block remaining in the text, break it up into words.
-    blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
-    for block in blocks:
-        tokens.extend(_find_words(block, first_layer))
+    def __init__(self, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
+        if milestone is not None:
+            self.MILESTONE = milestone
+            self.INMILESTONE = False
+        self.first_layer = first_layer
+        self.normalisation = normalisation
+        self.id_xpath = id_xpath
 
-    # Now go through all the tokens and apply our function, if any, to normalise
-    # the token.
-    if normalisation is not None:
-        normed = [normalisation(t) for t in tokens]
-        tokens = normed
+    def from_file(self, xmlfile, encoding='utf-8'):
+        with open(xmlfile, encoding=encoding) as fh:
+            return self.from_fh(fh)
 
-    return {'id': sigil, 'tokens': tokens}
+    def from_fh(self, xml_fh):
+        xmldoc = etree.parse(xml_fh)           # returns an ETree
+        return self.from_etree(xmldoc)
 
+    def from_string(self, xml_string):
+        xmlobj = etree.fromstring(xml_string)  # returns an Element
+        return self.from_element(xmlobj)
 
-def _find_words(element, first_layer=False):
-    """Detect word boundaries and add an anchor to each."""
-    tokens = []
-    # First handle the text of the element, if any
-    if element.tag is not etree.Comment and element.text is not None:
-        _split_text_node(element, element.text, tokens)
+    def from_etree(self, xml_doc):
+        return self.from_element(xml_doc.getroot())
 
-    # Now tokens has only the tokenized contents of the element itself.
-    # If there is a single token, then we 'lit' the entire element.
-    if len(tokens) == 1:
-        tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
+    def from_element(self, xml_object):
+        """Take a TEI XML file as input, and return a JSON structure suitable
+        for passing to CollateX."""
 
-    # Next handle the child elements of this one, if any.
-    for child in element:
-        child_tokens = _find_words(child, first_layer)
-        if len(child_tokens) == 0:
-            continue
-        if len(tokens) and 'INCOMPLETE' in tokens[-1]:
-            # Combine the last of these with the first child token.
-            prior = tokens[-1]
-            partial = child_tokens.pop(0)
-            prior['t'] += partial['t']
-            prior['n'] += partial['n']
-            # Now figure out 'lit'. Did the child have children?
-            if child.text is None and len(child) == 0:
-                # It's a milestone element. Stick it into 'lit'.
-                prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
-            prior['lit'] += partial['lit']
-            if 'INCOMPLETE' not in partial:
-                del prior['INCOMPLETE']
-        # Add the remaining tokens onto our list.
-        tokens.extend(child_tokens)
+        # (Re)set xml_doc from the element we are now using
+        self.xml_doc = etree.ElementTree(xml_object)
 
-    # Now we handle our tag-specific logic, after the child text and child tags
-    # have been processed but before the tail is processed.
-    # First, are we in the milestone we want?
-    global MILESTONE
-    global INMILESTONE
-    if _tag_is(element, 'milestone'):
-        if element.get('n') == MILESTONE:
-            INMILESTONE = True
-        elif MILESTONE is not None:
-            INMILESTONE = False
-    if not INMILESTONE:
+        ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+
+        # Extract a witness ID from the XML
+        sigil = "TEI MS"
+        if self.id_xpath is not None:
+            ids = xml_object.xpath(self.id_xpath, namespaces=ns)
+            if len(ids):
+                sigil = ' '.join(ids)
+
+        # Extract the text itself from the XML
+        thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
+        tokens = []
+
+        # For each section-like block remaining in the text, break it up into words.
+        blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
+        for block in blocks:
+            tokens.extend(self._find_words(block, self.first_layer))
+
+        # Now go through all the tokens and apply our function, if any, to normalise
+        # the token.
+        if self.normalisation is not None:
+            normed = [self.normalisation(t) for t in tokens]
+            tokens = normed
+
+        return {'id': sigil, 'tokens': tokens}
+
+    def _find_words(self, element, first_layer=False):
+        """Detect word boundaries and add an anchor to each."""
+        tokens = []
+        # First handle the text of the element, if any
+        if element.tag is not etree.Comment and element.text is not None:
+            self._split_text_node(element, element.text, tokens)
+
+        # Now tokens has only the tokenized contents of the element itself.
+        # If there is a single token, then we 'lit' the entire element.
+        if len(tokens) == 1:
+            tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
+
+        # Next handle the child elements of this one, if any.
+        for child in element:
+            child_tokens = self._find_words(child, first_layer)
+            if len(child_tokens) == 0:
+                continue
+            if len(tokens) and 'INCOMPLETE' in tokens[-1]:
+                # Combine the last of these with the first child token.
+                prior = tokens[-1]
+                partial = child_tokens.pop(0)
+                prior['t'] += partial['t']
+                prior['n'] += partial['n']
+                # Now figure out 'lit'. Did the child have children?
+                if child.text is None and len(child) == 0:
+                    # It's a milestone element. Stick it into 'lit'.
+                    prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
+                prior['lit'] += partial['lit']
+                if 'INCOMPLETE' not in partial:
+                    del prior['INCOMPLETE']
+            # Add the remaining tokens onto our list.
+            tokens.extend(child_tokens)
+
+        # Now we handle our tag-specific logic, after the child text and child tags
+        # have been processed but before the tail is processed.
+        # First, are we in the milestone we want?
+        if _tag_is(element, 'milestone'):
+            if element.get('n') == self.MILESTONE:
+                self.INMILESTONE = True
+            elif self.MILESTONE is not None:
+                self.INMILESTONE = False
+        if not self.INMILESTONE:
+            return tokens
+
+        # Move on with life
+        if (_tag_is(element, 'del') and first_layer is False) \
+                or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
+            # If we are looking at a del tag for the final layer, or an add tag for the
+            # first layer, discard all the tokens we just got, replacing them with an empty
+            # token that carries the correct 'incomplete' setting.
+            if len(tokens):
+                final = tokens[-1]
+                tokens = [{'t': '', 'n': '', 'lit': final['lit']}]
+                if 'INCOMPLETE' in final:
+                    tokens[0]['INCOMPLETE'] = True
+        elif _tag_is(element, 'abbr'):
+            # Mark a sort of regular expression in the token data, for matching.
+            if len(tokens) > 0:
+                tokens[0]['re'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
+        elif _tag_is(element, 'num'):
+            # Combine all the word tokens into a single one, and set 'n' to the number value.
+            mytoken = {'n': element.get('value'),
+                       't': ' '.join([x['t'] for x in tokens]),
+                       'lit': ' '.join([x['lit'] for x in tokens])}
+            if 'INCOMPLETE' in tokens[-1]:
+                mytoken['INCOMPLETE'] = True
+            tokens = [mytoken]
+
+        # Finally handle the tail text of this element, if any.
+        if element.tail is not None:
+            # Strip any insignificant whitespace from the tail.
+            tnode = element.tail
+            if re.match('.*\}[clp]b$', str(element.tag)):
+                tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
+            if tnode != '':
+                self._split_text_node(element, tnode, tokens)
+
+        # Get rid of any final empty tokens.
+        if len(tokens) and _is_blank(tokens[-1]):
+            tokens.pop()
         return tokens
 
-    # Move on with life
-    if (_tag_is(element, 'del') and first_layer is False) \
-            or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
-        # If we are looking at a del tag for the final layer, or an add tag for the
-        # first layer, discard all the tokens we just got, replacing them with an empty
-        # token that carries the correct 'incomplete' setting.
-        if len(tokens):
-            final = tokens[-1]
-            tokens = [{'t': '', 'n': '', 'lit': final['lit']}]
-            if 'INCOMPLETE' in final:
-                tokens[0]['INCOMPLETE'] = True
-    elif _tag_is(element, 'abbr'):
-        # Mark a sort of regular expression in the token data, for matching.
-        if len(tokens) > 0:
-            tokens[0]['re'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
-    elif _tag_is(element, 'num'):
-        # Combine all the word tokens into a single one, and set 'n' to the number value.
-        mytoken = {'n': element.get('value'),
-                   't': ' '.join([x['t'] for x in tokens]),
-                   'lit': ' '.join([x['lit'] for x in tokens])}
-        if 'INCOMPLETE' in tokens[-1]:
-            mytoken['INCOMPLETE'] = True
-        tokens = [mytoken]
-
-    # Finally handle the tail text of this element, if any.
-    if element.tail is not None:
-        # Strip any insignificant whitespace from the tail.
-        tnode = element.tail
-        if re.match('.*\}[clp]b$', str(element.tag)):
-            tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
-        if tnode != '':
-            _split_text_node(element, tnode, tokens)
-
-    # Get rid of any final empty tokens.
-    if len(tokens) and _is_blank(tokens[-1]):
-        tokens.pop()
-    return tokens
-
-
-def _split_text_node(context, tnode, tokens):
-    global INMILESTONE
-    if not INMILESTONE:
+    def _split_text_node(self, context, tnode, tokens):
+        if not self.INMILESTONE:
+            return tokens
+        ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+        tnode = tnode.rstrip('\n')
+        words = re.split('\s+', tnode)
+        for word in words:
+            if len(tokens) and 'INCOMPLETE' in tokens[-1]:
+                open_token = tokens.pop()
+                open_token['t'] += word
+                open_token['n'] += word
+                open_token['lit'] += word
+                del open_token['INCOMPLETE']
+                if not _is_blank(open_token):
+                    tokens.append(open_token)
+            elif word != '':
+                token = {'t': word, 'n': word, 'lit': word}
+                # Put the word location into the token
+                divisions = {
+                    'section': ('./ancestor::t:div', 'div'),
+                    'paragraph': ('./ancestor::t:p', 'p'),
+                    'page': ('./preceding::t:pb[1]', 'pb'),
+                    'column': ('./preceding::t:cb[1]', 'cb'),
+                    'line': ('./preceding::t:lb[1]', 'lb')
+                }
+                for k in divisions.keys():
+                    xmlpath = divisions.get(k)
+                    mydiv = context.xpath(xmlpath[0], namespaces=ns)
+                    if _tag_is(context, xmlpath[1]):
+                        token[k] = _xmljson(context).get('attr')
+                    elif len(mydiv):
+                        token[k] = _xmljson(mydiv[-1]).get('attr')
+                # Stash the token
+                tokens.append(token)
+        if len(tokens) and re.search('\s+$', tnode) is None:
+            tokens[-1]['INCOMPLETE'] = True
         return tokens
-    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
-    tnode = tnode.rstrip('\n')
-    words = re.split('\s+', tnode)
-    for word in words:
-        if len(tokens) and 'INCOMPLETE' in tokens[-1]:
-            open_token = tokens.pop()
-            open_token['t'] += word
-            open_token['n'] += word
-            open_token['lit'] += word
-            del open_token['INCOMPLETE']
-            if not _is_blank(open_token):
-                tokens.append(open_token)
-        elif word != '':
-            token = {'t': word, 'n': word, 'lit': word}
-            # Put the word location into the token
-            divisions = {
-                'section': ('./ancestor::t:div', 'div'),
-                'paragraph': ('./ancestor::t:p', 'p'),
-                'page': ('./preceding::t:pb[1]', 'pb'),
-                'column': ('./preceding::t:cb[1]', 'cb'),
-                'line': ('./preceding::t:lb[1]', 'lb')
-            }
-            for k in divisions.keys():
-                xmlpath = divisions.get(k)
-                mydiv = context.xpath(xmlpath[0], namespaces=ns)
-                if _tag_is(context, xmlpath[1]):
-                    token[k] = _xmljson(context).get('attr')
-                elif len(mydiv):
-                    token[k] = _xmljson(mydiv[-1]).get('attr')
-            # Stash the token
-            tokens.append(token)
-    if len(tokens) and re.search('\s+$', tnode) is None:
-        tokens[-1]['INCOMPLETE'] = True
-    return tokens
 
 
-# Helper function to look up TEI tags with full namespace
+##### Helper functions that don't need instance variables
+# Return the LXML-style element name with namespace
 def _tag_is(el, tag):
     return el.tag == '{http://www.tei-c.org/ns/1.0}%s' % tag
 
 
+# Return a JSON structure that represents an XML element and attributes
 def _xmljson(el):
     tag = _shortform(el.tag)
     attr = {}
@@ -238,6 +241,7 @@ def _shortform(xmlstr):
     return xmlstr
 
 
+# Check to see if a token counts as blank
 def _is_blank(token):
     if token['n'] != '':
         return False
@@ -257,9 +261,9 @@ if __name__ == '__main__':
         xmlfiles = sys.argv[2:]
     else:
         xmlfiles = sys.argv[1:]
+    tok = Tokenizer(milestone=textms)
     for fn in xmlfiles:
-        idxp = '//t:msDesc/@xml:id'
-        result = from_file(fn, textms, id_xpath=idxp)
+        result = tok.from_file(fn)
         if len(result):
             witness_array.append(result)
     result = json.dumps({'witnesses': witness_array}, ensure_ascii=False)
