@@ -20,7 +20,7 @@ class Tokenizer:
       identifier in CollateX output. Defaults to '//t:msDesc/@xml:id'. (Note that the TEI namespace
       should be abbreviated as 't'.)"""
 
-    # IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
+    IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
     MILESTONE = None
     INMILESTONE = True
     first_layer = None
@@ -79,7 +79,10 @@ class Tokenizer:
         # Now go through all the tokens and apply our function, if any, to normalise
         # the token.
         if self.normalisation is not None:
-            normed = [self.normalisation(t) for t in tokens]
+            try:
+                normed = [self.normalisation(t) for t in tokens]
+            except:
+                raise
             tokens = normed
 
         return {'id': sigil, 'tokens': tokens}
@@ -92,28 +95,41 @@ class Tokenizer:
             self._split_text_node(element, element.text, tokens)
 
         # Now tokens has only the tokenized contents of the element itself.
-        # If there is a single token, then we 'lit' the entire element.
-        if len(tokens) == 1:
+        # If there is a single token, then we 'lit' the entire element and will use the
+        # parent context below.
+        singlewordelement = False
+        if len(tokens) == 1 and len(element) == 0:
             tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
+            singlewordelement = True
 
         # Next handle the child elements of this one, if any.
         for child in element:
             child_tokens = self._find_words(child, first_layer)
             if len(child_tokens) == 0:
                 continue
-            if len(tokens) and 'INCOMPLETE' in tokens[-1]:
-                # Combine the last of these with the first child token.
-                prior = tokens[-1]
-                partial = child_tokens.pop(0)
-                prior['t'] += partial['t']
-                prior['n'] += partial['n']
-                # Now figure out 'lit'. Did the child have children?
-                if child.text is None and len(child) == 0:
-                    # It's a milestone element. Stick it into 'lit'.
-                    prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
-                prior['lit'] += partial['lit']
-                if 'INCOMPLETE' not in partial:
-                    del prior['INCOMPLETE']
+            if len(tokens) and 'join_next' in tokens[-1]:
+                # Try to combine the last of these with the first child token.
+                combolit = "<word>%s</word>" % (tokens[-1]['lit'] + child_tokens[0]['lit'])
+                try:
+                    etree.fromstring(combolit)
+                    # If this didn't cause an exception, merge the tokens
+                    prior = tokens[-1]
+                    partial = child_tokens.pop(0)
+                    prior['t'] += partial['t']
+                    prior['n'] += partial['n']
+                    # Now figure out 'lit'. Did the child have children?
+                    if child.text is None and len(child) == 0:
+                        # It's a milestone element. Stick it into 'lit'.
+                        prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
+                    prior['lit'] += partial['lit']
+                    if 'join_next' not in partial:
+                        del prior['join_next']
+                except etree.XMLSyntaxError:
+                    pass
+            # Check for an empty first child token (this will sometimes be here in case it
+            # is needed to close a join_next token above.)
+            if len(child_tokens) and _is_blank(child_tokens[0]):
+                child_tokens.pop(0)
             # Add the remaining tokens onto our list.
             tokens.extend(child_tokens)
 
@@ -129,16 +145,20 @@ class Tokenizer:
             return tokens
 
         # Move on with life
+
+        # Deal with specific tag logic
         if (_tag_is(element, 'del') and first_layer is False) \
                 or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
             # If we are looking at a del tag for the final layer, or an add tag for the
-            # first layer, discard all the tokens we just got, replacing them with an empty
-            # token that carries the correct 'incomplete' setting.
+            # first layer, discard all the tokens we just got, replacing them with either an
+            # empty joining token or nothing at all. TODO why the empty token?
             if len(tokens):
                 final = tokens[-1]
-                tokens = [{'t': '', 'n': '', 'lit': final['lit']}]
-                if 'INCOMPLETE' in final:
-                    tokens[0]['INCOMPLETE'] = True
+                if 'join_next' in final:
+                    tokens = [{'t': '', 'n': '', 'lit': '', 'join_next': True}]
+                else:
+                    tokens = []
+                    singlewordelement = False
         elif _tag_is(element, 'abbr'):
             # Mark a sort of regular expression in the token data, for matching.
             if len(tokens) > 0:
@@ -147,12 +167,28 @@ class Tokenizer:
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
                        't': ' '.join([x['t'] for x in tokens]),
-                       'lit': ' '.join([x['lit'] for x in tokens])}
-            if 'INCOMPLETE' in tokens[-1]:
-                mytoken['INCOMPLETE'] = True
+                       'lit': ' '.join([x['lit'] for x in tokens])
+                       }
+            for k in tokens[0]:
+                if k not in mytoken:
+                    mytoken[k] = tokens[0][k]
+            if 'join_next' in tokens[-1]:
+                mytoken['join_next'] = True
+            else:
+                del mytoken['join_next']
             tokens = [mytoken]
 
+        # Set the context on all the tokens created thus far
+        context = _shortform(self.xml_doc.getelementpath(element))
+        parentcontext = _shortform(self.xml_doc.getelementpath(element.getparent()))
+        if singlewordelement:
+            tokens[0]['context'] = parentcontext
+        for t in tokens:
+            if 'context' not in t:
+                t['context'] = context
+
         # Finally handle the tail text of this element, if any.
+        # Our XML context is now the element's parent.
         if element.tail is not None:
             # Strip any insignificant whitespace from the tail.
             tnode = element.tail
@@ -160,6 +196,10 @@ class Tokenizer:
                 tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
             if tnode != '':
                 self._split_text_node(element, tnode, tokens)
+            # Set the outer context on all the new tokens created
+            for t in tokens:
+                if 'context' not in t:
+                    t['context'] = parentcontext
 
         # Get rid of any final empty tokens.
         if len(tokens) and _is_blank(tokens[-1]):
@@ -172,16 +212,19 @@ class Tokenizer:
         ns = {'t': 'http://www.tei-c.org/ns/1.0'}
         tnode = tnode.rstrip('\n')
         words = re.split('\s+', tnode)
+        # Filter out any blank spaces at the end (but not at the beginning!)
+        if words[-1] == '':
+            words.pop()
         for word in words:
-            if len(tokens) and 'INCOMPLETE' in tokens[-1]:
+            if len(tokens) and 'join_next' in tokens[-1]:
                 open_token = tokens.pop()
                 open_token['t'] += word
                 open_token['n'] += word
                 open_token['lit'] += word
-                del open_token['INCOMPLETE']
+                del open_token['join_next']
                 if not _is_blank(open_token):
                     tokens.append(open_token)
-            elif word != '':
+            else:
                 token = {'t': word, 'n': word, 'lit': word}
                 # Put the word location into the token
                 divisions = {
@@ -201,11 +244,11 @@ class Tokenizer:
                 # Stash the token
                 tokens.append(token)
         if len(tokens) and re.search('\s+$', tnode) is None:
-            tokens[-1]['INCOMPLETE'] = True
+            tokens[-1]['join_next'] = True
         return tokens
 
 
-##### Helper functions that don't need instance variables
+# Helper functions that don't need instance variables #
 # Return the LXML-style element name with namespace
 def _tag_is(el, tag):
     return el.tag == '{http://www.tei-c.org/ns/1.0}%s' % tag
@@ -230,7 +273,7 @@ def _shortform(xmlstr):
     for k in nsmap.keys():
         v = nsmap.get(k)
         # Undo lxml namespace handling
-        if xmlstr.startswith('{%s}' % k):
+        if '{%s}' % k in xmlstr:
             if v is None:
                 return xmlstr.replace('{%s}' % k, '')
             else:
@@ -261,7 +304,7 @@ if __name__ == '__main__':
         xmlfiles = sys.argv[2:]
     else:
         xmlfiles = sys.argv[1:]
-    tok = Tokenizer(milestone=textms)
+    tok = Tokenizer(milestone=textms, first_layer=True)
     for fn in xmlfiles:
         result = tok.from_file(fn)
         if len(result):

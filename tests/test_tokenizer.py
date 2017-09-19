@@ -4,6 +4,8 @@ import unittest
 
 from tpen2tei.parse import from_sc
 from tpen2tei.wordtokenize import Tokenizer
+from lxml.etree import fromstring, XMLSyntaxError
+from json.decoder import JSONDecodeError
 
 from config import config as config
 import helpers
@@ -34,9 +36,9 @@ class Test (unittest.TestCase):
     def test_simple(self):
         """Test that basic parsing with no specified options works properly."""
         tokens = Tokenizer().from_etree(self.testdoc_noglyphs)['tokens']
-        first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն',
+        first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
-        last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'INCOMPLETE': True,
+        last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'join_next': True, 'context': 'text/body/ab',
                  'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
@@ -133,7 +135,31 @@ class Test (unittest.TestCase):
         else:
             self.assertTrue(False, "Did not find the testing token")
 
+    def test_token_context(self):
+        """Test that each token has a context, and each 'lit' string is parseable."""
+        tok = Tokenizer(normalisation=helpers.normalise)
+        tokens = tok.from_file(self.testfiles['xmlreal'])['tokens']
+        for t in tokens:
+            self.assertTrue('context' in t)
+            self.assertTrue('lit' in t)
+            try:
+                fromstring('<word>' + t['lit'] + '</word>')
+            except XMLSyntaxError:
+                self.fail()
+
+        # Again, with first layer
+        tok = Tokenizer(normalisation=helpers.normalise, first_layer=True)
+        tokens = tok.from_file(self.testfiles['xmlreal'])['tokens']
+        for t in tokens:
+            self.assertTrue('context' in t)
+            self.assertTrue('lit' in t)
+            try:
+                fromstring('<word>' + t['lit'] + '</word>')
+            except XMLSyntaxError:
+                self.fail()
+
     def test_normalisation(self):
+        """Test that passing a normalisation function works as intended"""
         tok = Tokenizer(milestone='401', normalisation=helpers.normalise)
         tokens = tok.from_etree(self.testdoc)['tokens']
         normal = {0: 'իսկ',
@@ -145,6 +171,13 @@ class Test (unittest.TestCase):
                   43: 'հռչակօոր'}
         for i, n in normal.items():
             self.assertEqual(tokens[i]['n'], n)
+
+        tok = Tokenizer(milestone='407', normalisation=helpers.bad_normalise)
+        try:
+            result = tok.from_etree(self.testdoc)
+            self.fail("should have raised an error")
+        except Exception as e:
+            self.assertIsInstance(e, JSONDecodeError)
 
     def test_location(self):
         tokens = Tokenizer(milestone='407').from_etree(self.testdoc)['tokens']
@@ -158,10 +191,20 @@ class Test (unittest.TestCase):
     #     TODO add testing data"""
     #     pass
 
-    # def test_gap(self):
-    #     """Test that gaps are handled correctly. At the moment this means that no token
-    #     should be generated for a gap."""
-    #     pass
+    def test_gap(self):
+        """Test that gaps are handled correctly. At the moment this means that no token
+        should be generated for a gap."""
+        tokens = Tokenizer(milestone='410').from_file(self.testfiles['xmlreal'])['tokens']
+        gaptoken = {'t': 'զ', 'n': 'զ', 'lit': 'զ<gap extent="5"/>', 'context': 'text/body/ab',
+                    'page': {'n': '002r'}, 'column': {'n': '1'},
+                    'line': {'xml:id': 'l101252731', 'n': '26'}}
+        found = False
+        for t in tokens:
+            if t['lit'].find('gap') > 0:
+                self.assertEqual(t, gaptoken)
+                found = True
+                break
+        self.assertTrue(found)
 
     def test_milestone_element(self):
         """Test that milestone elements (not <milestone>, but e.g. <lb/> or <cb/>)
@@ -192,10 +235,12 @@ class Test (unittest.TestCase):
         tokens = tok.from_file(filename, )['tokens']
         first_word = {'t': 'Իսկ', 'n': 'Իսկ',
                       'lit': '<supplied reason="missing highlight">Ի</supplied>սկ',
+                      'context': 'text/body/ab',
                       'page': {'n': '002v'}, 'column': {'n': '1'},
                       'line': {'xml:id': 'l101252792', 'n': '3'}}
         last_word = {'t': 'փառւրութբ։', 'n': 'փառւրութբ։',
                      'lit': 'փառ<abbr>ւ</abbr>րու<abbr>թբ</abbr>։',
+                     'context': 'text/body/ab',
                      'page': {'n': '002v'}, 'column': {'n': '2'},
                      'line': {'xml:id': 'l101252825', 'n': '5'}}
         self.assertEqual(len(tokens), 155)

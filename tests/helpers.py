@@ -52,6 +52,11 @@ def normalise(token):
     return token
 
 
+def bad_normalise(token):
+    token['json'] = json.loads(token['lit'])
+    return token
+
+
 def tpen_filter(st):
     result = st.replace('_', '֊').replace('“', '"').replace('”', '"').replace(',', '.')
     return result
