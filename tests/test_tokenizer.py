@@ -38,7 +38,7 @@ class Test (unittest.TestCase):
         tokens = Tokenizer().from_etree(self.testdoc_noglyphs)['tokens']
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
-        last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'join_next': True, 'context': 'text/body/ab',
+        last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
                  'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)

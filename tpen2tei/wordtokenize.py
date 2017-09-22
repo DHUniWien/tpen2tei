@@ -85,6 +85,11 @@ class Tokenizer:
                 raise
             tokens = normed
 
+        # Account for the possibility that a space was forgotten at the end of the
+        # section or document
+        if len(tokens) > 0 and 'join_next' in tokens[-1]:
+            del tokens[-1]['join_next']
+
         return {'id': sigil, 'tokens': tokens}
 
     def _find_words(self, element, first_layer=False):
@@ -212,7 +217,8 @@ class Tokenizer:
         ns = {'t': 'http://www.tei-c.org/ns/1.0'}
         tnode = tnode.rstrip('\n')
         words = re.split('\s+', tnode)
-        # Filter out any blank spaces at the end (but not at the beginning!)
+        # Filter out any blank spaces at the end (but not at the beginning! We may need the
+        # empty token to close out a join_next token that ends the outer layer.)
         if words[-1] == '':
             words.pop()
         for word in words:
@@ -224,6 +230,9 @@ class Tokenizer:
                 del open_token['join_next']
                 if not _is_blank(open_token):
                     tokens.append(open_token)
+            elif len(tokens) and word == '':
+                # In this case we can discard any blank-space token at the beginning.
+                continue
             else:
                 token = {'t': word, 'n': word, 'lit': word}
                 # Put the word location into the token
