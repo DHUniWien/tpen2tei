@@ -75,6 +75,9 @@ class Tokenizer:
         blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
         for block in blocks:
             tokens.extend(self._find_words(block, self.first_layer))
+        # Back to the top level: remove any empty tokens that were left over
+        # in case they were needed to close a seemingly incomplete word.
+        tokens = [t for t in tokens if not _is_blank(t)]
 
         # Now go through all the tokens and apply our function, if any, to normalise
         # the token.
@@ -131,10 +134,6 @@ class Tokenizer:
                         del prior['join_next']
                 except etree.XMLSyntaxError:
                     pass
-            # Check for an empty first child token (this will sometimes be here in case it
-            # is needed to close a join_next token above.)
-            if len(child_tokens) and _is_blank(child_tokens[0]):
-                child_tokens.pop(0)
             # Add the remaining tokens onto our list.
             tokens.extend(child_tokens)
 
@@ -228,8 +227,7 @@ class Tokenizer:
                 open_token['n'] += word
                 open_token['lit'] += word
                 del open_token['join_next']
-                if not _is_blank(open_token):
-                    tokens.append(open_token)
+                tokens.append(open_token)
             elif len(tokens) and word == '':
                 # In this case we can discard any blank-space token at the beginning.
                 continue

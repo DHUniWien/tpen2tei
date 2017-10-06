@@ -232,7 +232,7 @@ class Test (unittest.TestCase):
         """Make sure we get a result when passing a file path."""
         filename = self.testfiles['xmlreal']
         tok = Tokenizer(milestone="412")
-        tokens = tok.from_file(filename, )['tokens']
+        tokens = tok.from_file(filename)['tokens']
         first_word = {'t': 'Իսկ', 'n': 'Իսկ',
                       'lit': '<supplied reason="missing highlight">Ի</supplied>սկ',
                       'context': 'text/body/ab',
@@ -246,6 +246,15 @@ class Test (unittest.TestCase):
         self.assertEqual(len(tokens), 155)
         self.assertEqual(tokens[0], first_word)
         self.assertEqual(tokens[-1], last_word)
+
+    def test_tagend(self):
+        filename = self.testfiles['xmlreal']
+        tokens = Tokenizer(milestone="401").from_file(filename)['tokens']
+        self.assertEqual(tokens[1]['t'], "ընդ")
+        self.assertFalse('join_next' in tokens[1])
+        for t in tokens:
+            self.assertNotEqual(t['t'], "")
+
 
     # def test_fh_input(self):
     #     """Make sure we get a result when passing an open filehandle object."""
