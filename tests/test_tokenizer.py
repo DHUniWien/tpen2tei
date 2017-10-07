@@ -255,6 +255,14 @@ class Test (unittest.TestCase):
         for t in tokens:
             self.assertNotEqual(t['t'], "")
 
+    @unittest.skip("use only for debugging")
+    def test_debug(self):
+        filename = '/Users/tla/Projects/MatthewEdessa/transcription/tei-xml/M3071-merged.json.tei.xml'
+        tokens = Tokenizer(milestone="401").from_file(filename)['tokens']
+        self.assertEqual(tokens[14]['t'], "բյց")
+        self.assertFalse('join_next' in tokens[1])
+        for t in tokens:
+            self.assertNotEqual(t['t'], "")
 
     # def test_fh_input(self):
     #     """Make sure we get a result when passing an open filehandle object."""
