@@ -178,7 +178,7 @@ class Tokenizer:
                     mytoken[k] = tokens[0][k]
             if 'join_next' in tokens[-1]:
                 mytoken['join_next'] = True
-            else:
+            elif 'join_next' in mytoken:
                 del mytoken['join_next']
             tokens = [mytoken]
 
