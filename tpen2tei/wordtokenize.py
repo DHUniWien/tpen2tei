@@ -205,8 +205,8 @@ class Tokenizer:
                 if 'context' not in t:
                     t['context'] = parentcontext
 
-        # Get rid of any final empty tokens.
-        if len(tokens) and _is_blank(tokens[-1]):
+        # Get rid of any final empty tokens, if there are preceding tokens.
+        if len(tokens) > 1 and _is_blank(tokens[-1]):
             tokens.pop()
         return tokens
 

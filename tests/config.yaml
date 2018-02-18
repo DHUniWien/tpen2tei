@@ -14,6 +14,7 @@ settings:
         xmlreal: "./tests/data/m1896_real.xml"
         matenadaran_xml: "./tests/data/matenadaran_1896.xml"
         matenadaran_txt: "./tests/data/matenadaran_1896.txt"
+        v913: "./tests/data/V913.xml"
 
         tei_2009: "./tests/data/matenadaran_1896.xml"
         tei_2009_reference: "./tests/data/matenadaran_1896_reference.txt"

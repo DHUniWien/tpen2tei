@@ -1,0 +1,189 @@
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Ժամանակագրութիւն</title>
+        <author>Մատթէոս Ուռհայեցի</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Unpublished manuscript</p>
+      </publicationStmt>
+      <sourceDesc>
+        <msDesc xml:id="Y">
+          <msIdentifier>
+            <settlement>Venice</settlement>
+            <repository>Mekhitarist Library</repository>
+            <idno>913</idno>
+          </msIdentifier>
+          <history>
+            <origin>
+              <origDate>17th c.</origDate>
+            </origin>
+          </history>
+        </msDesc>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <charDecl>
+        <glyph xml:id="aregakn">
+          <glyphName>ARMENIAN AREGAKN SYMBOL</glyphName>
+          <mapping>արեգակն</mapping>
+        </glyph>
+        <glyph xml:id="asxarh">
+          <glyphName>ARMENIAN ASHXARH SYMBOL</glyphName>
+          <mapping>աշխարհ</mapping>
+        </glyph>
+        <glyph xml:id="erkin">
+          <glyphName>ARMENIAN ERKIN SYMBOL</glyphName>
+          <mapping>երկին</mapping>
+        </glyph>
+        <glyph xml:id="lusin">
+          <glyphName>ARMENIAN LUSIN SYMBOL</glyphName>
+          <mapping>լուսին</mapping>
+        </glyph>
+        <glyph xml:id="orpes">
+          <glyphName>ARMENIAN ORPES SYMBOL</glyphName>
+          <mapping>որպէս</mapping>
+        </glyph>
+        <glyph xml:id="ptlig">
+          <glyphName>ARMENIAN PEH-TIWN LIGATURE</glyphName>
+          <mapping>պտ</mapping>
+        </glyph>
+        <glyph xml:id="splig">
+          <glyphName>ARMENIAN SEH-PEH LIGATURE</glyphName>
+          <mapping>սպ</mapping>
+        </glyph>
+        <glyph xml:id="tblig">
+          <glyphName>ARMENIAN TO-BEN LIGATURE</glyphName>
+          <mapping>թբ</mapping>
+        </glyph>
+        <glyph xml:id="techlig">
+          <glyphName>ARMENIAN TO-ECH LIGATURE</glyphName>
+          <mapping>թե</mapping>
+        </glyph>
+        <glyph xml:id="tehlig">
+          <glyphName>ARMENIAN TO-EH LIGATURE</glyphName>
+          <mapping>թէ</mapping>
+        </glyph>
+        <glyph xml:id="tinilig">
+          <glyphName>ARMENIAN TO-INI LIGATURE</glyphName>
+          <mapping>թի</mapping>
+        </glyph>
+        <glyph xml:id="und">
+          <glyphName>ARMENIAN END SYMBOL</glyphName>
+          <mapping>ընդ</mapping>
+        </glyph>
+        <glyph xml:id="ust">
+          <glyphName>ARMENIAN EST SYMBOL</glyphName>
+          <mapping>ըստ</mapping>
+        </glyph>
+      </charDecl>
+    </encodingDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <ab>
+<pb n="129"/>
+<lb xml:id="l102535735" n="1"/>իւրով գրիգորիւ սպանաւ ի մեծ պ<abbr>տրզ</abbr>մին ի դւին քաղաքին։ 
+<lb xml:id="l102535736" n="2"/><hi rend="red">Յայսմ ամի․ շա<abbr>րժ</abbr>լ եղև բարկու<abbr>ի</abbr> մեծ ի տանէն պարսից․ և</hi> 
+<lb xml:id="l102535737" n="3"/>ելեալ գային արք <num value="3">․գ՟․</num> ի տիւանէն ի տուղրէլ սուլտանէն․ 
+<lb xml:id="l102535738" n="4"/>պօղի․ պուկի․ անազուղլի․ և հասանէին բազում զօրք <g ref="#asxarh">աշխարհ</g>ն տա֊
+<lb xml:id="l102535739" n="5"/>ճկաց. և անհամար գերու<abbr>բ</abbr> գայր բանակն հարկանէր ի վ<abbr>ր</abbr> արեան 
+<lb xml:id="l102535740" n="6"/>գետոյ․ ի սահմանս մօսլա՛. և յն<abbr>ժմ</abbr> զօրապետ մօսլա՛․ որ ասէին խո֊
+<lb xml:id="l102535741" n="7"/>ւրէշ․ տէրն մօսլա՛. զօրաժ<abbr>ղվ արր</abbr>լ գայր ի <abbr>վր</abbr> ն<abbr>ց</abbr>․ արապիկ զօրօքն 
+<lb xml:id="l102535742" n="8"/>և արարին պ<abbr>տրզ</abbr>մ սաստիկ. երկոցունց կողմանցն․ և <abbr>յնժ</abbr>մ թուրքն 
+<lb xml:id="l102535743" n="9"/>յաղթեաց արապիկ զօրացն․ և ա<abbr>րր</abbr> փախ<abbr>ստկ</abbr>ն զն<abbr>ս</abbr>․ և զկանայս և ըզ
+<lb xml:id="l102535744" n="10"/>զորդիս ն<abbr>ց</abbr>․ էառ ի գերու<abbr>ի</abbr>․ և յ<abbr>նժ</abbr>մ ամիրայն տաճկաց խուրէշ․ 
+<lb xml:id="l102535745" n="11"/>կապեաց սև ն<abbr>շն</abbr>կ և մտաւ չիճկան յարապիք․ և ա<abbr>րր</abbr> ժողով մեծ․ 
+<lb xml:id="l102535746" n="12"/>և գայր ի վ<abbr>ր</abbr> թուրքին. և սաստիկ պ<abbr>տրզմ</abbr>ւ յ<abbr>ղ<g ref="#techlig">թե</g></abbr>ց զն<abbr>ց</abbr>․ և առ<abbr>ել</abbr> 
+<lb xml:id="l102535747" n="13"/>զգերու<abbr>ի</abbr>ն իւր․ և զնոցայն. և գն<abbr>ց</abbr> թուրք փախստական <abbr>մ</abbr>չև 
+<lb xml:id="l102535748" n="14"/>ի պաղին․ ա<abbr>րրլ</abbr> բ<abbr>զւ</abbr>մ կո<abbr>տր</abbr>ծս բազում տեղիս․ և ի գ<abbr>ւ</abbr>ռս թլխմոյ. 
+<lb xml:id="l102535749" n="15"/>եղև բ<abbr>զւ</abbr>մ հեղու<abbr>իս</abbr> քր<abbr>ստ</abbr>նէից․ և այ<abbr>պս</abbr>ի գեր<abbr>ւբ</abbr> զօրքն թուրքաց․ 
+<lb xml:id="l102535750" n="16"/>դիմեալ երթային <g ref="#asxarh">աշխարհ</g>ն պարսից․ և հ<abbr>սն</abbr>էր <abbr>մ</abbr>չև յարճէշ․ քա<abbr>ղ</abbr>ք հայոց․ 
+<lb xml:id="l102535751" n="17"/>և է՛ր անդ զօրավար մի հոռոմոց՝ որում անունն ասէին ստեփան․ կա֊
+<lb xml:id="l102535752" n="18"/>տապան. և ամիրայքն պարսից յու<abbr>ղր</abbr>կեցին բ<abbr>զւ</abbr>մ տուրս հոռոմոց․ 
+<lb xml:id="l102535753" n="19"/>զօրավարին․ զի տացէ նմա՛ անց՝ զի գնասցեն յ<g ref="#asxarh">աշխարհ</g>ն իւ<abbr>րց</abbr>։ Իսկ ն<abbr>րյ</abbr> 
+<lb xml:id="l102535754" n="20"/>հպ<abbr>րտց</abbr>լ ելանէր ի պ<abbr>տրզ</abbr>մ ի <abbr>վր</abbr> զօ<abbr>րց</abbr>ն թուրքաց. և յ<abbr>նժ</abbr>մ յաղ<g ref="#techlig">թե</g>ցին 
+<lb xml:id="l102535755" n="21"/>զօրացն հոռոմոց․ թուրքն․ և ա<abbr>րր</abbr>ին սաստիկ կոտորածս․ և կալան 
+<lb xml:id="l102535756" n="22"/>զստեփան կատապանն․ և տարան ի հեր ք<abbr>ղ</abbr>ք․ և զկնի բ<abbr>զւ</abbr>մ չ<abbr>րչրնց</abbr>ն 
+<lb xml:id="l102535757" n="23"/>մեռանէր ի ձեռ<abbr>ց</abbr> անօրինացն. և քերթեցին զմորթ մարմնոյ ն<abbr>ր</abbr>. և <abbr>լցլ</abbr> 
+<lb xml:id="l102535758" n="24"/>զնա՛ խոտով․ և կախեցին զպարսպէն․ զոր լուե<abbr>լ</abbr> ազգի ն<abbr>ր</abbr> ե<abbr>կլ</abbr> գնեցին 
+<lb xml:id="l102535759" n="25"/>զմարմինն և զմորթն․ <num value="10000">տաս ․ռ՟․</num> դահեկան։ 
+<lb xml:id="l102535760" n="26"/><milestone unit="section" n="495"/><hi rend="red">Դ<abbr>րձլ</abbr></hi> ի <abbr>թվկ</abbr>նու<abbr>թե</abbr>ս հայոց <num value="495">․դ՟ճ՟․ ղ՟ե՟․</num> ամին․ զօրաժ<abbr>ղ</abbr>վ արար<abbr>ել</abbr>․ 
+<lb xml:id="l102535761" n="27"/>մոնոմախն․ թ<abbr>գր</abbr>ն յունաց. և կա<abbr>ցւց</abbr>լ զ<abbr>գլխ</abbr> մեծ զօրացն իշխան 
+<lb xml:id="l102535762" n="28"/>հոռոմոց․ որում անունն ասէին տէլիարի. կուրտ և ներքինի գո<abbr>լ</abbr>վ 
+<lb xml:id="l102535763" n="29"/>և գայր ահագին բ<abbr>զմւ</abbr>բ․ և անթիւ զօրօք ի <abbr>վր</abbr> ք<abbr>ղք</abbr>ին <abbr>դվ</abbr>նա՛․ և 
+<lb xml:id="l102535764" n="30"/>բանակ հարկանէր ի դուռն ք<abbr>ղք</abbr>ին. և է՛ր ի ձմերային ժ<abbr>մկ</abbr>. և ի սաս
+<lb xml:id="l102535765" n="31"/>տկու<g ref="#techlig">թե</g>նէ ս<abbr>ռնմնե</abbr>ցն և ի բախմանէ․ յորդաբոխ անձրևացն ոչ
+<lb xml:id="l102535766" n="32"/>ինչ կ<abbr>րց</abbr> առնել․ այլ դ<abbr>ռնյ</abbr>ր յանյաղ<g ref="#techlig">թե</g>լի այլ խաղայր գնայր ի հոռոմ<fw type="catch" place="bottom">ոց <g ref="#asxarh">աշխարհ</g>ն։</fw> 
+<pb n="130"/>
+<lb xml:id="l102535874" n="1"/><milestone unit="section" n="496"/><hi rend="red">Ի</hi>սկ յորժամ փոխեցաւ թ<abbr>վկն</abbr>ն հայոց <num value="496">․դ՟ճ՟․ ղ՟զ՟․</num> ամին․ դ<abbr>րձել</abbr> 
+<lb xml:id="l102535875" n="2"/>գայ․ տէլիարխն զօրօք բ<abbr>զ</abbr>մօք․ և իջանէր ի <abbr>վր</abbr> ք<abbr>ղք</abbr>ին <abbr>դվ</abbr>նայ. 
+<lb xml:id="l102535876" n="3"/>և բ<abbr>զւ</abbr>մ չարչարանս․ և տագնապս գործեաց այնմ գաւառին․ 
+<lb xml:id="l102535877" n="4"/>սրով և գերու<abbr>բ</abbr> ապականեաց զ<abbr>ա</abbr>մ ազգն տաճկաց․ և դար<abbr>ձւ</abbr> 
+<lb xml:id="l102535878" n="5"/>աշխարհն յունաց․ խաղաղու<abbr>բ</abbr>։ 
+<lb xml:id="l102535879" n="6"/><hi rend="red">Յ</hi>այսմ թ<abbr>վկն</abbr>ու<abbr><g ref="#techlig">թե</g></abbr>ս հայոց․ ոմն պատրիկ․ անուն թոռնիկ․ ա֊
+<lb xml:id="l102535880" n="7"/>պստամբեաց ի <abbr>վր</abbr> մոնոմախին․ որ է՛ ի ք<abbr>ղք</abbr>էն անդռնապօլէս 
+<lb xml:id="l102535881" n="8"/>այր քաջ և հզօր․ և պ<abbr>տրզ</abbr>մօղ. և <abbr>սր</abbr> ժո<abbr>ղ</abbr>վ ա<abbr>րրլ</abbr> զ<abbr>ա</abbr>մ <g ref="#asxarh">աշխարհ</g>ն յարևմտից 
+<lb xml:id="l102535882" n="9"/>և զգնդից․ և ահագին բ<abbr>զ</abbr>մւ<abbr>բ</abbr> գայր ի կոս<abbr>տնդնւպ</abbr>լիս․ և ի մեծ տագ
+<lb xml:id="l102535884" n="10"/>նապ․ և ի նեղ<abbr>ւիս</abbr> արկանէր զ<abbr>քղ</abbr>քն. և թ<abbr>գր</abbr>ն ո՛չ իշխեաց ելանել ի 
+<lb xml:id="l102535885" n="11"/>պ<abbr>տրզ</abbr>մն․ և յայնչափ ձանձրացան ք<abbr>ղ</abbr>քն ի կոս<abbr>տնդնւ</abbr>պլիս ի պ<abbr>տրզ</abbr>մէն 
+<lb xml:id="l102535886" n="12"/>մինչև քարուկըրով կալան զդուռն ք<abbr>ղք</abbr>ին. և այնչափ ահագին 
+<lb xml:id="l102535887" n="13"/>ա<abbr>րրլ</abbr> զթոռնիկ զ<abbr>պտրզ</abbr>մն․ <abbr>մչ</abbr> զ<abbr>ս</abbr>բ անարծաթքն․ որ կայ արտաքոյ 
+<lb xml:id="l102535889" n="14"/>ք<abbr>ղք</abbr>ին քարի յատակ ար<abbr>ր</abbr>լ․ և զ<abbr>ա</abbr>մ բարին առ հ<abbr>սր</abbr>կ ի յովկիանոսն 
+<lb xml:id="l102535890" n="15"/>ընկէց զմեծ եկ<abbr>ղ</abbr>ցին զ<abbr>ս</abbr>բ վկայիցն։ 
+<lb xml:id="l102535891" n="16"/><hi rend="red ">Ի</hi>սկ թ<abbr>գր</abbr>ն մոնոմախ․ և <abbr>ա</abbr>մ իշխանքն․ ք<abbr>ղք</abbr>ին կոստնդն<abbr>ւպլս</abbr>ի 
+<lb xml:id="l102535892" n="17"/>յահ է՛ կալեալ․ և ելս իրացն ո՛չ կարէին գտանել․ և <g ref="#und">ընդ</g><abbr>դ</abbr>մ <abbr>քջ</abbr>ու<abbr>բ</abbr> 
+<lb xml:id="l102535893" n="18"/>թոռնիկս ոչ կարէին կեալ։ Իսկ պ<abbr>տ</abbr>րիագն․ և <abbr>ա</abbr>մ իշխանքն․ 
+<lb xml:id="l102535895" n="19"/>և թ<abbr>գր</abbr>ն․ խորհեցան չար խորհուրդ․ <abbr>վս</abbr> թոռնկա՛. և գրեցին երդ
+<lb xml:id="l102535897" n="20"/>մունս ահա<abbr>ւ</abbr>որս․ և սուտ․ և խափանօք երդուան թոռնկա<del><gap extent="1"/></del> 
+<lb xml:id="l102535898" n="21"/>դնել զնա՛ կեսառ. և զկնի մահուան․ մոնոմախին․ թոռնիկ լիցի թ<abbr>գ</abbr>
+<lb xml:id="l102535899" n="22"/>աւոր. և այ<abbr>պ</abbr>սի գրեցին․ և երդմամբ հաւատ ամր<abbr>ցւ</abbr>ցին զի<abbr>ւրն</abbr>ց․ 
+<lb xml:id="l102535901" n="23"/>նենգու<abbr>ի</abbr>ն. և ասէին <g ref="#tehlig">թէ</g> գտաք ի գիրս․ զի զկնի մահուան մոնոմա֊
+<lb xml:id="l102535902" n="24"/>խին․ դու նստցիս․ յաթ<abbr>ռ</abbr> թ<abbr>գր</abbr>ու<abbr>ե</abbr>ն․ և ելեալ պատրիարգն առ 
+<lb xml:id="l102535904" n="25"/>թոռնիկ․ և <abbr>քհնյ</abbr>ք և իշ<abbr>խն</abbr>քն․ և ե<abbr>րկրդլ</abbr> զերդումն առաջի թոռնկա՛․ 
+<lb xml:id="l102535905" n="26"/>և եղև սէր․ և խ<abbr>ղղւի</abbr>. և միաբան ածին զնա՛․ ի կոստ<abbr>նդնւպ</abbr>լիս. և յետ 
+<lb xml:id="l102535907" n="27"/>ս<abbr>կւ</abbr> աւուրց ուրացան զերդ<abbr>ւ</abbr>մն իւ<abbr>րց</abbr>․ և ուրացան միջնորդն <abbr>ա</abbr>ծ 
+<lb xml:id="l102535909" n="28"/><g ref="#orpes">որպէս</g> և սովոր են ազգն հոռոմոց երդ<abbr>մմ</abbr>բ կ<abbr>րւս</abbr>նել զ<abbr>ա</abbr>մ մեծամեծս <g ref="#asxarh">աշխարհ</g>ի 
+<lb xml:id="l102535910" n="29"/>և յ<abbr>նժ</abbr>մ <abbr>խւրցւց</abbr>ին զաչսն թոռնկա՛ զառն քաջի։ 
+<lb xml:id="l102535911" n="30"/><milestone unit="section" n="498"/><hi rend="red">Յայսմ <abbr>թվկն</abbr>ու<abbr><g ref="#techlig">թե</g></abbr>ս հայոց <num value="498">․դ՟ճ՟․ղ՟ը՟․</num> ամին․ յաւուրս մոնոմո֊</hi>
+<lb xml:id="l102535912" n="31"/><gap>խի</gap> կայսերն. որ նենգու<abbr>բ</abbr> և երդմամբ եբարձ զթ<abbr>գր</abbr>ւ<abbr>ին</abbr> հայոց․ 
+<lb xml:id="l102535913" n="32"/>ի յազգէ բ<abbr>գ</abbr>ր<abbr>տւնե</abbr>ց. յայսմ թ<abbr>գր</abbr>ու<abbr>ե</abbr>ս․ և ի հ<abbr>յր<g ref="#ptlig">պտ</g>ւ<g ref="#techlig">թե</g></abbr>ն<del rend="scribble">է</del> <abbr>տր</abbr> պետր<abbr>ս</abbr>ի <fw type="catch" place="bottom">հայ</fw>
+<pb n="131"/>
+<lb xml:id="l102536027" n="1"/>հայոց <abbr>կթղկ</abbr>սի․ զարթեաւ <abbr>ա</abbr>ծասաստ բարկ<abbr>ւի</abbr>ն ի տանէն պարսից 
+<lb xml:id="l102536028" n="2"/>հ<abbr>րմն</abbr>ւ տուղրէլ սուլտանին. և ելեալ <num value="2">․բ՟․</num> զօրապետք․ բազում 
+<lb xml:id="l102536029" n="3"/>զօրօք ի տիւանէ անտի․ որք անուանեալ ասէին․ աբրէէմ. և 
+<lb xml:id="l102536030" n="4"/>գթլմուշ. և անթիւ բ<abbr>զմ</abbr>ւբ գան ի յ<g ref="#asxarh">աշխարհ</g>ն հայոց․ <abbr>վ</abbr>ս ի ձե<abbr>ռց</abbr>ն հոռ
+<lb xml:id="l102536031" n="5"/>ոմոց․ գիտացին անտէ՛ր և ան<abbr>պհպ</abbr>ն․ զ<abbr>ա</abbr>մ <g ref="#asxarh">աշխարհ</g>ն հայոց. զի զարս քաջս 
+<lb xml:id="l102536032" n="6"/>և զհզօրս քակ<abbr>ել</abbr> հանին յ<abbr>րև</abbr>լից հոռոմք․ և կուրտ զօր<abbr>պտ</abbr>օք ջան
+<lb xml:id="l102536033" n="7"/>ային պահել զ<g ref="#asxarh">աշխարհ</g>ն հայոց. և զ<abbr>ա</abbr>մ տունն յ<abbr>րև</abbr>լից․ և ահա՛ այսմ ամի 
+<lb xml:id="l102536034" n="8"/>զօրք անօ<abbr>րն</abbr>ցն հասանէին ի հռ<abbr>չկւ</abbr>րսն և ի բ<abbr>զւ</abbr>մ անբոխ ք<abbr>ղ</abbr>ք հայոց․ 
+<lb xml:id="l102536035" n="9"/>որ կոչի արծն. և գտեալ ան<abbr>պր</abbr>իսպ զք<abbr>ղք</abbr>ն․ և անթիւ բ<abbr>զմ</abbr>ւբ լցեալ․ 
+<lb xml:id="l102536036" n="10"/>արանց և կանանց. և անհամար չափս ոսկւոյ և արծաթոյ․ և քա֊
+<lb xml:id="l102536037" n="11"/>ղաքացիքն տես<abbr>լ</abbr> զզօրսն այլազգեացն․ միաբան ի պ<abbr>տրզ</abbr>մ ելեալ 
+<lb xml:id="l102536038" n="12"/>և խմբեցաւ շուրջ զեզերօք ք<abbr>ղք</abbr>ին. սաստիկ և ահ<abbr>ւ</abbr>ր պ<abbr>տ</abbr>ե<abbr>րզ</abbr>մ. և 
+<lb xml:id="l102536039" n="13"/>եղև զմեծ ցա<abbr>ւ</abbr> անդ<abbr>ստն</abbr>քն․ վ<abbr>ս</abbr> զի ոչ գոյր <abbr>փխ<g ref="#ust">ըստ</g></abbr>եան․ և ոչ օ<abbr>գնկ</abbr>ն 
+<lb xml:id="l102536040" n="14"/>միայն զմահ ունէին յո՛յս. և ի բ<abbr>զմւ</abbr><g ref="#techlig">թե</g>նէ ան<abbr>օրն</abbr>ցն ձանձ<abbr>րց</abbr>ն զօրք 
+<lb xml:id="l102536041" n="15"/>ք<abbr>ղք</abbr>ին․ և ի փախուստ <abbr>դձ</abbr>ն․ և այլազգիկքն սրով ար<abbr>ձկց</abbr>ն ի վերայ 
+<lb xml:id="l102536042" n="16"/>ք<abbr>ղք</abbr>ին սաստիկ կոտ<abbr>րծ</abbr>վ առ հ<abbr>սր</abbr>կ ի ներքոյ սրոյ անց<abbr>ւց</abbr>ին զ<abbr>ա</abbr>մ քա֊
+<lb xml:id="l102536043" n="17"/>ղաքն․ իբրև զբիւրս <num value="15">․ժ՟ե՟</num>։ այլ զոսկոյ և արծ<abbr>թ</abbr>ոյ․ և զդեպակաց 
+<lb xml:id="l102536044" n="18"/>աւելոր<add place="above">դ</add> է ասել. վ<abbr>ս</abbr> զի ոչ արկանի <g ref="#und">ընդ</g> գրով. բ<abbr>յ</abbr>ց զայս բ<abbr>զ</abbr>մ անգամ 
+<lb xml:id="l102536045" n="19"/>լուեալ է մեր ի բազմաց․ Յ<abbr>ղգս</abbr> քորե<abbr>պս</abbr>ին․ որ ասէին դաւթուկ․ 
+<lb xml:id="l102536046" n="20"/>եթէ զգանձատունն <abbr>նմ</abbr>․ տունն ն<abbr>ր</abbr> <num value="806">․ը՟ճ՟․ և վեց</num> գիհ եզանց ելանէ
+<lb xml:id="l102536047" n="21"/>ին ի տանէ ն<abbr>ր</abbr>․ և կայր յ<abbr>նժ</abbr>մ <num value="800">․ը՟ճ՟․</num> եկ<abbr>ղց</abbr>ի․ ընդ պ<abbr>տր</abbr>գով։ և այ<g ref="#splig">սպ</g>իսիս 
+<lb xml:id="l102536048" n="22"/>դառն կոտորածիւս․ և չ<abbr>րչ</abbr>ր մահուամբս․ որով անցաւ վայելուչ 
+<lb xml:id="l102536049" n="23"/>և փ<abbr>ռ</abbr>ր ք<abbr>ղք</abbr>ն ա՛րծն․ և կամ <g ref="#orpes">որպէս</g> լալով ասացից զանցումն իշխանացն․ 
+<lb xml:id="l102536050" n="24"/>և <abbr>քհնյ</abbr>իցն․ որք անթողք կե<abbr>րկւ</abbr>ր գ<abbr>զն</abbr>ց լեալք․ և փ<abbr>ռ</abbr>ր կանայնք հն<abbr>դձ</abbr> 
+<lb xml:id="l102536051" n="25"/>տղայօքն․ վարեցան ի գերու<abbr>ի</abbr>․ <g ref="#asxarh">աշխարհ</g>ն պարսից․ յանգին ծ<abbr>ռ</abbr>յու<abbr>ի</abbr>․ և 
+<lb xml:id="l102536052" n="26"/>ահա՛ այս սկիզբն եղև հայոց կոր<abbr>ստնս</abbr>. լո՞ւր միտ դիք կատարածիս 
+<lb xml:id="l102536053" n="27"/>և յանցմանս <abbr>յրև</abbr>լից․ մի՛ առ մի․ յամ․ յամէ․ վ<abbr>ս</abbr> զի ա՞յս է <abbr>յռ</abbr>ջին ք<abbr>ղք</abbr> 
+<lb xml:id="l102536054" n="28"/>զոր առաւ սրով և գերու<abbr>բ</abbr> ի հայոց։ Իսկ յ<abbr>րժմ</abbr> լուաւ զչար 
+<lb xml:id="l102536055" n="29"/>համբաւս զայս՝ թ<abbr>գր</abbr>ն մոնոմախ. առ<abbr>քց</abbr> զզօրս յ<abbr>րև</abbr>լս․ և կարգեաց 
+<lb xml:id="l102536056" n="30"/>զօրագ<abbr>լւ</abbr>խ զօրացն զկամենն․ զգրիգոր վասակայ որդին․ և զլիպա֊
+<lb xml:id="l102536057" n="31"/>րիտն զեղբայր ռատին առն քաջին․ և բազում զօրօք հասա֊
+<lb xml:id="l102536058" n="32"/>նէին <g ref="#asxarh">աշխարհ</g>ն հայոց․ առ ի պատերազմել ընդ զօրսն պարսից։ 
+</ab>
+    </body>
+  </text>
+</TEI>

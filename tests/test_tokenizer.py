@@ -255,6 +255,12 @@ class Test (unittest.TestCase):
         for t in tokens:
             self.assertNotEqual(t['t'], "")
 
+    def test_del_gap_linened(self):
+        filename = self.testfiles['v913']
+        tokens = Tokenizer(milestone="496").from_file(filename)['tokens']
+        self.assertEqual("թոռնկա", tokens[177]['t'])
+        self.assertEqual("դնել", tokens[178]['t'])
+
     @unittest.skip("use only for debugging")
     def test_debug(self):
         filename = '/Users/tla/Projects/MatthewEdessa/transcription/tei-xml/M3071-merged.json.tei.xml'
