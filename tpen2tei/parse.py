@@ -47,6 +47,8 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     notes = []
     columns = {}
     xmlstring = ''
+    nblines = set()  # Keep track of the line IDs that occur mid-word
+    breaking = False
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
@@ -71,6 +73,10 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 lineid = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
                 if lineid is None:
                     raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
+                # Note whether the line break element will need a 'break' attribute
+                if breaking:
+                    nblines.add(lineid.group(1))
+                breaking = not transcription.endswith(' ')
                 if line['motivation'] == 'oad:transcribing':
                     # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
@@ -93,7 +99,10 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 if len(thetext) > 1:
                     xmlstring += '<cb n="%d"/>\n' % (cn + 1)
                 for ln, line in enumerate(col):
-                    xmlstring += '<lb xml:id="l%s" n="%d"/>%s\n' % (line[0], ln + 1, line[1])
+                    attrstring = 'xml:id="l%s" n="%d"' % (line[0], ln + 1)
+                    if line[0] in nblines:
+                        attrstring += ' break="no"'
+                    xmlstring += '<lb %s/>%s\n' % (attrstring, line[1])
             # Keep track of the number of columns.
             if len(thetext) in columns:
                 columns[len(thetext)].append(pn)

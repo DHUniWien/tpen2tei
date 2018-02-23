@@ -155,37 +155,39 @@ class Test (unittest.TestCase):
         trailing space on the original transcription line. Also check that
         line xml:id is being calculated correctly."""
 
-        # test results 'xml:id': ('n', 'trailing space)
-        test_results = {"l101276867": ("1", False), "l101276826": ("1", False),
+        # test results 'xml:id': ('n', 'non-breaking')
+        test_results = {"l101276867": ("1", False), "l101276826": ("1", True),
                         "l101276868": ("2", True), "l101276922": ("2", True),
-                        "l101276869": ("3", True), "l101276923": ("3", False),
-                        "l101276870": ("4", False), "l101276924": ("4", False),
-                        "l101276871": ("5", False), "l101276925": ("5", False),
-                        "l101276872": ("6", False), "l101276926": ("6", False),
+                        "l101276869": ("3", False), "l101276923": ("3", False),
+                        "l101276870": ("4", False), "l101276924": ("4", True),
+                        "l101276871": ("5", True), "l101276925": ("5", True),
+                        "l101276872": ("6", True), "l101276926": ("6", True),
                         "l101276873": ("7", True), "l101276834": ("7", True),
-                        "l101276874": ("8", False), "l101276927": ("8", True),
+                        "l101276874": ("8", False), "l101276927": ("8", False),
                         "l101276875": ("9", True), "l101276928": ("9", False),
-                        "l101276876": ("10", True), "l101276929": ("10", True),
-                        "l101280110": ("11", True), "l101276930": ("11", True),
-                        "l101276878": ("12", False), "l101276931": ("12", True),
-                        "l101276879": ("13", False), "l101276840": ("13", False),
-                        "l101276880": ("14", False), "l101276841": ("14", False),
+                        "l101276876": ("10", False), "l101276929": ("10", True),
+                        "l101280110": ("11", False), "l101276930": ("11", False),
+                        "l101276878": ("12", False), "l101276931": ("12", False),
+                        "l101276879": ("13", True), "l101276840": ("13", False),
+                        "l101276880": ("14", True), "l101276841": ("14", True),
                         "l101276881": ("15", True), "l101276932": ("15", True),
-                        "l101276882": ("16", True), "l101276843": ("16", True),
-                        "l101276883": ("17", True), "l101276933": ("17", False),
-                        "l101276884": ("18", False), "l101276845": ("18", False),
-                        "l101276885": ("19", False), "l101276934": ("19", False),
+                        "l101276882": ("16", False), "l101276843": ("16", False),
+                        "l101276883": ("17", False), "l101276933": ("17", False),
+                        "l101276884": ("18", False), "l101276845": ("18", True),
+                        "l101276885": ("19", True), "l101276934": ("19", True),
                         "l101276886": ("20", True), "l101276848": ("20", True),
-                        "l101276887": ("21", False), "l101276935": ("21", True),
-                        "l101276888": ("22", False), "l101276850": ("22", True),
+                        "l101276887": ("21", False), "l101276935": ("21", False),
+                        "l101276888": ("22", True), "l101276850": ("22", False),
                         "l101276889": ("23", True), "l101276936": ("23", False),
-                        "l101276890": ("24", False), "l101276937": ("24", False),
-                        "l101276891": ("25", False), "l101276853": ("25", False)}
+                        "l101276890": ("24", False), "l101276937": ("24", True),
+                        "l101276891": ("25", True), "l101276853": ("25", True)}
         unchecked_lines = {key for key in test_results.keys()}
 
         for parent_element in self.testdoc.getroot().iterfind(".//{{{:s}}}ab".format(self.tei_ns)):
+
             line_id = None
             line_text = ""
+            line_breaking = None
             for element in parent_element:
                 tag = element.tag
                 if tag in [self.ns_pb, self.ns_note]:
@@ -195,6 +197,7 @@ class Test (unittest.TestCase):
                 elif tag == self.ns_lb:
                     n = element.attrib.get('n')
                     line_id = element.attrib.get(self.ns_id)
+                    line_breaking = element.attrib.get('break')
                     self.assertTrue(line_id and line_id in test_results, 'Id not defined')
                     self.assertTrue(n, 'Number not defined')
 
@@ -210,13 +213,14 @@ class Test (unittest.TestCase):
                     self.assertTrue(line_id)
 
                     # check trailing spaces
-                    if line_text.endswith(" \n"):
-                        self.assertTrue(test_results.get(line_id)[1])
+                    if line_breaking == "no":
+                        self.assertTrue(test_results.get(line_id)[1], "false break value on %s" % line_id)
                     else:
-                        self.assertFalse(test_results.get(line_id)[1])
+                        self.assertFalse(test_results.get(line_id)[1], "true break value on %s" % line_id)
                     unchecked_lines.discard(line_id)
                     line_text = ""
                     line_id = None
+                    line_breaking = None
 
             self.assertEqual(0, len(unchecked_lines), "Test file seems incomplete!")
             break
