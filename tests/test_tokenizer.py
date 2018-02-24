@@ -39,10 +39,9 @@ class Test (unittest.TestCase):
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
         last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
-                 'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
+                 'page': {'n': '075v'}, 'line': {'break': 'no', 'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
-        self.assertEqual(313, len(tokens))
         origtext = 'եղբայրն ներսէսի ի կարմիր վանգն. և նա՛ յաջորդեաց ի հոռոմ կլայն. և յետ նր ներսէս մինչև ի ոհաննէս. ' \
                    'և յայնմ ժմկի դաւիթ անուն ոմն ձեռնադրեա՛լ մինչև ի ստեփա֊նոս որ գերեցաւ ի յեգիոս և ի սիս ձեռնա֊' \
                    'դրեալ կթղս. մինչև ցթումավդպտն. և բաժա֊նեա՛լ նր եղև աթոռն սահմանել յէջմիածին և զբունն ոչ ' \
@@ -65,6 +64,7 @@ class Test (unittest.TestCase):
                    'սամուսատ մերձ ի քղք ուռհայ։ Իսկ ի թուակա֊նութես ազգիս հայոց ի դ՟ճ՟ և ի ը՟ ամին, զօրա֊'
         tokentext = ' '.join(x['t'] for x in tokens)
         self.assertEqual(tokentext, origtext)
+        self.assertEqual(313, len(tokens))
 
     def test_witnessid(self):
         struct = Tokenizer(id_xpath='//t:msIdentifier/*/text()').from_etree(self.testdoc_noglyphs)

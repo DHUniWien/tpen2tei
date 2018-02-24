@@ -75,9 +75,9 @@ class Tokenizer:
         blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
         for block in blocks:
             tokens.extend(self._find_words(block, self.first_layer))
-        # Back to the top level: remove any empty tokens that were left over
-        # in case they were needed to close a seemingly incomplete word.
-        tokens = [t for t in tokens if not _is_blank(t)]
+        # Back to the top level: combine tokens based on join_* flags, and
+        # remove any leftover empty ones.
+        tokens = _join_tokens(tokens)
 
         # Now go through all the tokens and apply our function, if any, to normalise
         # the token.
@@ -87,11 +87,6 @@ class Tokenizer:
             except:
                 raise
             tokens = normed
-
-        # Account for the possibility that a space was forgotten at the end of the
-        # section or document
-        if len(tokens) > 0 and 'join_next' in tokens[-1]:
-            del tokens[-1]['join_next']
 
         return {'id': sigil, 'tokens': tokens}
 
@@ -115,26 +110,6 @@ class Tokenizer:
             child_tokens = self._find_words(child, first_layer)
             if len(child_tokens) == 0:
                 continue
-            if len(tokens) and 'join_next' in tokens[-1]:
-                # Try to combine the last of these with the first child token.
-                combolit = "<word>%s</word>" % (tokens[-1]['lit'] + child_tokens[0]['lit'])
-                try:
-                    etree.fromstring(combolit)
-                    # If this didn't cause an exception, merge the tokens
-                    prior = tokens[-1]
-                    partial = child_tokens.pop(0)
-                    prior['t'] += partial['t']
-                    prior['n'] += partial['n']
-                    # Now figure out 'lit'. Did the child have children?
-                    if child.text is None and len(child) == 0:
-                        # It's a milestone element. Stick it into 'lit'.
-                        prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
-                    prior['lit'] += partial['lit']
-                    if 'join_next' not in partial:
-                        del prior['join_next']
-                except etree.XMLSyntaxError:
-                    pass
-            # Add the remaining tokens onto our list.
             tokens.extend(child_tokens)
 
         # Now we handle our tag-specific logic, after the child text and child tags
@@ -154,15 +129,10 @@ class Tokenizer:
         if (_tag_is(element, 'del') and first_layer is False) \
                 or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
             # If we are looking at a del tag for the final layer, or an add tag for the
-            # first layer, discard all the tokens we just got, replacing them with either an
-            # empty joining token or nothing at all. TODO why the empty token?
+            # first layer, discard all the tokens we just got.
             if len(tokens):
-                final = tokens[-1]
-                if 'join_next' in final:
-                    tokens = [{'t': '', 'n': '', 'lit': '', 'join_next': True}]
-                else:
-                    tokens = []
-                    singlewordelement = False
+                tokens = []
+                singlewordelement = False
         elif _tag_is(element, 'abbr'):
             # Mark a sort of regular expression in the token data, for matching.
             if len(tokens) > 0:
@@ -176,10 +146,6 @@ class Tokenizer:
             for k in tokens[0]:
                 if k not in mytoken:
                     mytoken[k] = tokens[0][k]
-            if 'join_next' in tokens[-1]:
-                mytoken['join_next'] = True
-            elif 'join_next' in mytoken:
-                del mytoken['join_next']
             tokens = [mytoken]
 
         # Set the context on all the tokens created thus far
@@ -194,64 +160,58 @@ class Tokenizer:
         # Finally handle the tail text of this element, if any.
         # Our XML context is now the element's parent.
         if element.tail is not None:
-            # Strip any insignificant whitespace from the tail.
             tnode = element.tail
-            if re.match('.*\}[clp]b$', str(element.tag)):
-                tnode = re.sub('^[\s\n]*', '', element.tail, re.S)
+            # Strip newlines
+            tnode = tnode.rstrip('\n')
             if tnode != '':
                 self._split_text_node(element, tnode, tokens)
             # Set the outer context on all the new tokens created
             for t in tokens:
                 if 'context' not in t:
                     t['context'] = parentcontext
-
-        # Get rid of any final empty tokens, if there are preceding tokens.
-        if len(tokens) > 1 and _is_blank(tokens[-1]):
-            tokens.pop()
         return tokens
 
     def _split_text_node(self, context, tnode, tokens):
         if not self.INMILESTONE:
             return tokens
         ns = {'t': 'http://www.tei-c.org/ns/1.0'}
-        tnode = tnode.rstrip('\n')
         words = re.split('\s+', tnode)
-        # Filter out any blank spaces at the end (but not at the beginning! We may need the
-        # empty token to close out a join_next token that ends the outer layer.)
-        if words[-1] == '':
-            words.pop()
+        # Put joining flags on word texts, if they aren't preceded / followed
+        # by a space. These may be joined to empty tokens later.
+        jp = words[0] != ''
+        jn = words[-1] != ''
+        # Also check for non-breaking milestone elements in the context; in this
+        # case jp should be set regardless of space, and any preceding space in
+        # the tail should be discarded. If the milestone element is a breaking one,
+        # on the other hand, then the lack of
+        if context.attrib.get('break') == 'no':
+            jp = True
+            if words[0] == '':
+                words.pop(0)
         for word in words:
-            if len(tokens) and 'join_next' in tokens[-1]:
-                open_token = tokens.pop()
-                open_token['t'] += word
-                open_token['n'] += word
-                open_token['lit'] += word
-                del open_token['join_next']
-                tokens.append(open_token)
-            elif len(tokens) and word == '':
-                # In this case we can discard any blank-space token at the beginning.
-                continue
-            else:
-                token = {'t': word, 'n': word, 'lit': word}
-                # Put the word location into the token
-                divisions = {
-                    'section': ('./ancestor::t:div', 'div'),
-                    'paragraph': ('./ancestor::t:p', 'p'),
-                    'page': ('./preceding::t:pb[1]', 'pb'),
-                    'column': ('./preceding::t:cb[1]', 'cb'),
-                    'line': ('./preceding::t:lb[1]', 'lb')
-                }
-                for k in divisions.keys():
-                    xmlpath = divisions.get(k)
-                    mydiv = context.xpath(xmlpath[0], namespaces=ns)
-                    if _tag_is(context, xmlpath[1]):
-                        token[k] = _xmljson(context).get('attr')
-                    elif len(mydiv):
-                        token[k] = _xmljson(mydiv[-1]).get('attr')
-                # Stash the token
-                tokens.append(token)
-        if len(tokens) and re.search('\s+$', tnode) is None:
-            tokens[-1]['join_next'] = True
+            token = {'t': word, 'n': word, 'lit': word}
+            # Put the word location into the token
+            divisions = {
+                'section': ('./ancestor::t:div', 'div'),
+                'paragraph': ('./ancestor::t:p', 'p'),
+                'page': ('./preceding::t:pb[1]', 'pb'),
+                'column': ('./preceding::t:cb[1]', 'cb'),
+                'line': ('./preceding::t:lb[1]', 'lb')
+            }
+            for k in divisions.keys():
+                xmlpath = divisions.get(k)
+                mydiv = context.xpath(xmlpath[0], namespaces=ns)
+                if _tag_is(context, xmlpath[1]):
+                    token[k] = _xmljson(context).get('attr')
+                elif len(mydiv):
+                    token[k] = _xmljson(mydiv[-1]).get('attr')
+            # Stash the token
+            tokens.append(token)
+        if len(tokens):
+            if jp:  # Word 0 wasn't a space, so it should join to the previous reading
+                tokens[0]['join_prior'] = True
+            if jn:  # Word -1 wasn't a space, so it should join to the next reading
+                tokens[-1]['join_next'] = True
         return tokens
 
 
@@ -289,6 +249,57 @@ def _shortform(xmlstr):
         elif k in xmlstr and v is None:
             return xmlstr.replace(' xmlns="%s"' % k, '')
     return xmlstr
+
+# Helper function to compress a list of tokens based on their join flags
+
+def _join_tokens(tokenlist):
+    tokens = []
+    currtoken = None
+    for t in tokenlist:
+        joined = False
+        if currtoken is None:
+            currtoken = t
+            continue
+        if 'join_next' in currtoken or 'join_prior' in t:
+            currtoken = _combine(currtoken, t)
+            joined = True
+
+        if joined and 'join_next' not in t:
+            tokens.append(currtoken)
+            currtoken = None
+        elif not joined:
+            tokens.append(currtoken)
+            currtoken = t
+        # otherwise currtoken is kept for the next iteration.
+    if currtoken is not None:
+        tokens.append(currtoken)
+    tokens = [t for t in tokens if not _is_blank(t)]
+    # Remove the first and last join flags
+    if len(tokens) > 0:
+        tokens[0].pop('join_prior', None)
+        tokens[-1].pop('join_next', None)
+    return tokens
+
+def _combine(token1, token2):
+    combolit = "<word>%s</word>" % (token1['lit'] + token2['lit'])
+    try:
+        etree.fromstring(combolit)
+        # If this didn't cause an exception, merge the tokens
+        token1['t'] += token2['t']
+        token1['n'] += token2['n']
+        # Now figure out 'lit'. Did the child have children?
+        # if child.text is None and len(child) == 0:
+        #     # It's a milestone element. Stick it into 'lit'.
+        #     prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
+        token1['lit'] += token2['lit']
+        # Propagate the 'join_next' setting from token 2 to token 1
+        if 'join_next' in token2:
+            token1['join_next'] = True
+        else:
+            token1.pop('join_next', None)
+    except etree.XMLSyntaxError:
+        pass
+    return token1
 
 
 # Check to see if a token counts as blank
