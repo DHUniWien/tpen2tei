@@ -163,10 +163,6 @@ class Tokenizer:
                 else:
                     tokens = []
                     singlewordelement = False
-        elif _tag_is(element, 'abbr'):
-            # Mark a sort of regular expression in the token data, for matching.
-            if len(tokens) > 0:
-                tokens[0]['re'] = '.*%s.*' % '.*'.join(tokens[0]['t'])
         elif _tag_is(element, 'num'):
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
