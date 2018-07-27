@@ -14,6 +14,7 @@ class Tokenizer:
     * milestone: Restrict the output to text between the given milestone ID and the next.
     * first_layer: Instead of using the final layer (e.g. <add> tags, use the first (a.c.)
       layer of the text (e.g. <del> tags).
+    * punctuation: A list of punctuation characters that should be split into its own tokens.
     * normalisation: A function that takes a token and rewrites that token's normalised form,
       if desired.
     * id_xpath: An XPath expression that returns a string that should be used as the manuscript's
@@ -24,17 +25,19 @@ class Tokenizer:
     MILESTONE = None
     INMILESTONE = True
     first_layer = None
+    punctuation = None
     normalisation = None
     id_xpath = None
     xml_doc = None
 
-    def __init__(self, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
+    def __init__(self, milestone=None, first_layer=False, punctuation=None, normalisation=None, id_xpath=None):
         if milestone is not None:
             self.MILESTONE = milestone
             self.INMILESTONE = False
         self.first_layer = first_layer
         self.normalisation = normalisation
         self.id_xpath = id_xpath
+        self.punctuation = punctuation
 
     def from_file(self, xmlfile, encoding='utf-8'):
         with open(xmlfile, encoding=encoding) as fh:
@@ -90,8 +93,8 @@ class Tokenizer:
 
         # Account for the possibility that a space was forgotten at the end of the
         # section or document
-        if len(tokens) > 0 and 'join_next' in tokens[-1]:
-            del tokens[-1]['join_next']
+        if len(tokens) > 0 and 'continue' in tokens[-1]:
+            del tokens[-1]['continue']
 
         return {'id': sigil, 'tokens': tokens}
 
@@ -115,7 +118,7 @@ class Tokenizer:
             child_tokens = self._find_words(child, first_layer)
             if len(child_tokens) == 0:
                 continue
-            if len(tokens) and 'join_next' in tokens[-1]:
+            if len(tokens) and 'continue' in tokens[-1]:
                 # Try to combine the last of these with the first child token.
                 combolit = "<word>%s</word>" % (tokens[-1]['lit'] + child_tokens[0]['lit'])
                 try:
@@ -130,8 +133,8 @@ class Tokenizer:
                         # It's a milestone element. Stick it into 'lit'.
                         prior['lit'] += _shortform(etree.tostring(child, encoding='unicode', with_tail=False))
                     prior['lit'] += partial['lit']
-                    if 'join_next' not in partial:
-                        del prior['join_next']
+                    if 'continue' not in partial:
+                        del prior['continue']
                 except etree.XMLSyntaxError:
                     pass
             # Add the remaining tokens onto our list.
@@ -158,24 +161,32 @@ class Tokenizer:
             # empty joining token or nothing at all. TODO why the empty token?
             if len(tokens):
                 final = tokens[-1]
-                if 'join_next' in final:
-                    tokens = [{'t': '', 'n': '', 'lit': '', 'join_next': True}]
+                if 'continue' in final:
+                    tokens = [{'t': '', 'n': '', 'lit': '', 'continue': True}]
                 else:
                     tokens = []
                     singlewordelement = False
         elif _tag_is(element, 'num'):
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
-                       't': ' '.join([x['t'] for x in tokens]),
-                       'lit': ' '.join([x['lit'] for x in tokens])
+                       't': tokens_to_string(tokens),
+                       'lit': tokens_to_string(tokens, field='lit')
                        }
+            # Replicate whatever metadata has been assigned to the first token, apart from
+            # joining flags which are a special case.
             for k in tokens[0]:
-                if k not in mytoken:
+                if k not in mytoken and not k.startswith('join'):
                     mytoken[k] = tokens[0][k]
+            # Deal with the continue flag if we have one
+            if 'continue' in tokens[-1]:
+                mytoken['continue'] = True
+            elif 'continue' in mytoken:
+                del mytoken['continue']
+            # Deal with the joining flags if we have them
+            if 'join_prior' in tokens[0]:
+                mytoken['join_prior'] = tokens[0]['join_prior']
             if 'join_next' in tokens[-1]:
-                mytoken['join_next'] = True
-            elif 'join_next' in mytoken:
-                del mytoken['join_next']
+                mytoken['join_next'] = tokens[-1]['join_next']
             tokens = [mytoken]
 
         # Set the context on all the tokens created thus far
@@ -209,45 +220,71 @@ class Tokenizer:
     def _split_text_node(self, context, tnode, tokens):
         if not self.INMILESTONE:
             return tokens
-        ns = {'t': 'http://www.tei-c.org/ns/1.0'}
         tnode = tnode.rstrip('\n')
         words = re.split('\s+', tnode)
         # Filter out any blank spaces at the end (but not at the beginning! We may need the
-        # empty token to close out a join_next token that ends the outer layer.)
+        # empty token to close out a 'continue' token that ends the outer layer.)
+        join_last = True
         if words[-1] == '':
             words.pop()
+            join_last = False
+        # If we are splitting punctuation into separate tokens then we have to iterate through
+        # the words twice in order to do this, and record joining flags as we go.
+        pregexstr = ''
+        pregex = None
+        if self.punctuation:
+            for x in self.punctuation:
+                pregexstr += x
+            pregex = re.compile("([{}]+)?([^{}]+)([{}]+)?".format(pregexstr, pregexstr, pregexstr))
+        tstrings = []
         for word in words:
-            if len(tokens) and 'join_next' in tokens[-1]:
+            wtuple = (None, word, None)
+            if self.punctuation:
+                # Make the regex that looks for punctuation.
+                wmatch = pregex.fullmatch(word)
+                if wmatch is not None:
+                    wtuple = wmatch.groups()
+            if wtuple[0] is not None:
+                tstrings.append((wtuple[0], 'join_next'))
+            if wtuple[1] is not None:
+                tstrings.append((wtuple[1], None))
+            if wtuple[2] is not None:
+                tstrings.append((wtuple[2], 'join_prior'))
+
+        # Now iterate through the token string tuples, to make the actual tokens.
+        for tstr in tstrings:
+            word = tstr[0]
+            flag = tstr[1]
+            if len(tokens) and 'continue' in tokens[-1]:
+                # If the previous token is flagged as a continuation, we append the first
+                # of our tstrings to it...unless the tstring is punctuation, and that punctuation
+                # should be a separate token!
                 open_token = tokens.pop()
-                open_token['t'] += word
-                open_token['n'] += word
-                open_token['lit'] += word
-                del open_token['join_next']
+                new_token = None
+                if flag == 'join_prior' or (pregexstr != '' and re.fullmatch("[{}]".format(pregexstr), word)):
+                    # We make a new token.
+                    new_token = _make_token(context, word, 'join_prior')
+                else:
+                    # We modify the existing token.
+                    open_token['t'] += word
+                    open_token['n'] += word
+                    open_token['lit'] += word
+                    if flag is not None:
+                        open_token[flag] = True
+                # Either way, we remove the continue flag
+                del open_token['continue']
+                # and we add back the open token, as well as the new one if applicable.
                 tokens.append(open_token)
+                if new_token is not None:
+                    tokens.append(new_token)
             elif len(tokens) and word == '':
                 # In this case we can discard any blank-space token at the beginning.
                 continue
             else:
-                token = {'t': word, 'n': word, 'lit': word}
-                # Put the word location into the token
-                divisions = {
-                    'section': ('./ancestor::t:div', 'div'),
-                    'paragraph': ('./ancestor::t:p', 'p'),
-                    'page': ('./preceding::t:pb[1]', 'pb'),
-                    'column': ('./preceding::t:cb[1]', 'cb'),
-                    'line': ('./preceding::t:lb[1]', 'lb')
-                }
-                for k in divisions.keys():
-                    xmlpath = divisions.get(k)
-                    mydiv = context.xpath(xmlpath[0], namespaces=ns)
-                    if _tag_is(context, xmlpath[1]):
-                        token[k] = _xmljson(context).get('attr')
-                    elif len(mydiv):
-                        token[k] = _xmljson(mydiv[-1]).get('attr')
-                # Stash the token
+                token = _make_token(context, word, flag)
                 tokens.append(token)
-        if len(tokens) and re.search('\s+$', tnode) is None:
-            tokens[-1]['join_next'] = True
+        if len(tokens) and join_last:
+            tokens[-1]['continue'] = True
         return tokens
 
 
@@ -287,6 +324,29 @@ def _shortform(xmlstr):
     return xmlstr
 
 
+def _make_token(context, ttext, flag):
+    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+    token = {'t': ttext, 'n': ttext, 'lit': ttext}
+    if flag is not None:
+        token[flag] = True
+    # Put the word location into the token
+    divisions = {
+        'section': ('./ancestor::t:div', 'div'),
+        'paragraph': ('./ancestor::t:p', 'p'),
+        'page': ('./preceding::t:pb[1]', 'pb'),
+        'column': ('./preceding::t:cb[1]', 'cb'),
+        'line': ('./preceding::t:lb[1]', 'lb')
+    }
+    for k in divisions.keys():
+        xmlpath = divisions.get(k)
+        mydiv = context.xpath(xmlpath[0], namespaces=ns)
+        if _tag_is(context, xmlpath[1]):
+            token[k] = _xmljson(context).get('attr')
+        elif len(mydiv):
+            token[k] = _xmljson(mydiv[-1]).get('attr')
+    return token
+
+
 # Check to see if a token counts as blank
 def _is_blank(token):
     if token['n'] != '':
@@ -296,6 +356,18 @@ def _is_blank(token):
     # if token['lit'] != '':
     #     return False
     return True
+
+
+def tokens_to_string(tokenlist, field="t"):
+    tstr = ""
+    joining = False
+    for t in tokenlist:
+        if t.get('join_prior', False) or tstr == "" or joining:
+            tstr += t.get(field)
+        else:
+            tstr += " " + t.get(field)
+        joining = t.get('join_next', False)
+    return tstr
 
 
 if __name__ == '__main__':

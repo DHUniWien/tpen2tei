@@ -3,12 +3,13 @@ __author__ = 'tla'
 import unittest
 
 from tpen2tei.parse import from_sc
-from tpen2tei.wordtokenize import Tokenizer
+from tpen2tei.wordtokenize import Tokenizer, tokens_to_string
 from lxml.etree import fromstring, XMLSyntaxError
 from json.decoder import JSONDecodeError
 
 from config import config as config
 import helpers
+import re
 
 class Test (unittest.TestCase):
 
@@ -63,7 +64,7 @@ class Test (unittest.TestCase):
                    'ռակամանոս, ա՛յր զօրաւոր և քաջ. և ի դուռըն քաղաքին բախէին զմիմեանս և աւուր յայնմիկ հարին ' \
                    'տաճկունք զօրսն հոռոմոց և արարին կոտորած առ դրան քաղաքին. և յե՛տ աւուրց ինչ առաւ քաղաքն ' \
                    'սամուսատ մերձ ի քղք ուռհայ։ Իսկ ի թուակա֊նութես ազգիս հայոց ի դ՟ճ՟ և ի ը՟ ամին, զօրա֊'
-        tokentext = ' '.join(x['t'] for x in tokens)
+        tokentext = tokens_to_string(tokens)
         self.assertEqual(tokentext, origtext)
 
     def test_witnessid(self):
@@ -260,6 +261,42 @@ class Test (unittest.TestCase):
         tokens = Tokenizer(milestone="496").from_file(filename)['tokens']
         self.assertEqual("թոռնկա", tokens[177]['t'])
         self.assertEqual("դնել", tokens[178]['t'])
+
+    def test_custom_tokenizer(self):
+        """Test that a custom tokenizer does its job."""
+        mypunct = [',', '.', '։']
+        tokens = Tokenizer(punctuation=mypunct).from_etree(self.testdoc_noglyphs)['tokens']
+        first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
+                 'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
+        last = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
+                'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
+        self.assertEqual(tokens[0], first)
+        self.assertEqual(tokens[-1], last)
+        self.assertEqual(347, len(tokens))
+        self.assertEqual(4, len([x for x in tokens if x.get('t') == "։"]))
+        self.assertEqual(12, len([x for x in tokens if x.get('t') == ","]))
+        self.assertEqual(18, len([x for x in tokens if x.get('t') == "."]))
+        origtext = 'եղբայրն ներսէսի ի կարմիր վանգն. և նա՛ յաջորդեաց ի հոռոմ կլայն. և յետ նր ներսէս մինչև ի ոհաննէս. ' \
+                   'և յայնմ ժմկի դաւիթ անուն ոմն ձեռնադրեա՛լ մինչև ի ստեփա֊նոս որ գերեցաւ ի յեգիոս և ի սիս ձեռնա֊' \
+                   'դրեալ կթղս. մինչև ցթումավդպտն. և բաժա֊նեա՛լ նր եղև աթոռն սահմանել յէջմիածին և զբունն ոչ ' \
+                   'խափանեալ զի դեռևս կենդա֊նի էր կաթղսն սըսա՛. զի ի լուսաւորչէն մինչև ի նայ էր հասեալ կթղսութի. և ' \
+                   'նա՛ ոչ եղև, քաղաքն զօրավար եդաք և անտի կամեցաք զի նա՛ դեռևս կենդանի էր։ թ. եղբայրք զա֊' \
+                   'քարիայ և իւանա՛ դարձաւ վրացի և եղբայրըն ոչ. նա՛ խնդրէր վրան զի պատարագ ա֊րասցեն։ Իսկ ընդ ' \
+                   'աւուրսն ընդ այնոսիկ, և ի ամին ն՟ա՟. եղև սով սաստիկ ի բզմ տեղիս. բայց յաշխարհն հարաւոյ ի յերկրին ' \
+                   'տաճկա՛ց եղև նեղութի մեծ և առաւել քան զամ ի միջա֊գետս. և ի խստութե սովոյն տագնապ և տատանում ' \
+                   'լինէր ի բզմ տեղիս, և ի հռչա֊կաւոր մայրաքղքն ուռհայ, զորս կանգընեաց տիգրան արքայ հայոց և կացեալ ' \
+                   'սովն յա՛յնմ աշխարհին զա՛մս .է՟. և անթիւ լինէր կոտո֊րածն յերեսաց սովոյն այն. և աշխարհին տաճըկաց ' \
+                   'լինէր անցումն մեծ և քրիստոնէիցն անթիւք մեռան յերեսաց բարկութե սովոյն. և զկնի ե ամի եկեալ մորեխ ' \
+                   'յայնմ գաւա֊ռէն որպ զաւազ ծովու և ապականեաց, զըերկիր. և սաստկանայր սովն առաւել քան զըառաւեն, և ' \
+                   'զայրացեալ բազմացան և գա֊զանաբար անողորմ յարձակեալ զմիմեանսս ուտէին, և իշխանքն և մեծամեծքն ' \
+                   'ընդաւք և մըրգաւք կերակրէին. և եղև անցումն ա֊նասնոցն. բզմ գեղք և գաւառք յանմարդ լինէին, և այլ ոչ ' \
+                   'շինեցան մինչև ցայսօր ժամկի։ Դարձլ ի թվականութես հայոց ի ն՟ և է՟. ամին զօրա՛ժողով լինէր ազգն ' \
+                   'արապկաց ուռհայ և ամ եդեսացոց աշխարհն ահա֊գին բազմութբ անցխալ ընդ մեծ գետն եփրատ և եկեա՛լ ի վր ' \
+                   'ամուր քաղաքին որ կոչի սամուսատ. և ելանէր ի պտզմն, զօրապե֊տըն հոռոմոց, որում անուն ասէին պա֊' \
+                   'ռակամանոս, ա՛յր զօրաւոր և քաջ. և ի դուռըն քաղաքին բախէին զմիմեանս և աւուր յայնմիկ հարին ' \
+                   'տաճկունք զօրսն հոռոմոց և արարին կոտորած առ դրան քաղաքին. և յե՛տ աւուրց ինչ առաւ քաղաքն ' \
+                   'սամուսատ մերձ ի քղք ուռհայ։ Իսկ ի թուակա֊նութես ազգիս հայոց ի դ՟ճ՟ և ի ը՟ ամին, զօրա֊'
+        self.assertEqual(origtext, tokens_to_string(tokens))
 
     @unittest.skip("use only for debugging")
     def test_debug(self):
