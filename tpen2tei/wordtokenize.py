@@ -63,12 +63,13 @@ class Tokenizer:
 
         ns = {'t': 'http://www.tei-c.org/ns/1.0'}
 
-        # Extract a witness ID from the XML
+        # Extract a witness ID from the XML. Remove any extraneous spaces
+        # from the value(s) selected by the XPath expression.
         sigil = "TEI MS"
         if self.id_xpath is not None:
             ids = xml_object.xpath(self.id_xpath, namespaces=ns)
             if len(ids):
-                sigil = ' '.join(ids)
+                sigil = ' '.join([x.rstrip().lstrip() for x in ids])
 
         # Extract the text itself from the XML
         thetext = xml_object.xpath('//t:text', namespaces=ns)[0]

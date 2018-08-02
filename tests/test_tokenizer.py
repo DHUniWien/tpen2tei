@@ -74,6 +74,10 @@ class Test (unittest.TestCase):
         struct = Tokenizer(id_xpath='//t:msDesc/@xml:id').from_etree(self.testdoc_noglyphs)
         self.assertEqual(struct['id'], 'F')
 
+        filename = self.testfiles['v913']
+        struct = Tokenizer(id_xpath='//t:msDesc/@xml:id', milestone="496").from_file(filename)
+        self.assertEquals(struct['id'], "Y")
+
 
     def test_glyphs(self):
         """Test the correct detection and rendering of glyphs. The characters in
