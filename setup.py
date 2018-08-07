@@ -6,7 +6,8 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.0',
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
 
     description='A module for conversion of SC-JSON transcription data to TEI XML',
 
