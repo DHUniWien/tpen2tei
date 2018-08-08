@@ -9,7 +9,7 @@ setup(
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
 
-    description='A module for conversion of SC-JSON transcription data to TEI XML',
+    description='A module for conversion of SharedCanvas-JSON transcription data to TEI XML',
 
     # The project's main homepage.
     url='https://github.com/DHUniWien/tpen2tei',
@@ -33,5 +33,6 @@ setup(
 
     keywords='TEI-XML SC-JSON manuscript transcription',
     packages=find_packages(exclude=['contrib', 'tests']),
-    install_requires=['lxml']
+    install_requires=['lxml'],
+    python_requires='>3'
 )
