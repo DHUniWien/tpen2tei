@@ -1,15 +1,41 @@
 from setuptools import setup, find_packages
+import os.path
 
+# Version comes from a file 'version' in the main directory, if it
+# exists; otherwise it has a sensible (but probably wrong) default
+def readversion():
+    try:
+        with open('version') as f:
+            return f.read().rstrip()
+    except IOError:
+        return "1.0.0"
+
+
+# Long description comes from the README
+def readme():
+    try:
+        with open('README.md') as f:
+            return f.read()
+    except IOError:
+        return "The long description appears to be missing."
+
+
+# History comes from git log
+def history():
+    try:
+        with open('HISTORY.md') as f:
+            return "HISTORY\n=======\n\n" + f.read()
+    except IOError:
+        return ""
+
+
+# The meat
 setup(
     name='tpen2tei',
-
-    # Versions should comply with PEP440.  For a discussion on single-sourcing
-    # the version across setup.py and the project code, see
-    # https://packaging.python.org/en/latest/single_source_version.html
-    use_scm_version=True,
-    setup_requires=['setuptools_scm'],
-
+    version=readversion(),
     description='A module for conversion of SharedCanvas-JSON transcription data to TEI XML',
+    long_description=readme() + "\n\n" + history(),
+    long_description_content_type="text/markdown",
 
     # The project's main homepage.
     url='https://github.com/DHUniWien/tpen2tei',
