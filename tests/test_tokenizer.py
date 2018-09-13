@@ -165,6 +165,7 @@ class Test (unittest.TestCase):
 
     def test_normalisation(self):
         """Test that passing a normalisation function works as intended"""
+        orig_count = len(Tokenizer(milestone='401').from_etree(self.testdoc)['tokens'])
         tok = Tokenizer(milestone='401', normalisation=helpers.normalise)
         tokens = tok.from_etree(self.testdoc)['tokens']
         normal = {0: 'իսկ',
@@ -176,6 +177,8 @@ class Test (unittest.TestCase):
                   43: 'հռչակօոր'}
         for i, n in normal.items():
             self.assertEqual(tokens[i]['n'], n)
+        # See if our blanked-out token was removed from the stream
+        self.assertEqual(len(tokens), orig_count - 1)
 
         tok = Tokenizer(milestone='407', normalisation=helpers.bad_normalise)
         try:

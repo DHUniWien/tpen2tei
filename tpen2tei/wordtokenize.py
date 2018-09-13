@@ -90,7 +90,7 @@ class Tokenizer:
                 normed = [self.normalisation(t) for t in tokens]
             except:
                 raise
-            tokens = normed
+            tokens = [n for n in normed if not _is_blank(n)]
 
         # Account for the possibility that a space was forgotten at the end of the
         # section or document
