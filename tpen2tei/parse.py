@@ -118,27 +118,7 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
         message = "Parsing error in the JSON: %s\n" % e.msg
         # This is an option, not default, to reduce the amount of XML parsing error data generated.
         if metadata.get('short_error', False):
-            # Figure out where the error is
-            txlines = txdata.splitlines()
-            problemstart = e.position[0] - 1
-            # Is it an error that spans multiple lines? If so figure out where it starts
-            tagmismatch = re.search('Opening and ending tag mismatch: \w+ line (\d+)', e.msg)
-            if tagmismatch is not None:
-                problemstart = int(tagmismatch.group(1)) - 1
-            # Look up the page where the error starts
-            pagestart = problemstart
-            for i in range(problemstart, -1, -1):
-                if '<pb n=' in txlines[i]:
-                    pagestart = i
-                    break
-            diagnostic_loc = ["%d: %s" % (i + 1, txlines[i]) for i in range(pagestart, e.position[0])]
-            if e.position[0] - problemstart > 100:
-                # Restrict the output to the single page of the problem
-                for i in range(1, len(diagnostic_loc)):
-                    if '<pb n=' in diagnostic_loc[i]:
-                        diagnostic_loc = diagnostic_loc[:i]
-                        break
-            message += "Affected portion of XML is %s" % '\n'.join(diagnostic_loc)
+            message += _show_parsing_short_error(e, txdata)
         else:
             message += "Full string was %s" % txdata
         safeerrmsg(message)
@@ -253,6 +233,30 @@ def _get_glyph(gname, special_chars):
     return glyph_el
 
 
+def _show_parsing_short_error(e, st):
+    # Figure out where the error is
+    txlines = st.splitlines()
+    problemstart = e.position[0] - 1
+    # Is it an error that spans multiple lines? If so figure out where it starts
+    tagmismatch = re.search('Opening and ending tag mismatch: \w+ line (\d+)', e.msg)
+    if tagmismatch is not None:
+        problemstart = int(tagmismatch.group(1)) - 1
+    # Look up the page where the error starts
+    pagestart = problemstart
+    for i in range(problemstart, -1, -1):
+        if '<pb n=' in txlines[i]:
+            pagestart = i
+            break
+    diagnostic_loc = ["%d: %s" % (i + 1, txlines[i]) for i in range(pagestart, e.position[0])]
+    if e.position[0] - problemstart > 100:
+        # Restrict the output to the single page of the problem
+        for i in range(1, len(diagnostic_loc)):
+            if '<pb n=' in diagnostic_loc[i]:
+                diagnostic_loc = diagnostic_loc[:i]
+                break
+    return "Affected portion of XML is %s" % '\n'.join(diagnostic_loc)
+
+
 def safeerrmsg(message):
     if sys.platform.startswith("win"):
         sys.stdout.buffer.write(message.encode(sys.getdefaultencoding()))
@@ -324,7 +328,10 @@ def _tei_wrap(content, metadata, glyphs):
     tei.addprevious(schema)
     # Now that we've done this, serialize and re-parse the entire TEI doc
     # so that the namespace functionality works.
-    tei_doc = etree.parse(BytesIO(etree.tostring(tei_doc)))
+    try:
+        tei_doc = etree.parse(BytesIO(etree.tostring(tei_doc)))
+    except etree.XMLSyntaxError as e:
+        safeerrmsg(_show_parsing_short_error(e, etree.tostring(tei_doc, encoding="utf-8").decode('utf-8')))
     return tei_doc
 
 
