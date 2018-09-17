@@ -60,5 +60,10 @@ def bad_normalise(token):
 
 
 def tpen_filter(st):
-    result = st.replace('_', '֊').replace('“', '"').replace('”', '"').replace(',', '.')
+    result = st.replace(
+        '_', '֊').replace(
+        '“', '"').replace(
+        '”', '"').replace(
+        ',', '.').replace(
+        '։', ':').replace('<p/>', '</p><p>')
     return result
