@@ -14,6 +14,7 @@ class Tokenizer:
     * milestone: Restrict the output to text between the given milestone ID and the next.
     * first_layer: Instead of using the final layer (e.g. <add> tags, use the first (a.c.)
       layer of the text (e.g. <del> tags).
+    * punctuation: A list of punctuation characters that should be split into its own tokens.
     * normalisation: A function that takes a token and rewrites that token's normalised form,
       if desired.
     * id_xpath: An XPath expression that returns a string that should be used as the manuscript's
@@ -24,17 +25,19 @@ class Tokenizer:
     MILESTONE = None
     INMILESTONE = True
     first_layer = None
+    punctuation = None
     normalisation = None
     id_xpath = None
     xml_doc = None
 
-    def __init__(self, milestone=None, first_layer=False, normalisation=None, id_xpath=None):
+    def __init__(self, milestone=None, first_layer=False, punctuation=None, normalisation=None, id_xpath=None):
         if milestone is not None:
             self.MILESTONE = milestone
             self.INMILESTONE = False
         self.first_layer = first_layer
         self.normalisation = normalisation
         self.id_xpath = id_xpath
+        self.punctuation = punctuation
 
     def from_file(self, xmlfile, encoding='utf-8'):
         with open(xmlfile, encoding=encoding) as fh:
@@ -60,12 +63,13 @@ class Tokenizer:
 
         ns = {'t': 'http://www.tei-c.org/ns/1.0'}
 
-        # Extract a witness ID from the XML
+        # Extract a witness ID from the XML. Remove any extraneous spaces
+        # from the value(s) selected by the XPath expression.
         sigil = "TEI MS"
         if self.id_xpath is not None:
             ids = xml_object.xpath(self.id_xpath, namespaces=ns)
             if len(ids):
-                sigil = ' '.join(ids)
+                sigil = ' '.join([x.rstrip().lstrip() for x in ids])
 
         # Extract the text itself from the XML
         thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
@@ -86,7 +90,12 @@ class Tokenizer:
                 normed = [self.normalisation(t) for t in tokens]
             except:
                 raise
-            tokens = normed
+            tokens = [n for n in normed if not _is_blank(n)]
+
+        # Account for the possibility that a space was forgotten at the end of the
+        # section or document
+        if len(tokens) > 0 and 'continue' in tokens[-1]:
+            del tokens[-1]['continue']
 
         return {'id': sigil, 'tokens': tokens}
 
@@ -140,11 +149,13 @@ class Tokenizer:
         elif _tag_is(element, 'num'):
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
-                       't': ' '.join([x['t'] for x in tokens]),
-                       'lit': ' '.join([x['lit'] for x in tokens])
+                       't': tokens_to_string(tokens),
+                       'lit': tokens_to_string(tokens, field='lit')
                        }
+            # Replicate whatever metadata has been assigned to the first token, apart from
+            # joining flags which are a special case.
             for k in tokens[0]:
-                if k not in mytoken:
+                if k not in mytoken and not k.startswith('join'):
                     mytoken[k] = tokens[0][k]
             tokens = [mytoken]
 
@@ -302,6 +313,29 @@ def _combine(token1, token2):
     return token1
 
 
+def _make_token(context, ttext, flag):
+    ns = {'t': 'http://www.tei-c.org/ns/1.0'}
+    token = {'t': ttext, 'n': ttext, 'lit': ttext}
+    if flag is not None:
+        token[flag] = True
+    # Put the word location into the token
+    divisions = {
+        'section': ('./ancestor::t:div', 'div'),
+        'paragraph': ('./ancestor::t:p', 'p'),
+        'page': ('./preceding::t:pb[1]', 'pb'),
+        'column': ('./preceding::t:cb[1]', 'cb'),
+        'line': ('./preceding::t:lb[1]', 'lb')
+    }
+    for k in divisions.keys():
+        xmlpath = divisions.get(k)
+        mydiv = context.xpath(xmlpath[0], namespaces=ns)
+        if _tag_is(context, xmlpath[1]):
+            token[k] = _xmljson(context).get('attr')
+        elif len(mydiv):
+            token[k] = _xmljson(mydiv[-1]).get('attr')
+    return token
+
+
 # Check to see if a token counts as blank
 def _is_blank(token):
     if token['n'] != '':
@@ -311,6 +345,18 @@ def _is_blank(token):
     # if token['lit'] != '':
     #     return False
     return True
+
+
+def tokens_to_string(tokenlist, field="t"):
+    tstr = ""
+    joining = False
+    for t in tokenlist:
+        if t.get('join_prior', False) or tstr == "" or joining:
+            tstr += t.get(field)
+        else:
+            tstr += " " + t.get(field)
+        joining = t.get('join_next', False)
+    return tstr
 
 
 if __name__ == '__main__':

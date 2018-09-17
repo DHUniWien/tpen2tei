@@ -49,6 +49,8 @@ def normalise(token):
         st = token['n'].lower().replace('եւ', 'և').replace('աւ', 'օ')
         st = re.sub(r'[\W]', '', st)
         token['n'] = st
+    if token['t'] == "կանգընեաց":
+        token = {'t': '', 'n': '', 'lit':''}
     return token
 
 
