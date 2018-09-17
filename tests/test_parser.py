@@ -9,7 +9,7 @@ import io
 __author__ = 'tla'
 
 
-class Test (unittest.TestCase):
+class Test(unittest.TestCase):
 
     def setUp(self):
         settings = config()
@@ -19,8 +19,10 @@ class Test (unittest.TestCase):
         self.xml_ns = settings['namespaces']['xml']
 
         self.ns_id = '{{{:s}}}id'.format(self.xml_ns)
+        self.ns_ab = '{{{:s}}}ab'.format(self.tei_ns)
         self.ns_lb = '{{{:s}}}lb'.format(self.tei_ns)
         self.ns_note = '{{{:s}}}note'.format(self.tei_ns)
+        self.ns_p = '{{{:s}}}p'.format(self.tei_ns)
         self.ns_pb = "{{{:s}}}pb".format(self.tei_ns)
         self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
 
@@ -45,28 +47,48 @@ class Test (unittest.TestCase):
         self.assertIsNotNone(self.testdoc.getroot())
         self.assertEqual(self.testdoc.getroot().tag, '{{{:s}}}TEI'.format(self.tei_ns))
 
-    def test_armenian_numbers(self):
-        """This actually tests my number parsing algorithm in the helpers module. It should eventually
-        move outside tpen2tei."""
-        self.assertEqual(helpers.armenian_numbers('ա'), 1)
-        self.assertEqual(helpers.armenian_numbers('ի'), 20)
-        self.assertEqual(helpers.armenian_numbers('ո'), 600)
-        self.assertEqual(helpers.armenian_numbers('վ'), 3000)
-        self.assertEqual(helpers.armenian_numbers('ճիա'), 121)
-        self.assertEqual(helpers.armenian_numbers('դ՟ճ՟. և լ՟գ՟.'), 433)
-        self.assertEqual(helpers.armenian_numbers('.ժ՟ե՟ \nռ՟'), 15000)
+    def test_blocks(self):
+        """Test that the right block element is used in the right context."""
+        root = self.testdoc.getroot()
+        self.assertEqual(1, len(root.findall('.//%s//%s' % (self.ns_text, self.ns_ab))))
+        self.assertEqual(0, len(root.findall('.//%s//%s' % (self.ns_text, self.ns_p))))
+        d_json = helpers.load_JSON_file(self.testfiles['m3519'])
+        d_root = from_sc(d_json, special_chars=self.glyphs, text_filter=helpers.tpen_filter)
+        self.assertEqual(0, len(d_root.findall('.//%s//%s' % (self.ns_text, self.ns_ab))))
+        self.assertEqual(2, len(d_root.findall('.//%s//%s' % (self.ns_text, self.ns_p))))
 
-    def test_parse_error(self):
-        """Check that a reasonable error message is returned from a JSON file that
-        contains badly-formed XML."""
-        md = {'short_error': True}
-        with io.StringIO() as buf, redirect_stderr(buf):
-            badresult = from_sc(self.brokendata, md)
-            errormsg = buf.getvalue()
-        self.assertRegex(errormsg, 'Parsing error in the JSON')
-        errorlines = errormsg.splitlines()[1:]
-        self.assertEqual(len(errorlines), 55)
-        self.assertRegex(errorlines[0], 'Affected portion of XML is 493: \<pb')
+    def test_cert_correction(self):
+        """Test that all numeric 'cert' values in a transcription are converted to one of high/medium/low."""
+        cert_attributes = self.legacydoc.getroot().xpath('.//attribute::cert')
+        self.assertEquals(len(cert_attributes), 32)
+        cert_values = {'low': 11, 'medium': 20, 'high': 1}
+        for attr in cert_attributes:
+            self.assertIn(attr, ['high', 'medium', 'low'])
+            cert_values[attr] -= 1
+        for v in cert_values.values():
+            self.assertEqual(v, 0)
+
+    def test_columns(self):
+        """Need to check that column transitions within the same page are
+        detected and an appropriate XML element is inserted."""
+
+        for lb_element in self.testdoc.getroot().iterfind(".//{:s}".format(self.ns_lb)):
+            n = lb_element.attrib.get('n')
+            line_id = lb_element.attrib.get(self.ns_id)
+            if line_id == "l101276891" and n == "25":
+                pb = False
+                for sibling in lb_element.itersiblings():
+                    if sibling.tag == "{{{:s}}}lb".format(self.tei_ns):
+                        self.assertTrue(pb)
+                        self.assertEqual(sibling.attrib.get('n'), "1", "Unexpected line")
+                        self.assertEqual(sibling.attrib.get(self.ns_id), "l101276826", "Unexpected line")
+                        break
+                    if sibling.tag == "{{{:s}}}pb".format(self.tei_ns):
+                        self.assertEqual(sibling.attrib.get('n'), '075v')
+                        pb = True
+                else:
+                    self.assertTrue(False, "Missing Pagebreak")
+                break
 
     def test_comment(self):
         """Need to check that any TPEN annotations on a line get passed as
@@ -78,25 +100,63 @@ class Test (unittest.TestCase):
             target = tag.attrib.get('target')
             self.assertTrue(target and target == '#l101280110')
 
-    def test_numbers(self):
-        """Check that all the 'num' elements have well-defined values when we have used a number parser.
-        Ideally this would check against the xsd: datatypes but I am not sure how to easily accomplish that."""
-        for number in self.legacydoc.getroot().findall(".//{%s}num" % self.tei_ns):
-            self.assertIn('value', number.keys())
-            try:
-                self.assertIsInstance(float(number.get('value')), float)
-            except ValueError:
-                self.fail()
+    # Correction code for the early conventions
+    def test_correct_type_to_rend(self):
+        """Test that the erroneous 'type' attribute on the 'del' element gets corrected to 'rend'"""
+        dels = self.legacydoc.getroot().findall('.//{%s}del' % self.tei_ns)
+        self.assertEqual(len(dels), 241)
+        for d in dels:
+            self.assertTrue('type' not in d)
+
+    def test_correct_corr_to_subst(self):
+        """Tests that the erroneous 'corr' elements were turned into 'subst' ones"""
+        corrs = self.legacydoc.getroot().findall('.//{%s}corr' % self.tei_ns)
+        substs = self.legacydoc.getroot().findall('.//{%s}subst' % self.tei_ns)
+        self.assertEqual(len(corrs), 0)
+        self.assertEqual(len(substs), 115)
 
     def test_filter(self):
         """Check that the text filter is producing the desired output in the transcription."""
         testlb = self.legacydoc.getroot().find(".//tei:lb[@xml:id='l100784691']",
                                                namespaces={'tei': 'http://www.tei-c.org/ns/1.0',
-                                                           'xml':'http://www.w3.org/XML/1998/namespace'})
+                                                           'xml': 'http://www.w3.org/XML/1998/namespace'})
         self.assertEqual(testlb.getnext().tag, '{http://www.tei-c.org/ns/1.0}num')
         self.assertEqual(testlb.getnext().tail, " վանք. և ե՛տ զայս ")
         self.assertEqual(testlb.getnext().getnext().tail, " գը֊\n")
 
+    def test_functioning_namespace(self):
+        """Just need to check that the XML document that gets returned has
+        the correct namespace settings for arbitrary elements in the middle."""
+
+        tei_ns = "{{{:s}}}".format(self.tei_ns)
+        xml_ns = "{{{:s}}}".format(self.xml_ns)
+
+        for element in self.testdoc.getroot().getiterator():
+            self.assertEqual(element.nsmap, {None: '{:s}'.format(self.tei_ns)})
+            for key in element.attrib.keys():
+                if key.startswith('{'):
+                    self.assertTrue(key.startswith(tei_ns) or key.startswith(xml_ns), 'Undefined Namespace')
+
+    def test_glyph_correction(self):
+        """Test that the various old ways glyphs got encoded in the transcription have the correct end result"""
+        # աշխարհ: 134 + 6
+        # թե: 114 + 10
+        # թէ: 210 + 4
+        # պտ: 320 + 18
+        # ընդ: 57 + 9
+        # որպէս: 17 + 2
+        # Get the allowed glyphs
+        glyphs = set(['#%s' % x.get('{%s}id' % self.xml_ns)
+                      for x in self.legacydoc.getroot().findall('.//{%s}glyph' % self.tei_ns)])
+        # Get all the 'g' elements and check that they have valid refs
+        gs = self.legacydoc.getroot().findall('.//{%s}g' % self.tei_ns)
+        for g in gs:
+            self.assertIn(g.get('ref'), glyphs)
+
+        expected = {'#asxarh': 140, '#techlig': 124, '#tehlig': 214, '#ptlig': 338, '#und': 66, '#orpes': 19}
+        for k, v in expected.items():
+            thisg = self.legacydoc.getroot().xpath('.//tei:g[@ref="%s"]' % k, namespaces=self.namespaces)
+            self.assertEqual(len(thisg), v)
 
     def test_glyphs(self):
         """Need to make sure that the glyph elements present in the JSON
@@ -227,42 +287,7 @@ class Test (unittest.TestCase):
         else:
             self.assertFalse(True, "No content found!")
 
-    def test_columns(self):
-        """Need to check that column transitions within the same page are
-        detected and an appropriate XML element is inserted."""
-
-        for lb_element in self.testdoc.getroot().iterfind(".//{:s}".format(self.ns_lb)):
-            n = lb_element.attrib.get('n')
-            line_id = lb_element.attrib.get(self.ns_id)
-            if line_id == "l101276891" and n == "25":
-                pb = False
-                for sibling in lb_element.itersiblings():
-                    if sibling.tag == "{{{:s}}}lb".format(self.tei_ns):
-                        self.assertTrue(pb)
-                        self.assertEqual(sibling.attrib.get('n'), "1", "Unexpected line")
-                        self.assertEqual(sibling.attrib.get(self.ns_id), "l101276826", "Unexpected line")
-                        break
-                    if sibling.tag == "{{{:s}}}pb".format(self.tei_ns):
-                        self.assertEqual(sibling.attrib.get('n'), '075v')
-                        pb = True
-                else:
-                    self.assertTrue(False, "Missing Pagebreak")
-                break
-
-    def test_functioning_namespace(self):
-        """Just need to check that the XML document that gets returned has
-        the correct namespace settings for arbitrary elements in the middle."""
-
-        tei_ns = "{{{:s}}}".format(self.tei_ns)
-        xml_ns = "{{{:s}}}".format(self.xml_ns)
-
-        for element in self.testdoc.getroot().getiterator():
-            self.assertEqual(element.nsmap, {None: '{:s}'.format(self.tei_ns)})
-            for key in element.attrib.keys():
-                if key.startswith('{'):
-                    self.assertTrue(key.startswith(tei_ns) or key.startswith(xml_ns), 'Undefined Namespace')
-
-    def test_included_metadata_M1731(self):
+    def test_metadata_included(self):
         """Check that the TPEN-supplied metadata ends up in the TEI header of the output."""
 
         # Check for correct TEI schema
@@ -294,7 +319,7 @@ class Test (unittest.TestCase):
                     if grandchild.tag is 'idno':
                         self.assertEqual(grandchild.text, "1731")
 
-    def test_passed_metadata_M1896(self):
+    def test_metadata_passed(self):
         """Check that user-supplied metadata has its effect on the TEI header."""
         # Check for correct title
         titlestmt = self.legacydoc.getroot().find(".//{%s}titleStmt" % self.tei_ns)
@@ -327,49 +352,24 @@ class Test (unittest.TestCase):
                     if grandchild.tag is 'origPlace':
                         self.assertEqual(grandchild.text, "Bitlis")
 
-    # Correction code for the early conventions
-    def test_cert_correction(self):
-        """Test that all numeric 'cert' values in a transcription are converted to one of high/medium/low."""
-        cert_attributes = self.legacydoc.getroot().xpath('.//attribute::cert')
-        self.assertEquals(len(cert_attributes), 32)
-        cert_values = {'low': 11, 'medium': 20, 'high': 1}
-        for attr in cert_attributes:
-            self.assertIn(attr, ['high', 'medium', 'low'])
-            cert_values[attr] -= 1
-        for v in cert_values.values():
-            self.assertEqual(v, 0)
+    def test_numbers(self):
+        """Check that all the 'num' elements have well-defined values when we have used a number parser.
+        Ideally this would check against the xsd: datatypes but I am not sure how to easily accomplish that."""
+        for number in self.legacydoc.getroot().findall(".//{%s}num" % self.tei_ns):
+            self.assertIn('value', number.keys())
+            try:
+                self.assertIsInstance(float(number.get('value')), float)
+            except ValueError:
+                self.fail()
 
-    def test_glyph_correction(self):
-        """Test that the various old ways glyphs got encoded in the transcription have the correct end result"""
-        # աշխարհ: 134 + 6
-        # թե: 114 + 10
-        # թէ: 210 + 4
-        # պտ: 320 + 18
-        # ընդ: 57 + 9
-        # որպէս: 17 + 2
-        # Get the allowed glyphs
-        glyphs = set(['#%s' % x.get('{%s}id' % self.xml_ns)
-                      for x in self.legacydoc.getroot().findall('.//{%s}glyph' % self.tei_ns)])
-        # Get all the 'g' elements and check that they have valid refs
-        gs = self.legacydoc.getroot().findall('.//{%s}g' % self.tei_ns)
-        for g in gs:
-            self.assertIn(g.get('ref'), glyphs)
-
-        expected = {'#asxarh': 140, '#techlig': 124, '#tehlig': 214, '#ptlig': 338, '#und': 66, '#orpes': 19}
-        for k, v in expected.items():
-            thisg = self.legacydoc.getroot().xpath('.//tei:g[@ref="%s"]' % k, namespaces=self.namespaces)
-            self.assertEqual(len(thisg), v)
-
-    def test_type_to_rend(self):
-        """Test that the erroneous 'type' attribute on the 'del' element gets corrected to 'rend'"""
-        dels = self.legacydoc.getroot().findall('.//{%s}del' % self.tei_ns)
-        self.assertEqual(len(dels), 241)
-        for d in dels:
-            self.assertTrue('type' not in d)
-
-    def test_corr_to_subst(self):
-        """Tests that the erroneous 'corr' elements were turned into 'subst' ones"""
-        corrs = self.legacydoc.getroot().findall('.//{%s}corr' % self.tei_ns)
-        substs = self.legacydoc.getroot().findall('.//{%s}subst' % self.tei_ns)
-        self.assertEqual(len(corrs), 0)
-        self.assertEqual(len(substs), 115)
+    def test_parse_error(self):
+        """Check that a reasonable error message is returned from a JSON file that
+        contains badly-formed XML."""
+        md = {'short_error': True}
+        with io.StringIO() as buf, redirect_stderr(buf):
+            badresult = from_sc(self.brokendata, md)
+            errormsg = buf.getvalue()
+        self.assertRegex(errormsg, 'Parsing error in the JSON')
+        errorlines = errormsg.splitlines()[1:]
+        self.assertEqual(len(errorlines), 55)
+        self.assertRegex(errorlines[0], 'Affected portion of XML is 493: \<pb')

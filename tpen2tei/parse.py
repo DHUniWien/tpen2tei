@@ -49,6 +49,7 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     xmlstring = ''
     nblines = set()  # Keep track of the line IDs that occur mid-word
     breaking = False
+    has_pgraphs = False
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
@@ -73,10 +74,16 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 lineid = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
                 if lineid is None:
                     raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
-                # Note whether the line break element will need a 'break' attribute
+                # Note whether the previous line break element needs a 'break' attribute
+                # (never the first line)
                 if breaking:
                     nblines.add(lineid.group(1))
+                # Note whether the next line break element needs a 'break' attribute
+                # (never the last line)
                 breaking = not transcription.endswith(' ')
+                # Note whether there are paragraph block elements
+                if '<p>' in transcription:
+                    has_pgraphs = True
                 if line['motivation'] == 'oad:transcribing':
                     # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
@@ -114,7 +121,12 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     # # Report how many columns per page.
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    return _xmlify("<body><ab>%s</ab></body>" % xmlstring, metadata,
+    blocktag = "ab"
+    if has_pgraphs:
+        blocktag = "p"
+    if not xmlstring.startswith('<%s>' % blocktag):
+        xmlstring = "<%s>%s</%s>" % (blocktag, xmlstring, blocktag)
+    return _xmlify("<body>%s</body>" % xmlstring, metadata,
                    special_chars=special_chars, numeric_parser=numeric_parser)
 
 
@@ -189,11 +201,11 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
                 try:
                     glyphs_seen[glyphid] = _get_glyph(glyphid, special_chars)
                 except ValueError as e:
-                    l = glyph.xpath('./preceding::lb[1]')[0]
+                    lb = glyph.xpath('./preceding::lb[1]')[0]
                     message = "In g element %s, line %s / %s, page %s:\n" % \
                               (etree.tostring(glyph, encoding='utf-8', with_tail=False).decode('utf-8'),
-                               l.get('{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
-                               l.get('n'),
+                               lb.get('{http://www.w3.org/XML/1998/namespace}id').lstrip('l'),
+                               lb.get('n'),
                                glyph.xpath('./preceding::pb[1]')[0].get('n'))
                     message += e.__str__() + "\n"
                     safeerrmsg(message)
@@ -340,7 +352,9 @@ def _tei_wrap(content, metadata, glyphs):
     try:
         tei_doc = etree.parse(BytesIO(etree.tostring(tei_doc)))
     except etree.XMLSyntaxError as e:
-        safeerrmsg(_show_parsing_short_error(e, etree.tostring(tei_doc, encoding="utf-8").decode('utf-8')))
+        message = "Error in final parse: "
+        message += _show_parsing_short_error(e, etree.tostring(tei_doc, encoding="utf-8").decode('utf-8'))
+        safeerrmsg(message)
     return tei_doc
 
 
