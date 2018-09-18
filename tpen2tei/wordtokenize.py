@@ -19,7 +19,11 @@ class Tokenizer:
       if desired.
     * id_xpath: An XPath expression that returns a string that should be used as the manuscript's
       identifier in CollateX output. Defaults to '//t:msDesc/@xml:id'. (Note that the TEI namespace
-      should be abbreviated as 't'.)"""
+      should be abbreviated as 't'.)
+    * block_xpath: An XPath expression that returns a list of paragraph- or stanza-level blocks
+      from which the tokens should be extracted. It will be executed relative to the <text> element.
+      Defaults to './/t:p | .//t:ab'.
+      """
 
     IDTAG = '{http://www.w3.org/XML/1998/namespace}id'   # xml:id; useful for debugging
     MILESTONE = None
@@ -28,16 +32,19 @@ class Tokenizer:
     punctuation = None
     normalisation = None
     id_xpath = None
+    block_xpath = './/t:p | .//t:ab'
     xml_doc = None
 
-    def __init__(self, milestone=None, first_layer=False, punctuation=None, normalisation=None, id_xpath=None):
+    def __init__(self, milestone=None, first_layer=False, punctuation=None, normalisation=None, id_xpath=None, block_xpath=None):
         if milestone is not None:
             self.MILESTONE = milestone
             self.INMILESTONE = False
         self.first_layer = first_layer
+        self.punctuation = punctuation
         self.normalisation = normalisation
         self.id_xpath = id_xpath
-        self.punctuation = punctuation
+        if block_xpath is not None:
+            self.block_xpath = block_xpath
 
     def from_file(self, xmlfile, encoding='utf-8'):
         with open(xmlfile, encoding=encoding) as fh:
@@ -75,8 +82,8 @@ class Tokenizer:
         thetext = xml_object.xpath('//t:text', namespaces=ns)[0]
         tokens = []
 
-        # For each section-like block remaining in the text, break it up into words.
-        blocks = thetext.xpath('.//t:div | .//t:ab', namespaces=ns)
+        # For each paragraph-like block remaining in the text, break it up into words.
+        blocks = thetext.xpath(self.block_xpath, namespaces=ns)
         for block in blocks:
             tokens.extend(self._find_words(block, self.first_layer))
         # Back to the top level: remove any empty tokens that were left over
