@@ -83,7 +83,7 @@
           "motivation" : "oad:transcribing",
           "resource" : {
             "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "ծեալ լիցի քանան մանուկ։ <num value=\"9\">Ինն</num><abbr>եր</abbr>դ. զի հիւանդու<abbr>ի</abbr> <add place=\"margin\"><num value=\"2\">բ՟</num></add> "
+            "cnt:chars" : "<p>ծեալ լիցի քանան մանուկ։ <num value=\"9\">Ինն</num><abbr>եր</abbr>դ. զի հիւանդու<abbr>ի</abbr> <add place=\"margin\"><num value=\"2\">բ՟</num></add> "
           },
           "on" : "http://t-pen.org/TPEN/canvas/13194828#xywh=69,62,575,25",
           "_tpen_note" : "margin number թ",
@@ -875,7 +875,7 @@
           "motivation" : "oad:transcribing",
           "resource" : {
             "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "պետական գունդն <num value=\"45000\">.խ՟ և ե՟ռ՟.</num> արանց քաչանց. զարդ "
+            "cnt:chars" : "պետական գունդն <num value=\"45000\">.խ՟ և ե՟ռ՟.</num> արանց քաչանց. զարդ </p>"
           },
           "on" : "http://t-pen.org/TPEN/canvas/13194840#xywh=150,857,561,27",
           "_tpen_note" : "",

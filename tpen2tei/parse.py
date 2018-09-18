@@ -49,7 +49,6 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     xmlstring = ''
     nblines = set()  # Keep track of the line IDs that occur mid-word
     breaking = False
-    has_pgraphs = False
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
@@ -81,9 +80,6 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 # Note whether the next line break element needs a 'break' attribute
                 # (never the last line)
                 breaking = not transcription.endswith(' ')
-                # Note whether there are paragraph block elements
-                if '<p>' in transcription:
-                    has_pgraphs = True
                 if line['motivation'] == 'oad:transcribing':
                     # This is a transcription of a manuscript line.
                     # Get the column y value and see if we are starting a new column.
@@ -118,11 +114,6 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     # # Report how many columns per page.
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    blocktag = "ab"
-    if has_pgraphs:
-        blocktag = "p"
-    if not xmlstring.startswith('<%s>' % blocktag):
-        xmlstring = "<%s>%s</%s>" % (blocktag, xmlstring, blocktag)
     return _xmlify("<body>%s</body>" % xmlstring, metadata,
                    special_chars=special_chars, numeric_parser=numeric_parser)
 
@@ -141,6 +132,26 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
             message += "Full string was %s" % txdata
         safeerrmsg(message)
         return
+
+    # Does the 'body' element have any direct text nodes? If so, wrap the whole thing in an
+    # anonymous block, so that it becomes valid TEI.
+    wrap_ab = content.text is not None and not re.match(r'\s+', content.text)
+    for el in content:
+        if el.tail is not None and not re.match(r'\s+', el.tail):
+            wrap_ab = True
+    if wrap_ab:
+        print("WARNING: unblocked text detected. Wrapping in anonymous block", file=sys.stderr)
+        txdata = txdata.replace('<body>', '<body><ab>').replace('</body>', '</ab></body>')
+        try:
+            content = etree.fromstring(txdata)
+        except etree.XMLSyntaxError as e:
+            message = "Parsing error in block wrap: %s\n" % e.msg
+            if metadata.get('short_error', False):
+                message += _show_parsing_short_error(e, txdata)
+            else:
+                message += "Full string was %s" % txdata
+            safeerrmsg(message)
+            return
 
     # First add values to the numbers if we have a way to.
     if numeric_parser is not None:
