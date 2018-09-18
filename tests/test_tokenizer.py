@@ -28,6 +28,12 @@ class Test (unittest.TestCase):
             msdata,
             special_chars = self.glyphs
         )
+        self.doc3519 = from_sc(
+            helpers.load_JSON_file(self.testfiles['m3519']),
+            special_chars=self.glyphs,
+            numeric_parser=helpers.armenian_numbers,
+            text_filter=helpers.tpen_filter
+        )
 
     # def setUp(self):
     #     with open('./data/M1731.json', encoding='utf-8') as fh:
@@ -40,7 +46,7 @@ class Test (unittest.TestCase):
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
         last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
-                 'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
+                 'page': {'n': '075v'}, 'line': {'break': 'no', 'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
         self.assertEqual(313, len(tokens))
@@ -78,6 +84,24 @@ class Test (unittest.TestCase):
         struct = Tokenizer(id_xpath='//t:msDesc/@xml:id', milestone="496").from_file(filename)
         self.assertEquals(struct['id'], "Y")
 
+    def test_block_xpath(self):
+        # First use the default block expression and see if we get our paragraph-in-note
+        default_tokens = Tokenizer().from_etree(self.doc3519)["tokens"]
+        found_imagine = False
+        for t in default_tokens:
+            self.assertNotEqual("calendar", t.get('t'))
+            if t.get('t') == "Imagine":
+                found_imagine = True
+        self.assertTrue(found_imagine)
+
+        # Now do it again with a more exclusionary xpath
+        default_tokens = Tokenizer(block_xpath='//t:body/t:p').from_etree(self.doc3519)["tokens"]
+        found_imagine = False
+        for t in default_tokens:
+            self.assertNotEqual("calendar", t.get('t'))
+            if t.get('t') == "Imagine":
+                found_imagine = True
+        self.assertFalse(found_imagine)
 
     def test_glyphs(self):
         """Test the correct detection and rendering of glyphs. The characters in
@@ -87,13 +111,13 @@ class Test (unittest.TestCase):
                     'յ<g ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
                     '<g ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
                     '<g ref="">աշխարհ</g>ին': 'աշխարհին',
-                    'ար<g ref="">ա</g>պ<lb xml:id="l101276841" n="14"/>կաց': 'արապկաց',
+                    'ար<g ref="">ա</g>պ<lb xml:id="l101276841" n="14" break="no"/>կաց': 'արապկաց',
                     '<g ref="">աշխարհ</g>ն': 'աշխարհն'}
 
         testdata_glyphs = {'յեգի<g ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
                             'յ<g ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
                             '<g ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
-                            'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" n="14"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
+                            'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" n="14" break="no"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
                             '<g ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
 
         tokens = Tokenizer().from_etree(self.testdoc_noglyphs)['tokens']
@@ -276,7 +300,7 @@ class Test (unittest.TestCase):
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
                  'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
         last = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
-                'page': {'n': '075v'}, 'line': {'n': '25', 'xml:id': 'l101276853'}}
+                'page': {'n': '075v'}, 'line': {'break': 'no', 'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
         self.assertEqual(347, len(tokens))

@@ -20,6 +20,7 @@ class Test(unittest.TestCase):
 
         self.ns_id = '{{{:s}}}id'.format(self.xml_ns)
         self.ns_ab = '{{{:s}}}ab'.format(self.tei_ns)
+        self.ns_body = '{{{:s}}}body'.format(self.tei_ns)
         self.ns_lb = '{{{:s}}}lb'.format(self.tei_ns)
         self.ns_note = '{{{:s}}}note'.format(self.tei_ns)
         self.ns_p = '{{{:s}}}p'.format(self.tei_ns)
@@ -54,8 +55,8 @@ class Test(unittest.TestCase):
         self.assertEqual(0, len(root.findall('.//%s//%s' % (self.ns_text, self.ns_p))))
         d_json = helpers.load_JSON_file(self.testfiles['m3519'])
         d_root = from_sc(d_json, special_chars=self.glyphs, text_filter=helpers.tpen_filter)
-        self.assertEqual(0, len(d_root.findall('.//%s//%s' % (self.ns_text, self.ns_ab))))
-        self.assertEqual(2, len(d_root.findall('.//%s//%s' % (self.ns_text, self.ns_p))))
+        self.assertEqual(0, len(d_root.findall('.//%s/%s/%s' % (self.ns_text, self.ns_body, self.ns_ab))))
+        self.assertEqual(2, len(d_root.findall('.//%s/%s/%s' % (self.ns_text, self.ns_body, self.ns_p))))
 
     def test_cert_correction(self):
         """Test that all numeric 'cert' values in a transcription are converted to one of high/medium/low."""

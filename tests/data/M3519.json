@@ -641,7 +641,7 @@
           "motivation" : "oad:transcribing",
           "resource" : {
             "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "ղաքին յուռհայ։ <milestone unit=\"section\" n=\"408\"/>Իսկ ի թվականութ<abbr>ե</abbr>ս ազգիս հայո՛ց. ի՛ "
+            "cnt:chars" : "ղաքին յուռհայ։ <note><p>Imagine that there is a large marginal note here that we are ignoring.</p></note><milestone unit=\"section\" n=\"408\"/>Իսկ ի թվականութ<abbr>ե</abbr>ս ազգիս հայո՛ց. ի՛ "
           },
           "on" : "http://t-pen.org/TPEN/canvas/13194840#xywh=150,399,561,27",
           "_tpen_note" : "Section marker in margin",
@@ -654,7 +654,7 @@
           "motivation" : "oad:transcribing",
           "resource" : {
             "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "<num value=\"408\">դ՟ճ՟ և ի ը՟</num> ամին, զաւրաց ժողով արարեալ թ<abbr>գր</abbr>ն հոռոմո՛ց "
+            "cnt:chars" : "<num value=\"408\">դ՟ճ՟ և ի ը՟</num> ամին, <note>This is the Armenian calendar</note>զաւրաց ժողով արարեալ թ<abbr>գր</abbr>ն հոռոմո՛ց "
           },
           "on" : "http://t-pen.org/TPEN/canvas/13194840#xywh=150,426,561,27",
           "_tpen_note" : "",

@@ -163,8 +163,9 @@ class Tokenizer:
 
         # Deal with specific tag logic
         if (_tag_is(element, 'del') and first_layer is False) \
-                or (_tag_is(element, 'add') and first_layer is True) or _tag_is(element, 'note'):
-            # If we are looking at a del tag for the final layer, or an add tag for the
+                or ((_tag_is(element, 'add') or _tag_is(element, 'mod'))
+                    and first_layer is True) or _tag_is(element, 'note'):
+            # If we are looking at a del tag for the final layer, or an add/mod tag for the
             # first layer, discard all the tokens we just got, replacing them with either an
             # empty joining token or nothing at all. TODO why the empty token?
             if len(tokens):
@@ -198,8 +199,11 @@ class Tokenizer:
             tokens = [mytoken]
 
         # Set the context on all the tokens created thus far
-        context = _shortform(self.xml_doc.getelementpath(element))
         parentcontext = _shortform(self.xml_doc.getelementpath(element.getparent()))
+        if element.tag is etree.Comment:
+            context = parentcontext
+        else:
+            context = _shortform(self.xml_doc.getelementpath(element))
         if singlewordelement:
             tokens[0]['context'] = parentcontext
         for t in tokens:
