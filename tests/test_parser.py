@@ -18,15 +18,6 @@ class Test(unittest.TestCase):
         self.tei_ns = settings['namespaces']['tei']
         self.xml_ns = settings['namespaces']['xml']
 
-        self.ns_id = '{{{:s}}}id'.format(self.xml_ns)
-        self.ns_ab = '{{{:s}}}ab'.format(self.tei_ns)
-        self.ns_body = '{{{:s}}}body'.format(self.tei_ns)
-        self.ns_lb = '{{{:s}}}lb'.format(self.tei_ns)
-        self.ns_note = '{{{:s}}}note'.format(self.tei_ns)
-        self.ns_p = '{{{:s}}}p'.format(self.tei_ns)
-        self.ns_pb = "{{{:s}}}pb".format(self.tei_ns)
-        self.ns_text = '{{{:s}}}text'.format(self.tei_ns)
-
         self.glyphs = helpers.glyph_struct(settings['armenian_glyphs'])
 
         self.testfiles = settings['testfiles']
@@ -43,6 +34,12 @@ class Test(unittest.TestCase):
                                  numeric_parser=helpers.armenian_numbers,
                                  text_filter=helpers.tpen_filter)
         self.brokendata = helpers.load_JSON_file(self.testfiles['broken'])
+        
+    def ns(self, st):
+        if st == 'id':
+            return '{%s}id' % self.xml_ns
+        else:
+            return "{%s}%s" % (self.tei_ns, st)
 
     def test_basic(self):
         self.assertIsNotNone(self.testdoc.getroot())
@@ -51,12 +48,12 @@ class Test(unittest.TestCase):
     def test_blocks(self):
         """Test that the right block element is used in the right context."""
         root = self.testdoc.getroot()
-        self.assertEqual(1, len(root.findall('.//%s//%s' % (self.ns_text, self.ns_ab))))
-        self.assertEqual(0, len(root.findall('.//%s//%s' % (self.ns_text, self.ns_p))))
+        self.assertEqual(1, len(root.findall('.//%s//%s' % (self.ns('text'), self.ns('ab')))))
+        self.assertEqual(0, len(root.findall('.//%s//%s' % (self.ns('text'), self.ns('p')))))
         d_json = helpers.load_JSON_file(self.testfiles['m3519'])
         d_root = from_sc(d_json, special_chars=self.glyphs, text_filter=helpers.tpen_filter)
-        self.assertEqual(0, len(d_root.findall('.//%s/%s/%s' % (self.ns_text, self.ns_body, self.ns_ab))))
-        self.assertEqual(2, len(d_root.findall('.//%s/%s/%s' % (self.ns_text, self.ns_body, self.ns_p))))
+        self.assertEqual(0, len(d_root.findall('.//%s/%s/%s' % (self.ns('text'), self.ns('body'), self.ns('ab')))))
+        self.assertEqual(2, len(d_root.findall('.//%s/%s/%s' % (self.ns('text'), self.ns('body'), self.ns('p')))))
 
     def test_cert_correction(self):
         """Test that all numeric 'cert' values in a transcription are converted to one of high/medium/low."""
@@ -73,16 +70,16 @@ class Test(unittest.TestCase):
         """Need to check that column transitions within the same page are
         detected and an appropriate XML element is inserted."""
 
-        for lb_element in self.testdoc.getroot().iterfind(".//{:s}".format(self.ns_lb)):
+        for lb_element in self.testdoc.getroot().iterfind(".//{:s}".format(self.ns('lb'))):
             n = lb_element.attrib.get('n')
-            line_id = lb_element.attrib.get(self.ns_id)
+            line_id = lb_element.attrib.get(self.ns('id'))
             if line_id == "l101276891" and n == "25":
                 pb = False
                 for sibling in lb_element.itersiblings():
                     if sibling.tag == "{{{:s}}}lb".format(self.tei_ns):
                         self.assertTrue(pb)
                         self.assertEqual(sibling.attrib.get('n'), "1", "Unexpected line")
-                        self.assertEqual(sibling.attrib.get(self.ns_id), "l101276826", "Unexpected line")
+                        self.assertEqual(sibling.attrib.get(self.ns('id')), "l101276826", "Unexpected line")
                         break
                     if sibling.tag == "{{{:s}}}pb".format(self.tei_ns):
                         self.assertEqual(sibling.attrib.get('n'), '075v')
@@ -95,9 +92,9 @@ class Test(unittest.TestCase):
         """Need to check that any TPEN annotations on a line get passed as
         <note> elements linked to the correct line in the @target attribute."""
         root = self.testdoc.getroot()
-        text_part = root.find(self.ns_text)
+        text_part = root.find(self.ns('text'))
         self.assertIsNotNone(text_part)
-        for tag in text_part.iterfind(".//{:s}".format(self.ns_note)):
+        for tag in text_part.iterfind(".//{:s}".format(self.ns('note'))):
             target = tag.attrib.get('target')
             self.assertTrue(target and target == '#l101280110')
 
@@ -119,9 +116,8 @@ class Test(unittest.TestCase):
     def test_filter(self):
         """Check that the text filter is producing the desired output in the transcription."""
         testlb = self.legacydoc.getroot().find(".//tei:lb[@xml:id='l100784691']",
-                                               namespaces={'tei': 'http://www.tei-c.org/ns/1.0',
-                                                           'xml': 'http://www.w3.org/XML/1998/namespace'})
-        self.assertEqual(testlb.getnext().tag, '{http://www.tei-c.org/ns/1.0}num')
+                                               namespaces=self.namespaces)
+        self.assertEqual(testlb.getnext().tag, self.ns('num'))
         self.assertEqual(testlb.getnext().tail, " վանք. և ե՛տ զայս ")
         self.assertEqual(testlb.getnext().getnext().tail, " գը֊\n")
 
@@ -186,7 +182,7 @@ class Test(unittest.TestCase):
         char_decls = []
         for declaration in char_decl:
             self.assertEqual(declaration.tag, "{{{:s}}}glyph".format(self.tei_ns))
-            charid = declaration.attrib.get(self.ns_id)
+            charid = declaration.attrib.get(self.ns('id'))
             self.assertTrue(charid)
 
             values = {}
@@ -249,13 +245,13 @@ class Test(unittest.TestCase):
             line_text = ""
             for element in parent_element:
                 tag = element.tag
-                if tag in [self.ns_pb, self.ns_note]:
+                if tag in [self.ns('pb'), self.ns('note')]:
                     line_id = None
                     line_text = ""
                     continue
-                elif tag == self.ns_lb:
+                elif tag == self.ns('lb'):
                     n = element.attrib.get('n')
-                    line_id = element.attrib.get(self.ns_id)
+                    line_id = element.attrib.get(self.ns('id'))
                     self.assertTrue(line_id and line_id in test_results, 'Id not defined')
                     self.assertTrue(n, 'Number not defined')
 
@@ -283,6 +279,20 @@ class Test(unittest.TestCase):
             break
         else:
             self.assertFalse(True, "No content found!")
+
+    def test_members(self):
+        msdata = helpers.load_JSON_file(self.testfiles['json'])
+        testdoc = from_sc(
+            msdata,
+            members=helpers.test_members(),
+            special_chars=self.glyphs
+        )
+        respstmt = testdoc.xpath('//tei:fileDesc/tei:editionStmt/tei:respStmt', namespaces=self.namespaces)
+        self.assertEqual(1, len(respstmt))
+        self.assertEqual('u281', respstmt[0].get(self.ns('id')))
+        self.assertEqual('Me M. and I', respstmt[0].find(self.ns('name')).text)
+        for line in testdoc.iter(self.ns('lb')):
+            self.assertEquals('#u281', line.get('resp'))
 
     def test_metadata_included(self):
         """Check that the TPEN-supplied metadata ends up in the TEI header of the output."""
@@ -378,7 +388,7 @@ class Test(unittest.TestCase):
                          text_filter=helpers.tpen_filter,
                          postprocess=helpers.postprocess)
         visited = False
-        for tag in d_root.iter(self.ns_pb):
+        for tag in d_root.iter(self.ns('pb')):
             visited = True
             self.assertEquals('interesting', tag.get('ana'))
         self.assertTrue(visited)

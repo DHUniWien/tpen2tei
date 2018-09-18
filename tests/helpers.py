@@ -72,3 +72,7 @@ def tpen_filter(st):
 def postprocess(doc):
     for pb in doc.xpath('//t:pb', namespaces={'t':'http://www.tei-c.org/ns/1.0'}):
         pb.set('ana', 'interesting')
+
+
+def test_members():
+    return {'281': {'uname': 'me@example.com', 'name': 'Me M. and I', 'id': '281'}}

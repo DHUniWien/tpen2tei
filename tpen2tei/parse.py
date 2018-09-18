@@ -9,7 +9,13 @@ from warnings import warn
 __author__ = 'tla'
 
 
-def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, text_filter=None, postprocess=None):
+def from_sc(jsondata,
+            metadata=None,
+            members=None,
+            special_chars=None,
+            numeric_parser=None,
+            text_filter=None,
+            postprocess=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
@@ -17,6 +23,11 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
 
     The optional metadata parameter is a dictionary of keys whose values should
     appear in certain places in the TEI header. This is not yet fully documented.
+
+    The optional members parameter is a dictionary of T-PEN project members,
+    which is keyed on T-PEN user ID and should be of the form
+      {"1234": {"name": "T. Pen Transcriber", "uname": "tpt@example.org"}}
+    This is used to add a respStmt and @resp attributes to the individual lines.
 
     The optional special_chars parameter is a dictionary of glyphs that have
     been referenced in the transcription. The dictionary key is the normalized
@@ -52,6 +63,7 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     xmlstring = ''
     nblines = set()  # Keep track of the line IDs that occur mid-word
     breaking = False
+    seen_members = {}
     for page in pages:
         pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
         thetext = []
@@ -74,6 +86,7 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                     continue
                 # Get the line ID, for later attachment of notes.
                 lineid = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
+                agent = "%d" % line.get('_tpen_creator')
                 if lineid is None:
                     raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
                 # Note whether the previous line break element needs a 'break' attribute
@@ -93,11 +106,16 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                         # Start a new 'column' in thetext.
                         thetext.append([])
                         xval = int(coords.group(1))
-                    thetext[-1].append((lineid.group(1), transcription))
+                    if members is not None:
+                        if agent in members:
+                            seen_members[agent] = members.get(agent)
+                        else:
+                            print("WARNING: T-PEN user %s not in members list" % agent)
+                    thetext[-1].append((lineid.group(1), transcription, agent))
                 if '_tpen_note' in line:
                     # This 'transcription' is actually a transcriber's note.
                     if line['_tpen_note'] != "":
-                        notes.append((lineid.group(1), line['_tpen_note']))
+                        notes.append((lineid.group(1), line['_tpen_note'], agent))
         # Spit out the text
         if len(thetext):
             xmlstring += '<pb n="%s"/>\n' % pn
@@ -106,6 +124,8 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                     xmlstring += '<cb n="%d"/>\n' % (cn + 1)
                 for ln, line in enumerate(col):
                     attrstring = 'xml:id="l%s" n="%d"' % (line[0], ln + 1)
+                    if line[2] in seen_members:
+                        attrstring += ' resp="#u%s"' % line[2]
                     if line[0] in nblines:
                         attrstring += ' break="no"'
                     xmlstring += '<lb %s/>%s\n' % (attrstring, line[1])
@@ -116,15 +136,15 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 columns[len(thetext)] = [pn]
     # and then add the notes.
     for n in notes:
-        xmlstring += '<note type="transcriptional" target="#l%s">%s</note>\n' % n
-    # # Report how many columns per page.
-    # for n in sorted(columns.keys()):
-    #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
-    return _xmlify("<body>%s</body>" % xmlstring, metadata,
+        attrstring = 'type="transcriptional" target="#l%s"' % n[0]
+        if n[2] in seen_members:
+            attrstring += ' resp="#u%s"' % n[2]
+        xmlstring += '<note %s>%s</note>\n' % (attrstring, n[1])
+    return _xmlify("<body>%s</body>" % xmlstring, metadata, members=seen_members,
                    special_chars=special_chars, numeric_parser=numeric_parser, postprocess=postprocess)
 
 
-def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None, postprocess=None):
+def _xmlify(txdata, metadata, members=None, special_chars=None, numeric_parser=None, postprocess=None):
     """Take the extracted XML structure of from_sc and make sure it is
     well-formed. Also fix any shortcuts, e.g. for the glyph tags."""
     try:
@@ -250,7 +270,7 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None, postproce
             else:
                 el.set('cert', 'low')
 
-    return _tei_wrap(content, metadata,
+    return _tei_wrap(content, metadata, members,
                      sorted(glyphs_seen.values(),
                             key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')),
                      postprocess)
@@ -300,7 +320,7 @@ def safeerrmsg(message):
         print(message, file=sys.stderr)
 
 
-def _tei_wrap(content, metadata, glyphs, postprocess):
+def _tei_wrap(content, metadata, members, glyphs, postprocess):
     """Wraps the content, and the glyphs that were found, into TEI XML format."""
     # Set some trivial default TEI header values, if they are not already set
     defaults = {
@@ -322,7 +342,18 @@ def _tei_wrap(content, metadata, glyphs, postprocess):
     if 'author' in metadata:
         etree.SubElement(title_stmt, 'author').text = metadata['author']
     etree.SubElement(etree.SubElement(file_desc, 'publicationStmt'), 'p').text = metadata['publicationStmt']
-    # TODO handle responsibility notations
+    edition_stmt = etree.SubElement(file_desc, 'editionStmt')
+    etree.SubElement(edition_stmt, 'edition').text = 'T-Pen transcription'
+    if members is not None:
+        # Add the transcribers that we have seen
+        for mid, minfo in members.items():
+            resp_stmt = etree.SubElement(edition_stmt, 'respStmt')
+            resp_stmt.set('{http://www.w3.org/XML/1998/namespace}id', "u%s" % mid)
+            etree.SubElement(resp_stmt, 'resp').text = 'T-Pen transcriber'
+            key = 'name'
+            if key not in minfo:
+                key = 'uname'
+            etree.SubElement(resp_stmt, 'name').text = minfo.get(key, 'Anonymous')
 
     # Source and manuscript description
     msdesc = etree.SubElement(etree.SubElement(file_desc, 'sourceDesc'), 'msDesc')
