@@ -370,3 +370,15 @@ class Test(unittest.TestCase):
         errorlines = errormsg.splitlines()[1:]
         self.assertEqual(len(errorlines), 55)
         self.assertRegex(errorlines[0], 'Affected portion of XML is 493: \<pb')
+
+    def test_postprocess(self):
+        d_json = helpers.load_JSON_file(self.testfiles['m3519'])
+        d_root = from_sc(d_json,
+                         special_chars=self.glyphs,
+                         text_filter=helpers.tpen_filter,
+                         postprocess=helpers.postprocess)
+        visited = False
+        for tag in d_root.iter(self.ns_pb):
+            visited = True
+            self.assertEquals('interesting', tag.get('ana'))
+        self.assertTrue(visited)

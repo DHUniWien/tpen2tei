@@ -9,7 +9,7 @@ from warnings import warn
 __author__ = 'tla'
 
 
-def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, text_filter=None):
+def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, text_filter=None, postprocess=None):
     """Extract the textual transcription from a JSON file, probably exported
     from T-PEN according to a Shared Canvas specification. It has a series of
     sequences (should be 1 sequence), and each sequence has a set of canvases,
@@ -31,6 +31,9 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     expected to return a string. It will be passed the text content of each line
     of transcription in the canvas, and its return value will be stored as the
     content of that line.
+
+    The optional postprocess parameter is a function that takes an etree Element
+    object, which is the otherwise final parsed TEI document, and modifies it.
     """
     if len(jsondata['sequences']) > 1:
         warn("Your data has more than one sequence. Check to see what's going on.", UserWarning)
@@ -118,10 +121,10 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
     # for n in sorted(columns.keys()):
     #     print("%d columns for pages %s\n" % (n, " ".join(columns[n])), file=sys.stderr)
     return _xmlify("<body>%s</body>" % xmlstring, metadata,
-                   special_chars=special_chars, numeric_parser=numeric_parser)
+                   special_chars=special_chars, numeric_parser=numeric_parser, postprocess=postprocess)
 
 
-def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
+def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None, postprocess=None):
     """Take the extracted XML structure of from_sc and make sure it is
     well-formed. Also fix any shortcuts, e.g. for the glyph tags."""
     try:
@@ -249,7 +252,8 @@ def _xmlify(txdata, metadata, special_chars=None, numeric_parser=None):
 
     return _tei_wrap(content, metadata,
                      sorted(glyphs_seen.values(),
-                            key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')))
+                            key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')),
+                     postprocess)
 
 
 def _get_glyph(gname, special_chars):
@@ -296,7 +300,7 @@ def safeerrmsg(message):
         print(message, file=sys.stderr)
 
 
-def _tei_wrap(content, metadata, glyphs):
+def _tei_wrap(content, metadata, glyphs, postprocess):
     """Wraps the content, and the glyphs that were found, into TEI XML format."""
     # Set some trivial default TEI header values, if they are not already set
     defaults = {
@@ -366,6 +370,8 @@ def _tei_wrap(content, metadata, glyphs):
         message = "Error in final parse: "
         message += _show_parsing_short_error(e, etree.tostring(tei_doc, encoding="utf-8").decode('utf-8'))
         safeerrmsg(message)
+    if postprocess is not None:
+        postprocess(tei_doc)
     return tei_doc
 
 

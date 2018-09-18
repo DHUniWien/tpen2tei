@@ -67,3 +67,8 @@ def tpen_filter(st):
         ',', '.').replace(
         '։', ':').replace('<p/>', '</p><p>')
     return result
+
+
+def postprocess(doc):
+    for pb in doc.xpath('//t:pb', namespaces={'t':'http://www.tei-c.org/ns/1.0'}):
+        pb.set('ana', 'interesting')
