@@ -341,7 +341,6 @@ def _tei_wrap(content, metadata, members, glyphs, postprocess):
     etree.SubElement(title_stmt, 'title').text = metadata['title']
     if 'author' in metadata:
         etree.SubElement(title_stmt, 'author').text = metadata['author']
-    etree.SubElement(etree.SubElement(file_desc, 'publicationStmt'), 'p').text = metadata['publicationStmt']
     edition_stmt = etree.SubElement(file_desc, 'editionStmt')
     etree.SubElement(edition_stmt, 'edition').text = 'T-Pen transcription'
     if members is not None:
@@ -354,6 +353,7 @@ def _tei_wrap(content, metadata, members, glyphs, postprocess):
             if key not in minfo:
                 key = 'uname'
             etree.SubElement(resp_stmt, 'name').text = minfo.get(key, 'Anonymous')
+    etree.SubElement(etree.SubElement(file_desc, 'publicationStmt'), 'p').text = metadata['publicationStmt']
 
     # Source and manuscript description
     msdesc = etree.SubElement(etree.SubElement(file_desc, 'sourceDesc'), 'msDesc')
