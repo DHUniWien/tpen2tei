@@ -102,7 +102,10 @@ def from_sc(jsondata, metadata=None, special_chars=None, numeric_parser=None, te
                 if len(thetext) > 1:
                     xmlstring += '<cb n="%d"/>\n' % (cn + 1)
                 for ln, line in enumerate(col):
-                    xmlstring += '<lb xml:id="l%s" n="%d"/>%s\n' % (line[0], ln + 1, line[1])
+                    attrstring = 'xml:id="l%s" n="%d"' % (line[0], ln + 1)
+                    if line[0] in nblines:
+                        attrstring += ' break="no"'
+                    xmlstring += '<lb %s/>%s\n' % (attrstring, line[1])
             # Keep track of the number of columns.
             if len(thetext) in columns:
                 columns[len(thetext)].append(pn)
