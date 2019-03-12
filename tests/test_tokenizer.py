@@ -145,7 +145,7 @@ class Test (unittest.TestCase):
         tokens = Tokenizer().from_etree(self.testdoc)['tokens']
         # Find the token that has our substitution
         for t in tokens:
-            if t['lit'] != 'դե<add>ռ</add>ևս':
+            if t['lit'] != 'դե<subst instant="true"><del>ղ</del><add>ռ</add></subst>ևս':
                 continue
             self.assertEqual(t['t'], 'դեռևս')
             break
@@ -157,7 +157,7 @@ class Test (unittest.TestCase):
         tokens = Tokenizer(first_layer=True).from_etree(self.testdoc)['tokens']
         # Find the token that has our substitution
         for t in tokens:
-            if t['lit'] != 'դե<del>ղ</del>ևս':
+            if t['lit'] != 'դե<subst instant="true"><del>ղ</del><add>ռ</add></subst>ևս':
                 continue
             self.assertEqual(t['t'], 'դեղևս')
             break

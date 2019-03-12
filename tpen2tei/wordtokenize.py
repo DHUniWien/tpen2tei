@@ -113,14 +113,6 @@ class Tokenizer:
         if element.tag is not etree.Comment and element.text is not None:
             self._split_text_node(element, element.text, tokens)
 
-        # Now tokens has only the tokenized contents of the element itself.
-        # If there is a single token, then we 'lit' the entire element and will use the
-        # parent context below.
-        singlewordelement = False
-        if len(tokens) == 1 and len(element) == 0:
-            tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
-            singlewordelement = True
-
         # Next handle the child elements of this one, if any.
         for child in element:
             child_tokens = self._find_words(child, first_layer)
@@ -166,15 +158,8 @@ class Tokenizer:
                 or ((_tag_is(element, 'add') or _tag_is(element, 'mod'))
                     and first_layer is True) or _tag_is(element, 'note') or _tag_is(element, 'fw'):
             # If we are looking at a del tag for the final layer, or an add/mod tag for the
-            # first layer, discard all the tokens we just got, replacing them with either an
-            # empty joining token or nothing at all. TODO why the empty token?
-            if len(tokens):
-                final = tokens[-1]
-                if 'continue' in final:
-                    tokens = [{'t': '', 'n': '', 'lit': '', 'continue': True}]
-                else:
-                    tokens = []
-                    singlewordelement = False
+            # first layer, discard all the tokens we just got.
+            tokens = []
         elif _tag_is(element, 'num'):
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
@@ -197,6 +182,14 @@ class Tokenizer:
             if 'join_next' in tokens[-1]:
                 mytoken['join_next'] = tokens[-1]['join_next']
             tokens = [mytoken]
+
+        # Now tokens has only the tokenized contents of the element itself.
+        # If there is a single token, then we 'lit' the entire element and will use the
+        # parent context below.
+        singlewordelement = False
+        if len(tokens) == 1:
+            tokens[0]['lit'] = _shortform(etree.tostring(element, encoding='unicode', with_tail=False))
+            singlewordelement = True
 
         # Set the context on all the tokens created thus far
         parentcontext = _shortform(self.xml_doc.getelementpath(element.getparent()))
