@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import re
 import sys
 from io import BytesIO
@@ -66,9 +67,9 @@ def from_sc(jsondata,
     breaking = False
     seen_members = {}
     for page in pages:
-        # Get the page image and derive the page number
-        fn = page['label']
-        pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', fn)
+        # Get the page image label and derive the page number on a best-effort basis
+        fn = os.path.splitext(page['label'])[0]
+        pn = re.sub('^[^\d]+(\d+\w)', '\\1', fn)
         pn = pn.lstrip('0')
         # Pull out the necessary facsimile information
         surface = {'graphic': fn, 'width': page['width'], 'height': page['height'], 'zones': []}
