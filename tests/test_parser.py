@@ -82,7 +82,7 @@ class Test(unittest.TestCase):
                         self.assertEqual(sibling.attrib.get(self.ns('id')), "l101276826", "Unexpected line")
                         break
                     if sibling.tag == "{{{:s}}}pb".format(self.tei_ns):
-                        self.assertEqual(sibling.attrib.get('n'), '075v')
+                        self.assertEqual(sibling.attrib.get('n'), '75v')
                         pb = True
                 else:
                     self.assertTrue(False, "Missing Pagebreak")
@@ -112,6 +112,38 @@ class Test(unittest.TestCase):
         substs = self.legacydoc.getroot().findall('.//{%s}subst' % self.tei_ns)
         self.assertEqual(len(corrs), 0)
         self.assertEqual(len(substs), 115)
+
+    def test_facsimile(self):
+        """Tests that facsimile information was added as expected."""
+        testfacs = self.testdoc.getroot().find("./tei:facsimile", namespaces=self.namespaces)
+        # There should be one facsimile element with two surfaces and N zones
+        self.assertEqual(2, len(testfacs))
+        for surface in testfacs:
+            self.assertEqual('801', surface.get('lrx'))
+            self.assertEqual('1000', surface.get('lry'))
+            self.assertEqual(self.ns('graphic'), surface[0].tag)
+            ulx = None
+            lry = None
+            for zone in surface[1:]:
+                # Check that zone geometries look sane
+                # The left x coordinate should not change in this document
+                if ulx is None:
+                    ulx = int(zone.get('ulx'))
+                    self.assertTrue(ulx > 0)
+                else:
+                    self.assertEqual(ulx, int(zone.get('ulx')))
+                # The upper y coordinate should be the same as the previous lower y
+                if lry is None:
+                    lry = int(zone.get('lry'))
+                    self.assertTrue(lry > 0)
+                else:
+                    self.assertEqual(lry, int(zone.get('uly')))
+                    lry = int(zone.get('lry'))
+                # Each zone should have a corresponding line in the transcription
+                zid = zone.get('{%s}id' % self.xml_ns)
+                corr_line = self.testdoc.getroot().find(".//tei:lb[@facs='#%s']" % zid, namespaces=self.namespaces)
+                self.assertIsNotNone(corr_line)
+                self.assertEqual(zid.replace('z', 'l'), corr_line.get('{%s}id' % self.xml_ns))
 
     def test_filter(self):
         """Check that the text filter is producing the desired output in the transcription."""

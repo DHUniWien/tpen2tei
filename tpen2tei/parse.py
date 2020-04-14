@@ -58,6 +58,7 @@ def from_sc(jsondata,
                 metadata[item['label']] = item['value']
 
     pages = jsondata['sequences'][0]['canvases']
+    facsimile = []
     notes = []
     columns = {}
     xmlstring = ''
@@ -65,7 +66,12 @@ def from_sc(jsondata,
     breaking = False
     seen_members = {}
     for page in pages:
-        pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', page['label'])
+        # Get the page image and derive the page number
+        fn = page['label']
+        pn = re.sub('^[^\d]+(\d+\w)\.jpg', '\\1', fn)
+        pn = pn.lstrip('0')
+        # Pull out the necessary facsimile information
+        surface = {'graphic': fn, 'width': page['width'], 'height': page['height'], 'zones': []}
         thetext = []
         xval = -1
         # Find the annotation list.
@@ -77,6 +83,8 @@ def from_sc(jsondata,
         # Did we find a list of annotations for this page?
         if linelist is None:
             continue
+        # Apparently we did, so add this page to the facsimiles and parse its lines.
+        facsimile.append(surface)
         for line in linelist['resources']:
             if line['resource']['@type'] == 'cnt:ContentAsText':
                 transcription = line['resource']['cnt:chars']
@@ -85,37 +93,44 @@ def from_sc(jsondata,
                 if len(transcription) == 0:
                     continue
                 # Get the line ID, for later attachment of notes.
-                lineid = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
+                lineidfound = re.match('^.*line/(\d+)$', line['_tpen_line_id'])
                 agent = "%d" % line.get('_tpen_creator')
-                if lineid is None:
+                if lineidfound is None:
                     raise ValueError('Could not find a line ID on line %s' % json.dumps(line))
+                lineid = lineidfound.group(1)
                 # Note whether the previous line break element needs a 'break' attribute
                 # (never the first line)
                 if breaking:
-                    nblines.add(lineid.group(1))
+                    nblines.add(lineid)
                 # Note whether the next line break element needs a 'break' attribute
                 # (never the last line)
                 breaking = not transcription.endswith(' ')
                 if line['motivation'] == 'oad:transcribing':
                     # This is a transcription of a manuscript line.
-                    # Get the column y value and see if we are starting a new column.
-                    coords = re.match('^.*#xywh=-?(\d+)', line['on'])
+                    # Get the geometry of the line and save it as a zone.
+                    coords = re.match('^.*#xywh=(.*)', line['on'])
                     if coords is None:
                         raise ValueError('Could not find the coordinates for line %s' % line['@id'])
-                    if xval < int(coords.group(1)):
-                        # Start a new 'column' in thetext.
+                    points = coords.group(1).split(',') # x, y, width, height
+                    zone = {'id': lineid, 'points': points}
+                    surface['zones'].append(zone)
+                    # See if a new text column needs to be started.
+                    if xval < int(points[0]):
                         thetext.append([])
-                        xval = int(coords.group(1))
+                        xval = int(points[0])
+                    # See who is responsible for this transcription line.
                     if members is not None:
                         if agent in members:
                             seen_members[agent] = members.get(agent)
                         else:
                             print("WARNING: T-PEN user %s not in members list" % agent)
-                    thetext[-1].append((lineid.group(1), transcription, agent))
+                    # Add the line to the running text
+                    thetext[-1].append((lineid, transcription, agent))
+
                 if '_tpen_note' in line:
                     # This 'transcription' is actually a transcriber's note.
                     if line['_tpen_note'] != "":
-                        notes.append((lineid.group(1), line['_tpen_note'], agent))
+                        notes.append((lineid, line['_tpen_note'], agent))
         # Spit out the text
         if len(thetext):
             xmlstring += '<pb n="%s"/>\n' % pn
@@ -123,7 +138,7 @@ def from_sc(jsondata,
                 if len(thetext) > 1:
                     xmlstring += '<cb n="%d"/>\n' % (cn + 1)
                 for ln, line in enumerate(col):
-                    attrstring = 'xml:id="l%s" n="%d"' % (line[0], ln + 1)
+                    attrstring = 'xml:id="l%s" facs="#z%s" n="%d"' % (line[0], line[0], ln + 1)
                     if line[2] in seen_members:
                         attrstring += ' resp="#u%s"' % line[2]
                     if line[0] in nblines:
@@ -140,11 +155,11 @@ def from_sc(jsondata,
         if n[2] in seen_members:
             attrstring += ' resp="#u%s"' % n[2]
         xmlstring += '<note %s>%s</note>\n' % (attrstring, n[1])
-    return _xmlify("<body>%s</body>" % xmlstring, metadata, members=seen_members,
+    return _xmlify("<body>%s</body>" % xmlstring, facsimile, metadata, members=seen_members,
                    special_chars=special_chars, numeric_parser=numeric_parser, postprocess=postprocess)
 
 
-def _xmlify(txdata, metadata, members=None, special_chars=None, numeric_parser=None, postprocess=None):
+def _xmlify(txdata, facsimile, metadata, members=None, special_chars=None, numeric_parser=None, postprocess=None):
     """Take the extracted XML structure of from_sc and make sure it is
     well-formed. Also fix any shortcuts, e.g. for the glyph tags."""
     try:
@@ -270,7 +285,7 @@ def _xmlify(txdata, metadata, members=None, special_chars=None, numeric_parser=N
             else:
                 el.set('cert', 'low')
 
-    return _tei_wrap(content, metadata, members,
+    return _tei_wrap(content, facsimile, metadata, members,
                      sorted(glyphs_seen.values(),
                             key=lambda x: x.get('{http://www.w3.org/XML/1998/namespace}id')),
                      postprocess)
@@ -287,6 +302,25 @@ def _get_glyph(gname, special_chars):
     etree.SubElement(glyph_el, 'glyphName').text = special_chars[gname][1]
     etree.SubElement(glyph_el, 'mapping').text = gname
     return glyph_el
+
+
+def _make_surface(sinfo):
+    """Returns a TEI XML 'surface' element for the given surface
+    information, including graphic and zone geometry."""
+    surface_el = etree.Element('surface')
+    surface_el.set('ulx', '0')
+    surface_el.set('uly', '0')
+    surface_el.set('lrx', "%d" % sinfo['width'])
+    surface_el.set('lry', "%d" % sinfo['height'])
+    etree.SubElement(surface_el, 'graphic').set('url', sinfo['graphic'])
+    for zone in sinfo['zones']:
+        z_el = etree.SubElement(surface_el, 'zone')
+        z_el.set('{http://www.w3.org/XML/1998/namespace}id', 'z%s' % zone['id'])
+        z_el.set('ulx', zone['points'][0])
+        z_el.set('uly', zone['points'][1])
+        z_el.set('lrx', "%d" % (int(zone['points'][0]) + int(zone['points'][2])))
+        z_el.set('lry', "%d" % (int(zone['points'][1]) + int(zone['points'][3])))
+    return surface_el
 
 
 def _show_parsing_short_error(e, st):
@@ -320,7 +354,7 @@ def safeerrmsg(message):
         print(message, file=sys.stderr)
 
 
-def _tei_wrap(content, metadata, members, glyphs, postprocess):
+def _tei_wrap(content, facsimile, metadata, members, glyphs, postprocess):
     """Wraps the content, and the glyphs that were found, into TEI XML format."""
     # Set some trivial default TEI header values, if they are not already set
     defaults = {
@@ -385,6 +419,10 @@ def _tei_wrap(content, metadata, members, glyphs, postprocess):
     # Then add the glyphs we used
     if len(glyphs):
         etree.SubElement(etree.SubElement(tei.find('teiHeader'), 'encodingDesc'), 'charDecl').extend(glyphs)
+    # Now make the facsimile element and its content
+    facs_el = etree.SubElement(tei, 'facsimile')
+    for surface in facsimile:
+        facs_el.append(_make_surface(surface))
     # Then add the content.
     etree.SubElement(tei, 'text').append(content)
     # Finally, set the appropriate namespace and schema.

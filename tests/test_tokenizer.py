@@ -44,9 +44,9 @@ class Test (unittest.TestCase):
         """Test that basic parsing with no specified options works properly."""
         tokens = Tokenizer().from_etree(self.testdoc_noglyphs)['tokens']
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
-                 'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
+                 'page': {'n': '75r'}, 'line': {'facs': '#z101276867', 'n': '1', 'xml:id': 'l101276867'}}
         last  = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
-                 'page': {'n': '075v'}, 'line': {'break': 'no', 'n': '25', 'xml:id': 'l101276853'}}
+                 'page': {'n': '75v'}, 'line': {'break': 'no', 'facs': '#z101276853', 'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
         self.assertEqual(313, len(tokens))
@@ -107,24 +107,28 @@ class Test (unittest.TestCase):
         """Test the correct detection and rendering of glyphs. The characters in
         the resulting token should be the characters that are the content of the
         g tag. """
-        testdata_noglyphs = {'յեգի<g ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
-                    'յ<g ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
-                    '<g ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
-                    '<g ref="">աշխարհ</g>ին': 'աշխարհին',
-                    'ար<g ref="">ա</g>պ<lb xml:id="l101276841" n="14" break="no"/>կաց': 'արապկաց',
-                    '<g ref="">աշխարհ</g>ն': 'աշխարհն'}
+        testdata_noglyphs = {
+            'յեգի<g ref="#&#x57A;&#x57F;"/>ոս': 'յեգիոս',
+            'յ<g ref="&#x561;&#x577;&#x56D;&#x561;&#x580;&#x570;">աշխար</g>հն': 'յաշխարհն',
+            '<g ref="asxarh">աշխարհ</g>ին': 'աշխարհին',
+            '<g ref="">աշխարհ</g>ին': 'աշխարհին',
+            'ար<g ref="">ա</g>պ<lb xml:id="l101276841" facs="#z101276841" n="14" break="no"/>կաց': 'արապկաց',
+            '<g ref="">աշխարհ</g>ն': 'աշխարհն'}
 
-        testdata_glyphs = {'յեգի<g ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
-                            'յ<g ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
-                            '<g ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
-                            'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" n="14" break="no"/>կաց': {'token': 'արապկաց', 'occurrence': 1},
-                            '<g ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
+        testdata_glyphs = {
+            'յեգի<g ref="#ptlig">պտ</g>ոս': {'token': 'յեգիպտոս', 'occurrence': 1},
+            'յ<g ref="#asxarh">աշխար</g>հն': {'token': 'յաշխարհն', 'occurrence': 1},
+            '<g ref="#asxarh">աշխարհ</g>ին': {'token': 'աշխարհին', 'occurrence': 2},
+            'ար<g ref="#avar">ա</g>պ<lb xml:id="l101276841" facs="#z101276841" n="14" break="no"/>կաց':
+                {'token': 'արապկաց', 'occurrence': 1},
+            '<g ref="#asxarh">աշխարհ</g>ն': {'token': 'աշխարհն', 'occurrence': 1}}
 
         tokens = Tokenizer().from_etree(self.testdoc_noglyphs)['tokens']
         # Find the token that has our substitution
         for t in tokens:
             if '<g ref="' in t['lit']:
-                self.assertIsNotNone(testdata_noglyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
+                self.assertIsNotNone(testdata_noglyphs.get(t['lit']),
+                                     "Error in rendering glyphs (input data %s not covered by testdata)" % t['lit'])
                 self.assertTrue(t['t'] == testdata_noglyphs.get(t['lit']), "Error in rendering glyphs")
                 del testdata_noglyphs[t['lit']]
         self.assertEqual(len(testdata_noglyphs), 0, "Did not find any test token")
@@ -133,7 +137,8 @@ class Test (unittest.TestCase):
         # Find the token that has our substitution
         for t in tokens:
             if '<g ref="' in t['lit']:
-                self.assertIsNotNone(testdata_glyphs.get(t['lit']), "Error in rendering glyphs (input data not covered by testdata)")
+                self.assertIsNotNone(testdata_glyphs.get(t['lit']),
+                                     "Error in rendering glyphs (input data %s not covered by testdata)" % t['lit'])
                 self.assertTrue(t['t'] == testdata_glyphs.get(t['lit'])['token'], "Error in rendering glyphs")
                 testdata_glyphs[t['lit']]['occurrence'] -= 1
                 if testdata_glyphs[t['lit']]['occurrence'] == 0:
@@ -213,10 +218,10 @@ class Test (unittest.TestCase):
 
     def test_location(self):
         tokens = Tokenizer(milestone='407').from_etree(self.testdoc)['tokens']
-        self.assertEqual(tokens[0]['page'], {'n': '075v'})
-        self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'n': '12'})   # first token
-        self.assertEqual(tokens[10]['line'], {'xml:id': 'l101276840', 'n': '13'})  # line broken
-        self.assertEqual(tokens[22]['line'], {'xml:id': 'l101276843', 'n': '16'})    # beginning of line
+        self.assertEqual(tokens[0]['page'], {'n': '75v'})
+        self.assertEqual(tokens[0]['line'], {'xml:id': 'l101276931', 'facs': '#z101276931', 'n': '12'})   # first token
+        self.assertEqual(tokens[10]['line'], {'xml:id': 'l101276840', 'facs': '#z101276840', 'n': '13'})  # line broken
+        self.assertEqual(tokens[22]['line'], {'xml:id': 'l101276843', 'facs': '#z101276843', 'n': '16'})    # beginning of line
 
     # def test_del_word_boundary(self):
     #     """Test that a strategically placed del doesn't cause erroneous joining of words.
@@ -298,9 +303,9 @@ class Test (unittest.TestCase):
         mypunct = [',', '.', '։']
         tokens = Tokenizer(punctuation=mypunct).from_etree(self.testdoc_noglyphs)['tokens']
         first = {'t': 'եղբայրն', 'n': 'եղբայրն', 'lit': 'եղբայրն', 'context': 'text/body/ab',
-                 'page': {'n': '075r'}, 'line': {'n': '1', 'xml:id': 'l101276867'}}
+                 'page': {'n': '75r'}, 'line': {'facs': '#z101276867', 'n': '1', 'xml:id': 'l101276867'}}
         last = {'t': 'զօրա֊', 'n': 'զօրա֊', 'lit': 'զօրա֊', 'context': 'text/body/ab',
-                'page': {'n': '075v'}, 'line': {'break': 'no', 'n': '25', 'xml:id': 'l101276853'}}
+                'page': {'n': '75v'}, 'line': {'break': 'no', 'facs': '#z101276853', 'n': '25', 'xml:id': 'l101276853'}}
         self.assertEqual(tokens[0], first)
         self.assertEqual(tokens[-1], last)
         self.assertEqual(347, len(tokens))
