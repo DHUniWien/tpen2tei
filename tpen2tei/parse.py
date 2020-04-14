@@ -73,7 +73,9 @@ def from_sc(jsondata,
         # Pull out the necessary facsimile information
         surface = {'graphic': fn, 'width': page['width'], 'height': page['height'], 'zones': []}
         thetext = []
-        xval = -1
+        # Keep track of the minimum X value on the page, to track column shifts.
+        # Since it is possible for X values to be negative, we initialize to None instead of -1.
+        xval = None
         # Find the annotation list.
         linelist = None
         for content in page['otherContent']:
@@ -115,6 +117,9 @@ def from_sc(jsondata,
                     zone = {'id': lineid, 'points': points}
                     surface['zones'].append(zone)
                     # See if a new text column needs to be started.
+                    if xval is None:
+                        # Initialise the minimum xval for the page if necessary
+                        xval = int(points[0]) - 1
                     if xval < int(points[0]):
                         thetext.append([])
                         xval = int(points[0])
