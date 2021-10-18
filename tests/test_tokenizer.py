@@ -298,6 +298,12 @@ class Test (unittest.TestCase):
         self.assertEqual("թոռնկա", tokens[177]['t'])
         self.assertEqual("դնել", tokens[178]['t'])
 
+    def test_choice_element(self):
+        filename = self.testfiles['v913']
+        tokens = Tokenizer(milestone="494").from_file(filename)['tokens']
+        self.assertEqual("պտրզմին", tokens[5]['t'])
+        self.assertEqual("պատերազմին", tokens[5]['n'])
+
     def test_custom_tokenizer(self):
         """Test that a custom tokenizer does its job."""
         mypunct = [',', '.', '։']

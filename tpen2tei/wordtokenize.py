@@ -160,6 +160,35 @@ class Tokenizer:
             # If we are looking at a del tag for the final layer, or an add/mod tag for the
             # first layer, discard all the tokens we just got.
             tokens = []
+        elif _tag_is(element, 'choice'):
+            # If we are looking at a choice tag, we need to redo the token grabbing separately
+            # for the oppositional pairs. Set sic/orig/abbr to be the t value, and corr/reg/expan
+            # to be the n value. We treat this as a single token, since we can't do any sort of
+            # reasonable intra-tag correlation of multiple tokens.
+            mytoken = {'lit': tokens_to_string(tokens, field='lit')}
+            for opt in element:
+                # If the tag is a corrected/regularized/expanded form, it belongs in the 'normal form' field.
+                if _tag_is(opt, 'corr') or _tag_is(opt, 'reg') or _tag_is(opt, 'expan'):
+                    ccorr = self._find_words(opt, first_layer)
+                    if len(ccorr) > 0:
+                        mytoken['n'] = tokens_to_string(ccorr)
+                # Otherwise, it belongs in the regular token field.
+                else:
+                   corig = self._find_words(opt, first_layer)
+                   if len(corig) > 0:
+                       mytoken['t'] = tokens_to_string(corig)
+                       if 'continue' in corig[-1]:
+                           mytoken['continue'] = True
+
+            # If we have neither corrected nor uncorrected, just skip this token
+            if 't' not in mytoken and 'n' not in mytoken:
+                tokens = []
+            # If we have a corrected but no original form, set the corrected form to 't'
+            elif 't' not in mytoken:
+                mytoken['t'] = mytoken['n']
+            elif 'n' not in mytoken:
+                mytoken['n'] = mytoken['t']
+            tokens = [mytoken]
         elif _tag_is(element, 'num'):
             # Combine all the word tokens into a single one, and set 'n' to the number value.
             mytoken = {'n': element.get('value'),
